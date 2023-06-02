@@ -1,0 +1,2 @@
+-- DROP and CREATE TABLE for chapters
+-- chapters: id, prev, user_id, content

@@ -1,4 +1,5 @@
--- Drop and recreate Users table (Example)
+-- Drop and recreate Users table 
+-- USERS: id, username, email, password
 
 DROP TABLE IF EXISTS users CASCADE;
 CREATE TABLE users (

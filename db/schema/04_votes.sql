@@ -1,0 +1,2 @@
+-- DROP and CREATE TABLE votes
+-- id, user_id, chapter_id

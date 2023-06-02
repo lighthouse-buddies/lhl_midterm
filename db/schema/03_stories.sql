@@ -1,0 +1,2 @@
+-- DROP and CREATE stories
+-- stories: id, first_chapter_id, last_chapter_id, complete
