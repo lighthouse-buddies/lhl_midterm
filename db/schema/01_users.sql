@@ -1,8 +1,10 @@
--- Drop and recreate Users table 
--- USERS: id, username, email, password
+-- Drop table if exists
+DROP TABLE IF EXISTS users;
 
-DROP TABLE IF EXISTS users CASCADE;
+-- Create table
 CREATE TABLE users (
-  id SERIAL PRIMARY KEY NOT NULL,
-  name VARCHAR(255) NOT NULL
+                     id INT PRIMARY KEY,
+                     username VARCHAR NOT NULL,
+                     email VARCHAR NOT NULL,
+                     password VARCHAR NOT NULL
 );
