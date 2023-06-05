@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS chapters;
 
 -- Create table
 CREATE TABLE chapters (
-                        id INT PRIMARY KEY,
+                        id SERIAL PRIMARY KEY,
                         content TEXT NOT NULL,
                         prev INT,
                         user_id INT,

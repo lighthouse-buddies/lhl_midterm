@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS stories;
 
 -- Create table
 CREATE TABLE stories (
-                       id INT PRIMARY KEY,
+                       id SERIAL PRIMARY KEY,
                        title VARCHAR NOT NULL,
                        first_chapter_id INT,
                        last_chapter_id INT,
