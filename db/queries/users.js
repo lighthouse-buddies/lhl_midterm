@@ -1,9 +1,5 @@
 const db = require('../connection');
 
-/**
- * Retrieves all users from the database.
- * @returns {Promise<Array<Object>>} A promise that resolves to an array of user objects.
- */
 const getUsers = () => {
   return db.query('SELECT * FROM users;')
     .then(data => {
@@ -12,45 +8,92 @@ const getUsers = () => {
 };
 
 /**
- * Retrieves a user's information based on their ID.
- * @param {number} id - The ID of the user.
- * @returns {Promise<Object>} A promise that resolves to the user object.
+ * Get a single user from the database given their email.
+ * @param {String} email The email of the user.
+ * @return {Promise<{}>} A promise to the user.
  */
-const getUserById = (id) => {
-  return db.query('SELECT * FROM users WHERE id = $1;', [id])
-    .then(data => {
-      return data.rows[0];
-    });
+const getUserWithEmail = function(email) {
+  const queryString = `
+    SELECT * FROM users
+    WHERE email = $1
+    `;
+
+  return db
+    .query(queryString, [email])
+    .then(result => result.rows[0] || null)
+    .catch(error => console.log(error.message));
 };
 
 /**
- * Authenticates a user by checking if the provided email and password match a record in the database.
- * @param {string} email - The email of the user.
- * @param {string} password - The password of the user.
- * @returns {Promise<boolean>} A promise that resolves to a boolean indicating the authentication result.
+ * Get a single user from the database given their id.
+ * @param {string} id The id of the user.
+ * @return {Promise<{}>} A promise to the user.
  */
-const authenticate = (email, password) => {
-  return db.query('SELECT EXISTS(SELECT 1 FROM users WHERE email = $1 AND password = $2);', [email, password])
-    .then(data => {
-      return data.rows[0].exists;
-    });
+const getUserWithId = function(id) {
+  const queryString = `
+    SELECT * FROM users
+    WHERE id = $1
+    `;
+
+  return db
+    .query(queryString, [id])
+    .then(result => result.rows[0] || null)
+    .catch(error => console.log(error.message));
 };
 
 /**
- * Retrieves the user ID associated with a given story ID.
- * @param {number} story_id - The ID of the story.
- * @returns {Promise<number>} A promise that resolves to the user ID.
+ * Get a single username from the database given their id.
+ * @param {string} id The id of the user.
+ * @return {Promise<{}>} A promise to the user.
  */
-const getUserIdByStory = (story_id) => {
-  return db.query('SELECT user_id FROM stories WHERE id = $1;', [story_id])
-    .then(data => {
-      return data.rows[0].user_id;
-    });
+const getUsernameById = function(id) {
+  const queryString = `
+    SELECT username FROM users
+    WHERE id = $1
+    `;
+
+  return db
+    .query(queryString, [id])
+    .then(result => result.rows[0] || null)
+    .catch(error => console.log(error.message));
 };
 
-module.exports = {
-  getUsers,
-  getUserById,
-  authenticate,
-  getUserIdByStory
+/**
+ * Add a new user to the database.
+ * @param {{name: string, password: string, email: string}} user
+ * @return {Promise<{}>} A promise to the user.
+ */
+const addUser = function(user) {
+  const queryString = `
+    INSERT INTO users (name, email, password)
+    VALUES ($1, $2, $3)
+    RETURNING *;
+  `;
+  const values = [user.name, user.email, user.password];
+
+  return db
+    .query(queryString, values)
+    .then(result => result.rows[0])
+    .catch(error => console.log(error));
 };
+
+/**
+ * Returns all stories by currently logged in user.
+ * @param {string} id The id of the user
+ * @return {Promise<{}>} A promise to the user.
+ */
+const getStoriesByUserId = (id) => {
+  const queryString = `
+    SELECT * FROM stories
+    WHERE first_chapter_id IN
+    (SELECT id FROM chapters WHERE user_id = $1);
+    `;
+
+  return db
+    .query(queryString, [id])
+    .then(result => result.rows)
+    .catch(error => console.log(error));
+};
+
+
+module.exports = { getUsers, getUserWithEmail, getUserWithId, addUser, getStoriesByUserId, getUsernameById };
