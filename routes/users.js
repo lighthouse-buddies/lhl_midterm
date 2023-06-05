@@ -35,7 +35,7 @@ router.get('/:id', (req, res) => {
 //POST a new user
 router.post('/', (req, res) => {
   const { username, email, password } = req.body;
-  userQueries.addUser(username, email, password)
+  userQueries.createUser(username, email, password)
     .then((userId) => {
       req.session.userId = userId;
       res.status(201).json({ id: userId });
