@@ -1,0 +1,76 @@
+@startuml
+'!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+'LAYOUT_TOP_DOWN()
+package "database.operations" {
+  !define Class(name, desc) class name as "desc" << (T,#FFAAAA) >>
+  !define PrimaryKey(x) <u>x</u>
+  !define ForeignKey(x) <color:purple>x</color>
+  !define EvolveGroup(x) <color:blue>x</color>
+  !define QueryGroup(x) <color:green>x</color>
+  !define NotNull(x) <color:red>x</color>
+  !define DefaultNull(x) <color:orange>x</color>
+
+  Class(Users, "Users") {
+    +PrimaryKey(id: int)
+    +NotNull(username: varchar)
+    +NotNull(email: varchar)
+    +NotNull(password: varchar)
+    +DefaultNull(deleted_at: timestamp)
+    +EvolveGroup(create(username, email, password))
+    +EvolveGroup(updateUsername(email, password, newUsername))
+    +EvolveGroup(updateEmail(email, password, newEmail))
+    +EvolveGroup(updatePassword(email, password, newPassword))
+    +EvolveGroup(remove(email, password))
+    +QueryGroup(getUserNameById(id)) -> {username}
+    +QueryGroup(authenticate(email, password)) -> bool
+  }
+
+  Class(Chapters, "Chapters") {
+    +PrimaryKey(id: int)
+    +NotNull(content: text)
+    +prev: int
+    +ForeignKey(user_id: int)
+    +NotNull(created_at: timestamp)
+    +DefaultNull(deleted_at: timestamp)
+    +EvolveGroup(create(content, prev, email, password))
+    +EvolveGroup(remove(id, email, password))
+    +QueryGroup(getChapterById(id)) -> {content}
+    +QueryGroup(getNextChapters(chapter_id)) -> [chapter_id]
+    +QueryGroup(getNextApprovedChapter(chapter_id)) -> chapter_id
+    +QueryGroup(getChaptersByUserId(user_id)) -> [chapter_id]
+  }
+
+  Class(Stories, "Stories") {
+    +PrimaryKey(id: int)
+    +NotNull(title: varchar)
+    +ForeignKey(first_chapter_id: int)
+    +ForeignKey(last_chapter_id: int)
+    +NotNull(complete: bool)
+    +DefaultNull(deleted_at: timestamp)
+    +EvolveGroup(create(title, chapter_id, email, password))
+    +EvolveGroup(remove(id, email, password))
+    +EvolveGroup(approveChapter(chapter_id, email, password))
+    +QueryGroup(getStoryById(id)) -> {title, original_author_id}
+    +QueryGroup(getStoriesByUserId(user_id)) -> [story_id]
+    +QueryGroup(getStoryByChapterId(chapter_id)) -> story_id
+  }
+
+  Class(Votes, "Votes") {
+    +PrimaryKey(id: int)
+    +ForeignKey(user_id)
+    +ForeignKey(chapter_id: int)
+    +EvolveGroup(create(email, password, chapter_id))
+    +EvolveGroup(remove(id, email, password))
+    +QueryGroup(getVoteCountByChapterId(chapter_id)) -> INT
+    +QueryGroup(getVoteCountByStoryId(chapter_id)) -> INT
+  }
+
+  note "Primary Key" as note_pk #00C0C0
+  note "Foreign Key" as note_fk #800080
+  note "Not Null" as note_notnull #FF0000
+  note "Default Null" as note_default #FFA500
+  note "methods: Evolve Group" as note_evolve #0000FF
+  note "methods: Query Group" as note_query #008000
+}
+
+@enduml
