@@ -6,7 +6,7 @@
  */
 
 const express = require('express');
-const router  = express.Router();
+const router = express.Router();
 const userQueries = require('../db/queries/queries');
 
 
@@ -14,34 +14,77 @@ router.get('/', (req, res) => {
   res.render('users');
 });
 
-//GET stories from user by id
+//GET user by id
 router.get('/:id', (req, res) => {
   const userId = req.params.id;
-  const sessionUserId = req.session.userId
+  const sessionUserId = req.session.userId;
+
   if (sessionUserId === userId) {
-  userQueries.getStoriesByUserId(userId)
-    .then((stories) => {
-      res.json({stories});
+    userQueries.users.getUserById(userId)
+      .then((user) => {
+        if (user) {
+          res.json(user);
+        } else {
+          res.status(404).send('User not found');
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).send('Error retrieving user');
+      });
+  } else {
+    res.status(401).send('Unauthorized');
+  }
+});
+
+// GET user ID by story ID
+router.get('/story/:id', (req, res) => {
+  const storyId = req.params.id;
+
+  userQueries.users.getIdByStoryId(storyId)
+    .then((userId) => {
+      if (userId) {
+        res.json({ user_id: userId });
+      } else {
+        res.status(404).send('User ID not found');
+      }
     })
     .catch((err) => {
       console.error(err);
-      res.status(500).send('Error: Could not retrieve stories');
+      res.status(500).send('Error retrieving user ID');
     });
-  } else {
-    res.status(401).send('Not Allowed')
-  }
+});
+
+// POST user authentication
+router.post('/login', (req, res) => {
+  const { email, password } = req.body;
+
+  userQueries.users.authenticate(email, password)
+    .then((userId) => {
+      if (userId) {
+        req.session.userId = userId;
+        res.json({ message: 'Authentication successful' });
+      } else {
+        res.status(401).json({ message: 'Authentication failed' });
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send('Error authenticating user');
+    });
 });
 
 //POST a new user
 router.post('/', (req, res) => {
   const { username, email, password } = req.body;
-  userQueries.createUser(username, email, password)
+
+  userQueries.users.create(username, email, password)
     .then((userId) => {
       req.session.userId = userId;
       res.status(201).json({ id: userId });
     })
-    .catch((err) => {
-      console.error(err);
+    .catch((error) => {
+      console.error(error);
       res.status(500).send('Error: Could not create user');
     });
 });
