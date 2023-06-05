@@ -1,44 +1,47 @@
 @startuml
 
+!define Table(name, desc) class name as "desc" << (T,#FFAAAA) >>
+!define PrimaryKey(x) <color:blue>x</color>
+!define ForeignKey(x) <color:purple>x</color>
+!define NotNull(x) <color:red>x</color>
+!define DefaultNull(x) <color:orange>x</color>
+
 package "Database Schema" {
-    !define Table(name, desc) class name as "desc" << (T,#FFAAAA) >>
-    !define PrimaryKey(x) <color:blue>x</color>
-    !define ForeignKey(x) <color:green>x</color>
-    !define NotNull(x) <color:red>x</color>
-    !define Default(x) <color:orange>x</color>
-
-    note "Primary Key" as note_pk #00C0C0
-    note "Not Null Constraint" as note_notnull #FF4040
-    note "Foreign Key" as note_fk #008000
-    note "Default Constraint" as note_default #FFA500
-
     Table(users, "Users") {
-      + id [PK]
-      + username [NotNull(VARCHAR)]
-      + email [NotNull(VARCHAR)]
-      + password [NotNull(VARCHAR)]
+        + id [PrimaryKey(PK)]
+        + username [NotNull(VARCHAR)]
+        + email [NotNull(VARCHAR)]
+        + password [NotNull(VARCHAR)]
+        + DefaultNull(deleted_at [TIMESTAMP])
     }
 
     Table(chapters, "Chapters") {
-      + id [PK]
-      + content [NotNull(TEXT)]
-      prev [ForeignKey(chapters.id)]
-      user_id [ForeignKey(users.id)]
+        + id [PrimaryKey(PK)]
+        + content [NotNull(TEXT)]
+        prev [ForeignKey(chapters.id)]
+        user_id [ForeignKey(users.id)]
+        + DefaultNull(deleted_at [TIMESTAMP])
     }
 
     Table(votes, "Votes") {
-      + id [PK]
-      user_id [ForeignKey(users.id)]
-      chapter_id [ForeignKey(chapters.id)]
+        + id [PrimaryKey(PK)]
+        user_id [ForeignKey(users.id)]
+        chapter_id [ForeignKey(chapters.id)]
     }
 
     Table(stories, "Stories") {
-      + id [PK]
-      + title [NotNull(VARCHAR)]
-      + first_chapter_id [ForeignKey(chapters.id)]
-      + last_chapter_id [ForeignKey(chapters.id)]
-      + complete [Default(FALSE)]
+        + id [PrimaryKey(PK)]
+        + title [NotNull(VARCHAR)]
+        + first_chapter_id [ForeignKey(chapters.id)]
+        + last_chapter_id [ForeignKey(chapters.id)]
+        + complete [FALSE]
+        + DefaultNull(deleted_at [TIMESTAMP])
     }
+
+    note "Primary Key" as note_pk #00C0C0
+    note "Not Null" as note_notnull #FF4040
+    note "Foreign Key" as note_fk #800080
+    note "Default Null" as note_default #FFA500
 
     users --{ chapters : "1"  "*"
     chapters --o chapters : "0/1"  "*"
