@@ -6,7 +6,7 @@ const voteQueries = require('../db/queries/queries');
 router.post('/create', (req, res) => {
   const { email, password, chapter_id } = req.body;
 
-  voteQueries.votes.createVotes(email, password, chapter_id)
+  voteQueries.votes.create(email, password, chapter_id)
     .then((success) => {
       if (success) {
         res.json({ message: 'Vote created successfully' });
@@ -24,7 +24,7 @@ router.post('/create', (req, res) => {
 router.delete('/remove', (req, res) => {
   const { email, password, chapter_id } = req.body;
 
-  voteQueries.votes.removeVote(email, password, chapter_id)
+  voteQueries.votes.remove(email, password, chapter_id)
     .then((success) => {
       if (success) {
         res.json({ message: 'Vote removed successfully' });
