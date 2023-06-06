@@ -7,7 +7,7 @@ const db = require('../../connection');
  * @param {string} password - The password of the user.
  * @returns {Promise<number|null>} A promise that resolves to the user ID (as a number) if the user is created successfully, or null if the user creation fails.
  */
-const createUser = (username, email, password) => {
+const create = (username, email, password) => {
   // Prepare the SQL query with parameter placeholders
   const query = 'INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING id;';
 
@@ -32,4 +32,4 @@ const createUser = (username, email, password) => {
     });
 };
 
-module.exports = createUser;
+module.exports = create;

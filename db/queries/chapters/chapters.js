@@ -1,19 +1,31 @@
-// import all functions to do with querying the chapters table
-//this file is for exporting all functions to do with retrieving information from the chapters table
-
-//TODO get previous chapter by chapter id
-//TODO get next chapters by chapter id -> []
-//TODO get approved next chapter by chapter id
-
-const create = require("./createChapter");
-const getById = require("./getChapterById");
-const getNextChapters = require("./getNextChapters");
-const remove = require("./removeChapter");
+const create = require("./create");
+const getData = require("./getData");
+const nextChapters = require("./nextChapters");
+const remove = require("./remove");
 
 module.exports = {
-  create,
-  getById,
-  getNextChapters,
-  remove,
+  create: create,/**
+   * Creates a new chapter in the database.
+   * @param {string} content - The content of the chapter.
+   * @param {number|null} prev - The ID of the previous chapter (if any).
+   * @param {number} user_id - The ID of the user creating the chapter.
+   * @returns {Promise<number|null>} A promise that resolves to the chapter ID (as a number) if the chapter is created successfully, or null if the chapter creation fails.
+   */
+  getById: getData, //TODO? change to get data?
+  /**
+   * Retrieves a chapter by its ID.
+   * @param {number} id - The ID of the chapter.
+   * @returns {Promise<Object|null>} A promise that resolves to an object containing the chapter details if found, or null if not found.
+   */
+  getNextChapters: nextChapters,/**
+   * Retrieves the next chapter IDs for a given chapter ID.
+   * @param {number} chapter_id - The ID of the current chapter.
+   * @returns {Promise<Array<number>>} A promise that resolves to an array of next chapter IDs if found, or an empty array if not found.
+   */
+  remove: remove,/**
+   * Soft deletes a story from the database by setting the "deleted_at" field.
+   * @param {number} id - The ID of the story to be soft deleted.
+   * @returns {Promise<boolean>} A promise that resolves to a boolean indicating the success of the operation.
+   */
   //getNextApprovedChapter,
 }

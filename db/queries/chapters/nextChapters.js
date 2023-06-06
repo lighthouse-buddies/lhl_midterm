@@ -5,7 +5,7 @@ const db = require('../../connection');
  * @param {number} chapter_id - The ID of the current chapter.
  * @returns {Promise<Array<number>>} A promise that resolves to an array of next chapter IDs if found, or an empty array if not found.
  */
-const getNextChapters = (chapter_id) => {
+const nextChapters = (chapter_id) => {
   // Prepare the SQL query with parameter placeholders
   const query = 'SELECT id FROM chapters WHERE prev = $1;';
 
@@ -15,9 +15,9 @@ const getNextChapters = (chapter_id) => {
   // Execute the query using the database connection
   return db.query(query, values)
     .then(data => {
+      // console.log(data.rows);
       // Extract the next chapter IDs from the query response
-      const nextChapterIds = data.rows.map(row => row.id);
-      return nextChapterIds;
+      return data.rows.map(row => row.id);
     })
     .catch(error => {
       console.error('Error retrieving next chapters:', error);
@@ -25,4 +25,4 @@ const getNextChapters = (chapter_id) => {
     });
 };
 
-module.exports = getNextChapters;
+module.exports = nextChapters;
