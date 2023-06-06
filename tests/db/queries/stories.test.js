@@ -46,16 +46,15 @@ describe('Stories', function() {
   describe('getStoriesByUserId', function() {
     it('should retrieve an array of story IDs associated with a user ID', async function() {
       const stories = await Stories.getStoriesByUserId(userId);
+      console.log('Retrieved stories:', stories); // Console log the retrieved stories
       assert(Array.isArray(stories));
     });
   });
 
   describe('getData', function() {
     it('should retrieve a row by its ID', async function() {
-      // Assume a user with ID `userId` exists in the database
-      const tableName = 'users';
-      const data = await Stories.getData(tableName, userId);
-      console.log('Retrieved user data:', data); // Console log the retrieved data
+      const data = await Stories.getData(storyId);
+      console.log('Retrieved story data:', data); // Console log the retrieved data
       assert.strictEqual(typeof data, 'object');
     });
   });

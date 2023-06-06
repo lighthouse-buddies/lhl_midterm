@@ -33,8 +33,7 @@ module.exports = {
   // getTitleById,
   //TODO getData?
   getData: getData , /**
-   * Retrieves a row by its ID.
-   * @param {string} tableName - The name of the table.
+   * Retrieves a row by its ID from the stories table in the database.
    * @param {number} id - The ID of the row.
    * @returns {Promise<Object|null>} A promise that resolves to the row object if found, or null if not found.
    */

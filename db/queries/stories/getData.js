@@ -1,14 +1,13 @@
 const db = require('../../connection');
 
 /**
- * Retrieves a row by its ID.
- * @param {string} tableName - The name of the table.
+ * Retrieves a row by its ID from the stories table in the database.
  * @param {number} id - The ID of the row.
  * @returns {Promise<Object|null>} A promise that resolves to the row object if found, or null if not found.
  */
-const getData = (tableName, id) => {
+const getData = (id) => {
   // Prepare the SQL query with parameter placeholders
-  const query = `SELECT * FROM ${tableName} WHERE id = $1;`;
+  const query = 'SELECT * FROM stories WHERE id = $1;';
 
   // Prepare the values to be inserted into the query
   const values = [id];
@@ -26,8 +25,8 @@ const getData = (tableName, id) => {
       }
     })
     .catch(error => {
-      console.error('Error retrieving data:', error);
-      return null; // Error occurred
+      console.error('Error retrieving data from stories:', error);
+      return null; // Error occurred during data retrieval
     });
 };
 
