@@ -1,6 +1,54 @@
 // See: https://sass-lang.com/
 
+// colors: 
+$red: #723D46;
+$black: #1E1E24;
+$dun: #D8C3A5;
+$khaki: #B8AFA3;
+$coffee: #4F3D36;
+
+
+//fonts:
+$cinzel: 'Cinzel', serif;
+$playfair: 'Playfair Display SC', serif;
+$hind: 'Hind', sans-serif;
+
+@mixin button {
+  padding: 1rem;
+  height: min-content;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  font-family: $playfair;
+  background-color: $red;
+  color: $khaki;
+}
+
+@mixin user-handle-red {
+  font-family: $cinzel;
+  font-weight: 700;
+  font-size: 2rem;
+  color: $red;
+}
+
+@mixin headings {
+  color: $khaki;
+  font-family: $cinzel;
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+
 body,
 html {
   margin: 0;
+  font-size: 62.5%;
+  font-family: $hind;
+  color: $khaki;
+  background-color: $coffee;
+}
+
+@mixin wrapper {
+  margin: 0 auto;
+  padding: 0 1rem;
 }

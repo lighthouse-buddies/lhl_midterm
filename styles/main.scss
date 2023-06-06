@@ -1,18 +1,61 @@
-body {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+@import 'layout';
 
-  background: rgb(163, 208, 219);
-  background: linear-gradient(
-    227deg,
-    rgba(163, 208, 219, 1) 0%,
-    rgba(163, 176, 219, 1) 20%,
-    rgba(163, 173, 219, 1) 34%,
-    rgba(163, 219, 208, 1) 59%,
-    rgba(163, 208, 219, 1) 74%,
-    rgba(163, 208, 219, 1) 100%
-  );
+#banner {
+  height: 55vh;
+  width: 100vw;
+  background-image: url("https://wallpapers.com/images/hd/dark-academia-ireland-library-afhnkau6zvbpzu1o.jpg");
+  background-size: cover;
+  background-position: 50% 50%;
+}
+
+
+.story-preview-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  @include wrapper;
+  margin-top: 1rem;
+}
+
+.story-preview {
+  width: 100%;
+  max-width: 40rem;
+  height: auto;
+  margin: 1rem;
+  background-color: $black;
+  font-size: 2rem;
+  border-radius: 10px;
+  text-align: center;
+
+  header {
+    height: 20%;
+    background-color: $red;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    @include headings;
+    text-align: center;
+    padding-top: 1rem;
+  }
+
+  p {
+    margin: 0 auto;
+    padding: 1rem;
+  }
+
+  footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1rem;
+    align-items: baseline;
+  }
+
+  .user-handle-red {
+    @include user-handle-red;
+  }
+
+  .story-status {
+    @include button;
+  }
+
 }
