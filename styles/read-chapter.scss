@@ -39,5 +39,80 @@ main {
 .page-content {
   width: 75%;
   @include wrapper;
-  margin-left: 25%;
+  margin-left: 26%;
+  margin-top: 11vh;
+  font-size: 2rem;
+
+
+  .story-text {
+    height: 60%;
+    overflow-y: scroll;
+    padding-right: 2rem;
+  }
+
+  h2 {
+    font-family: $playfair;
+    color: $dun;
+    font-size: 3rem;
+    margin-bottom: 0;
+  }
+
+  .story-container {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .story-scroll {
+    display: flex;
+    width: fit-content;
+  }
+
+  .story-preview {
+    flex: 0 0 33.33%;
+    padding: 1rem;
+    width: 100%;
+    max-width: 40rem;
+    height: auto;
+    background-color: $black;
+    font-size: 1.5rem;
+    border-radius: 10px;
+    text-align: center;
+
+    header {
+      height: 20%;
+      background-color: $red;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      @include headings;
+      text-align: center;
+      padding-top: 1rem;
+      animation: color;
+
+      a:hover {
+        @include color-on-hover;
+      }
+    }
+
+    p {
+      margin: 0 auto;
+      padding: 1rem;
+    }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 1rem;
+      align-items: baseline;
+    }
+
+    .user-handle-red {
+      @include user-handle-red;
+    }
+
+    .story-status {
+      @include button;
+    }
+
+  }
+
 }
