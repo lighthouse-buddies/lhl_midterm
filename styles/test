@@ -1,0 +1,43 @@
+Yes, you can add horizontal scrolling to a div to display multiple articles at a time. Here's an example of how you can achieve that using CSS:
+
+HTML:
+```html
+<div class="story-container">
+  <div class="story-scroll">
+    <!-- Repeat this article block for each article -->
+    <article class="story-preview">
+      <!-- Article content goes here -->
+    </article>
+    <!-- Repeat this article block for each article -->
+  </div>
+</div>
+```
+
+CSS:
+```css
+.story-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.story-scroll {
+  display: flex;
+  width: fit-content;
+}
+
+.story-preview {
+  flex: 0 0 33.33%; /* Display three articles at a time */
+  padding: 10px;
+  /* Other styling for the article goes here */
+}
+```
+
+In this example, we have a container div with the class "story-container" that wraps the div with the class "story-scroll". The "story-container" div has a width of 100% to ensure it occupies the full width of its parent container. The `overflow-x: auto` property enables horizontal scrolling when the content overflows the container.
+
+The "story-scroll" div uses `display: flex` to create a flex container that holds the article elements. The articles will be displayed side by side due to the flex display.
+
+Each individual article with the class "story-preview" has a `flex: 0 0 33.33%` property, which makes each article take up one-third of the available width. This ensures that three articles are visible at a time in the horizontal scroll view.
+
+You can repeat the article block for each article you want to display within the "story-scroll" div.
+
+Feel free to adjust the styling and widths according to your specific requirements.

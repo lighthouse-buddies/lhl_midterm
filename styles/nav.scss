@@ -1,20 +1,3 @@
-// <nav>
-//   <h1 id="logo">
-//     <span>Collab</span>Tales
-//   </h1>
-//   <div class="nav-menu">
-//     <a href="#">
-//       Start a Story
-//     </a>
-//     <a href="#">
-//       My Stories
-//     </a>
-//     <a href="#">
-//       Logout
-//     </a>
-//   </div>
-// </nav>
-
 @import 'layout';
 
 nav {
@@ -31,12 +14,17 @@ nav {
 
 .nav-menu {
   align-self: flex-start;
+
+  a:hover {
+    @include color-on-hover;
+  }
 }
 
 a {
   text-decoration: none;
   @include headings;
   padding: 1rem;
+  animation: color;
 }
 
 #logo {
@@ -46,6 +34,6 @@ a {
   margin: 0;
 }
 
-#logo span {
+#logo>span {
   color: $dun;
 }

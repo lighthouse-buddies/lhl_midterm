@@ -38,6 +38,10 @@ $hind: 'Hind', sans-serif;
   font-size: 2rem;
 }
 
+@mixin wrapper {
+  margin: 0 auto;
+  padding: 0 1rem;
+}
 
 body,
 html {
@@ -46,9 +50,36 @@ html {
   font-family: $hind;
   color: $khaki;
   background-color: $coffee;
+  overflow-x: hidden;
 }
 
-@mixin wrapper {
-  margin: 0 auto;
-  padding: 0 1rem;
+//animations
+
+@mixin bounce($duration: 1s) {
+  animation: bounce-animation $duration infinite;
+
+  @keyframes bounce-animation {
+
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+      transform: translateY(0);
+    }
+
+    40% {
+      transform: translateY(-20px);
+    }
+
+    60% {
+      transform: translateY(-10px);
+    }
+  }
+}
+
+@mixin color-on-hover {
+  &:hover {
+    color: $dun;
+  }
 }
