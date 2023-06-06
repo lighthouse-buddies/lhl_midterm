@@ -6,7 +6,7 @@ const db = require('../../connection');
  * @param {string} password - The password of the user.
  * @returns {Promise<number|null>} A promise that resolves to the user ID (as a number) if authentication is successful, or null if authentication fails.
  */
-const authenticateUser = (email, password) => {
+const authenticate = (email, password) => {
   // Prepare the SQL query with parameter placeholders
   const query = 'SELECT id FROM users WHERE email = $1 AND password = $2;';
 
@@ -31,4 +31,4 @@ const authenticateUser = (email, password) => {
     });
 };
 
-module.exports = authenticateUser;
+module.exports = authenticate;

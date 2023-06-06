@@ -5,7 +5,7 @@ const db = require('../../connection');
  * @param {number} id - The ID of the story.
  * @returns {Promise<string|null>} A promise that resolves to the title (as a string) if found, or null if not found.
  */
-const getTitleById = (id) => {
+const deprecate_getTitleById = (id) => {
   // Prepare the SQL query with parameter placeholders
   const query = 'SELECT title FROM stories WHERE id = $1;';
 
@@ -30,4 +30,4 @@ const getTitleById = (id) => {
     });
 };
 
-module.exports = getTitleById;
+module.exports = deprecate_getTitleById;

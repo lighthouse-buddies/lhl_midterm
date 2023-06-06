@@ -5,9 +5,9 @@ const db = require('../../connection');
  * @param {number} id - The ID of the chapter.
  * @returns {Promise<Object|null>} A promise that resolves to an object containing the chapter details if found, or null if not found.
  */
-const getChapterById = (id) => {
+const getData = (id) => {
   // Prepare the SQL query with parameter placeholders
-  const query = 'SELECT content, user_id FROM chapters WHERE id = $1;';
+  const query = 'SELECT * FROM chapters WHERE id = $1;';
 
   // Prepare the values to be inserted into the query
   const values = [id];
@@ -18,8 +18,7 @@ const getChapterById = (id) => {
       // Check if a matching chapter was found
       if (data.rows.length === 1) {
         // Extract the chapter details from the query response
-        const { content, user_id } = data.rows[0];
-        return { content, user_id };
+        return data.rows[0];
       } else {
         return null; // Chapter not found
       }
@@ -30,4 +29,4 @@ const getChapterById = (id) => {
     });
 };
 
-module.exports = getChapterById;
+module.exports = getData;
