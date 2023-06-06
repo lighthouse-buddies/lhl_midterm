@@ -3,7 +3,7 @@ const router  = express.Router();
 const chapterQueries = require('../db/queries/queries');
 
 // POST route to create a new chapter
-app.post('/create_chapter', (req, res) => {
+app.post('/new', (req, res) => {
   const { content, prev } = req.body;
   const email = req.session.email;
   const password = req.body.password;
@@ -11,7 +11,7 @@ app.post('/create_chapter', (req, res) => {
   chapterQueries.chapters.create(content, prev, email, password)
     .then((chapterId) => {
       if (chapterId !== null) {
-        res.redirect('/chapter/' + chapterId);
+        res.redirect(`/${chapterId}`);
       } else {
         res.status(500).send('Chapter creation failed');
       }
@@ -23,7 +23,7 @@ app.post('/create_chapter', (req, res) => {
 });
 
 // GET route to get chapter by id
-app.get('/chapter/:id', (req, res) => {
+app.get('/:id', (req, res) => {
   const chapterId = parseInt(req.params.id);
 
   chapterQueries.chapters.getById(chapterId)
@@ -41,7 +41,7 @@ app.get('/chapter/:id', (req, res) => {
 });
 
 // GET route to get next chapters by id
-app.get('/chapter/:id', (req, res) => {
+app.get('/next_chapter/:id', (req, res) => {
   const chapterId = parseInt(req.params.id);
 
   chapterQueries.chapters.getNextChapters(chapterId)

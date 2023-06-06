@@ -45,7 +45,7 @@ router.post('/', (req, res) => {
     });
 });
 
-//author approved chapter from any other user
+// POST author approved chapter from any other user
 router.post('/approve-chapter', requireAuth, (req, res) => {
   const { story_id, chapter_id, email, password } = req.body;
 
