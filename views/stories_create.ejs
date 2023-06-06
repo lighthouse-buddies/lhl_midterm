@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="/vendor/border-box.css" />
   <link rel="stylesheet" href="/styles/layout.css" />
   <link rel="stylesheet" href="/styles/nav.css" />
-  <link rel="stylesheet" href="/styles/login-register.css" />
+  <link rel="stylesheet" href="/styles/create-story.css" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,14 +29,17 @@
     <main>
       <div class="sidebar-image"></div>
       <div class="form-container">
-        <h1>Login to <span>Collab<span class="change-color">Tales</span></span></h1>
-        <form>
-          <label for="username">Username:</label>
-          <input type="text" id="username" name="username" required>
+        <form method="POST" action="">
+          <label for="story-title">Give your story a title:</label>
+          <input type="text" id="story-title" name="story_title" class="form-input" required>
 
-          <label for="password">Password:</label>
-          <input type="password" id="password" name="password" required>
-          <button type="submit">Login</button>
+          <label for="chapter-title">Title your chapter:</label>
+          <input type="text" id="chapter-title" name="chapter_id" class="form-input" required>
+
+          <label for="chapter-content">Now get writing!</label>
+          <textarea id="chapter-content" name="chapter_content" class="form-input" rows="15" required></textarea>
+
+          <button type="submit" class="form-submit">Submit</button>
         </form>
       </div>
     </main>

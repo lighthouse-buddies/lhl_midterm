@@ -36,6 +36,11 @@
     @include headings;
     text-align: center;
     padding-top: 1rem;
+    animation: color;
+
+    a:hover {
+      @include color-on-hover;
+    }
   }
 
   p {

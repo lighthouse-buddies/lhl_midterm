@@ -1,0 +1,85 @@
+@import 'layout';
+
+main {
+
+  .sidebar-image {
+    margin-top: 12vh;
+    width: 100%;
+    height: 50vh;
+    background-image: url(https://illustrationfriday.com/wp-content/uploads/2022/05/6-Dark-Academia-Novels-That-Define-the-Genre.jpg);
+    background-size: cover;
+    background-position: 50% 50%;
+  }
+
+  h1 {
+    @include headings;
+    font-size: 4rem;
+    margin-bottom: 3rem;
+    margin-top: 0;
+    padding: 2rem;
+    background-color: $red;
+
+    span {
+      font-family: $playfair;
+      color: $dun;
+    }
+
+    .change-color {
+      color: $khaki;
+    }
+  }
+
+}
+
+.form-container {
+  @include wrapper;
+  text-align: center;
+
+  form {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    margin-right: 2rem;
+
+    label {
+      @include headings;
+      color: $dun;
+      margin-right: 2rem;
+    }
+
+    input {
+      height: 5vh;
+      margin-right: 2rem;
+    }
+
+    input,
+    textarea {
+      background-color: $khaki;
+      border: none;
+      outline: none;
+      font-size: 1.5rem;
+      font-family: $hind;
+      border-radius: 2px;
+    }
+
+    button {
+      @include button;
+      margin-top: 2rem;
+      font-size: 1.5rem;
+      width: min-content;
+      transition: box-shadow 0.3s ease, background-color 0.3s ease;
+
+      &:hover {
+        box-shadow: 0 0 8px 2px $dun;
+      }
+
+      &:active {
+        background-color: $dun;
+        color: #fff;
+        box-shadow: none;
+      }
+    }
+
+  }
+
+}
