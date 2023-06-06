@@ -29,7 +29,7 @@ router.get('/:id', (req, res) => {
         }
       })
       .catch((error) => {
-        console.error(error);
+        console.log(error);
         res.status(500).send('Error retrieving user');
       });
   } else {
@@ -49,8 +49,8 @@ router.get('/story/:id', (req, res) => {
         res.status(404).send('User ID not found');
       }
     })
-    .catch((err) => {
-      console.error(err);
+    .catch((error) => {
+      console.log(error);
       res.status(500).send('Error retrieving user ID');
     });
 });
@@ -69,7 +69,7 @@ router.post('/login', (req, res) => {
       }
     })
     .catch((error) => {
-      console.error(error);
+      console.log(error);
       res.status(500).send('Error authenticating user');
     });
 });
@@ -84,7 +84,7 @@ router.post('/', (req, res) => {
       res.status(201).json({ id: userId });
     })
     .catch((error) => {
-      console.error(error);
+      console.log(error);
       res.status(500).send('Error: Could not create user');
     });
 });

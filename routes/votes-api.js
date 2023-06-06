@@ -3,7 +3,7 @@ const router  = express.Router();
 const voteQueries = require('../db/queries/queries');
 
 // POST creating a vote
-router.post('/create', (req, res) => {
+router.post('/', (req, res) => {
   const { email, password, chapter_id } = req.body;
 
   voteQueries.votes.create(email, password, chapter_id)
@@ -15,13 +15,13 @@ router.post('/create', (req, res) => {
       }
     })
     .catch((error) => {
-      console.error(error);
+      console.log(error);
       res.status(500).send('Error creating vote');
     });
 });
 
 // DELETE removing a vote
-router.delete('/remove', (req, res) => {
+router.delete('/', (req, res) => {
   const { email, password, chapter_id } = req.body;
 
   voteQueries.votes.remove(email, password, chapter_id)
@@ -33,7 +33,7 @@ router.delete('/remove', (req, res) => {
       }
     })
     .catch((error) => {
-      console.error(error);
+      console.log(error);
       res.status(500).send('Error removing vote');
     });
 });

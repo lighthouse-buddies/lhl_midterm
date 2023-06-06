@@ -13,7 +13,7 @@ router.get('/:id', (req, res) => {
         res.render('my_stories', { stories });
       })
       .catch((error) => {
-        console.error(error);
+        console.log(error);
         res.status(500).send('Error: Could not retrieve stories');
       });
   } else {
@@ -39,8 +39,8 @@ router.post('/', (req, res) => {
         res.status(500).json({ message: 'Error creating story' });
       }
     })
-    .catch((err) => {
-      console.error(err);
+    .catch((error) => {
+      console.log(error);
       res.status(500).send('Error creating story');
     });
 });
@@ -58,7 +58,7 @@ router.post('/approve-chapter', requireAuth, (req, res) => {
       }
     })
     .catch((error) => {
-      console.error(error);
+      console.log(error);
       res.status(500).send('Error approving chapter');
     });
 });
@@ -76,7 +76,7 @@ router.get('/:id', (req, res) => {
       }
     })
     .catch((error) => {
-      console.error(error);
+      console.log(error);
       res.status(500).send('Error retrieving story title');
     });
 });
