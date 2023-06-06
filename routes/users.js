@@ -15,7 +15,7 @@ router.get('/', (req, res) => {
 });
 
 //GET user by id
-router.get('/:id', (req, res) => {
+router.get('/user/:id', (req, res) => {
   const userId = req.params.id;
   const sessionUserId = req.session.userId;
 
