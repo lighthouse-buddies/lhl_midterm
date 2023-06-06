@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Home Page</title>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" />
+  <link rel="stylesheet" href="/vendor/border-box.css" />
+  <link rel="stylesheet" href="/styles/layout.css" />
+  <link rel="stylesheet" href="/styles/nav.css" />
+  <link rel="stylesheet" href="/styles/create-story.css" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Hind:wght@400;600&family=Playfair+Display+SC:ital,wght@1,900&display=swap"
+    rel="stylesheet">
+
+  <script src="/vendor/jquery-3.0.0.js"></script>
+  <script defer src="/scripts/app.js"></script>
+</head>
+
+<body>
+  <%- include('partials/_header.ejs') %>
+    <main>
+      <div class="sidebar-image"></div>
+      <div class="form-container">
+        <form method="POST" action="/save-data.php">
+          <label for="story-title">Give your story a title:</label>
+          <input type="text" id="story-title" name="story_title" class="form-input" required>
+
+          <label for="chapter-title">Title your chapter:</label>
+          <input type="text" id="chapter-title" name="chapter_id" class="form-input" required>
+
+          <label for="chapter-content">Now get writing!</label>
+          <textarea id="chapter-content" name="chapter_content" class="form-input" rows="15" required></textarea>
+
+          <button type="submit" class="form-submit">Submit</button>
+        </form>
+      </div>
+    </main>
+</body>
+
+</html>
