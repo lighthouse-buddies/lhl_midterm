@@ -15,6 +15,9 @@ main {
     @include headings;
     font-size: 4rem;
     margin-bottom: 3rem;
+    margin-top: 0;
+    padding: 2rem;
+    background-color: $red;
 
     span {
       font-family: $playfair;
