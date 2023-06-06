@@ -3,7 +3,7 @@ const router  = express.Router();
 const chapterQueries = require('../db/queries/queries');
 
 // POST route to create a new chapter
-app.post('/new', (req, res) => {
+router.post('/new', (req, res) => {
   const { content, prev } = req.body;
   const email = req.session.email;
   const password = req.body.password;
@@ -23,7 +23,7 @@ app.post('/new', (req, res) => {
 });
 
 // GET route to get chapter by id
-app.get('/:id', (req, res) => {
+router.get('/:id', (req, res) => {
   const chapterId = req.params.id;
 
   chapterQueries.chapters.getById(chapterId)
@@ -41,7 +41,7 @@ app.get('/:id', (req, res) => {
 });
 
 // GET route to get next chapters by id
-app.get('/next_chapter/:id', (req, res) => {
+router.get('/next_chapter/:id', (req, res) => {
   const chapterId = req.params.id;
 
   chapterQueries.chapters.getNextChapters(chapterId)
@@ -55,7 +55,7 @@ app.get('/next_chapter/:id', (req, res) => {
 });
 
 // Route to remove a chapter by ID
-app.post('/:id/delete', (req, res) => {
+router.post('/:id/delete', (req, res) => {
   const chapterId = req.params.id;
 
   if (!req.session.user) {

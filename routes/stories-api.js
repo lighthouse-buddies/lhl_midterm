@@ -11,7 +11,7 @@ router.get('/:id', (req, res) => {
   if (sessionUserId === userId) {
     storyQueries.stories.getStoriesByUserId(userId)
       .then((stories) => {
-        res.render('my_stories', { stories });
+        res.render('stories_for_user', { stories });
       })
       .catch((error) => {
         console.log(error);
