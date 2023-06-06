@@ -77,8 +77,8 @@ html {
   }
 }
 
-@mixin color-on-hover($color) {
+@mixin color-on-hover {
   &:hover {
-    color: $color;
+    color: $dun;
   }
 }
