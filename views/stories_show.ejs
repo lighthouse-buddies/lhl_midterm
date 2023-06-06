@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Home Page</title>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" />
+  <link rel="stylesheet" href="/vendor/border-box.css" />
+  <link rel="stylesheet" href="/styles/layout.css" />
+  <link rel="stylesheet" href="/styles/nav.css" />
+  <link rel="stylesheet" href="/styles/read-chapter.css" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Hind:wght@400;600&family=Playfair+Display+SC:ital,wght@1,900&display=swap"
+    rel="stylesheet">
+
+  <script src="/vendor/jquery-3.0.0.js"></script>
+  <script defer src="/scripts/app.js"></script>
+</head>
+
+<body>
+  <%- include('partials/_header.ejs') %>
+    <main class="chapter-layout">
+      <div class="chapter-information">
+        <header class="story-details">
+          <h1>
+            Chapter 1: Whatever Title
+          </h1>
+          <button>
+            @Author
+          </button>
+        </header>
+        <footer>
+          <button>
+            Contribute
+          </button>
+          <button>
+            3000 Likes
+          </button>
+        </footer>
+      </div>
+      <div class="page-content">
+        <p>Once upon a time in a small village, there lived a curious and determined young girl named Lily. She had
+          heard
+          marvelous stories about the world of coding and its ability to create wonders. Fascinated by the idea of
+          bringing
+          ideas to life through programming, Lily embarked on a journey to learn how to code.
+          With her laptop in hand and a heart filled with excitement, Lily dove into the vast ocean of coding languages.
+          At
+          first, the unfamiliar syntax and complex logic seemed daunting, but she was not one to give up easily. She
+          began
+          her adventure by learning the basics of HTML and CSS, laying the foundation for her coding prowess.
+          As she progressed, Lily encountered challenges that tested her patience and problem-solving skills. But with
+          each
+          hurdle, she grew stronger and more determined. She sought guidance from online tutorials and interactive
+          coding
+          platforms, always hungry for knowledge. Late nights were spent debugging, tracing every line of code until she
+          found the elusive bug.
+          Lily discovered that coding was not merely about writing lines of text; it was about creating art.</p>
+        <div class="story-container">
+          <h2>
+            See What Happens Next...
+          </h2>
+          <div class="story-scroll">
+            <!-- Repeat this article block for each article -->
+            <article class="story-preview">
+              <header class="story-title">
+                <a href="">This is the story title</a>
+              </header>
+              <p>
+                This is the story content, the first line will be typed here to get the reader hooked. Until a certain
+                limit
+                is
+                reached the story will show...
+              </p>
+              <footer>
+                <button class="story-status">
+                  In Progress
+                </button>
+                <h4 class="user-handle-red">
+                  @userhandle
+                </h4>
+              </footer>
+            </article>
+            <!-- Repeat this article block for each article -->
+          </div>
+        </div>
+      </div>
+    </main>
+
+</body>
+
+</html>

@@ -48,6 +48,12 @@ app.get('/', (req, res) => {
   res.render('stories_index');
 });
 
+
+//dummy route to style stories_show template (will eventually become /stories:chapterid)
+app.get('/stories', (req, res) => {
+  res.render('stories_show');
+});
+
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
 });

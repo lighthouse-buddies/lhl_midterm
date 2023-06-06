@@ -1,0 +1,43 @@
+@import 'layout';
+
+
+main {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  background-color: $black;
+}
+
+.chapter-information {
+  margin-top: 12vh;
+  width: 25%;
+  height: 90vh;
+  background-image: url(https://preview.redd.it/dark-academia-aesthetic-architecture-europe-v0-7oogqx48mhba1.jpg?width=640&crop=smart&auto=webp&s=ea552866cd6cf9c64ec82e14d8998473ffe0c893);
+  @include headings;
+  color: $dun;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: fixed;
+
+  button {
+    @include button;
+    margin: 0 1rem 1rem 2rem;
+  }
+
+  footer {
+    height: 10%;
+    background-color: $khaki;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+}
+
+.page-content {
+  width: 75%;
+  @include wrapper;
+  margin-left: 25%;
+}
