@@ -5,7 +5,7 @@ const db = require('../../connection');
  * @param {number} user_id - The ID of the user.
  * @returns {Promise<Object|null>} A promise that resolves to an object containing user details if found, or null if not found.
  */
-const getUserById = (user_id) => {
+const getData = (user_id) => {
   // Prepare the SQL query with parameter placeholders
   const query = 'SELECT * FROM users WHERE id = $1;';
 
@@ -31,4 +31,4 @@ const getUserById = (user_id) => {
 };
 
 module.exports =
-  getUserById;
+  getData;
