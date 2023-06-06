@@ -1,0 +1,1 @@
+//takes in story id and returns a promise (number) which is the user id
