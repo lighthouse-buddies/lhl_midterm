@@ -7,6 +7,7 @@ const storyQueries = require('../db/queries/queries');
 router.get('/:id', (req, res) => {
   const userId = req.params.id;
   const sessionUserId = req.session.userId;
+
   if (sessionUserId === userId) {
     storyQueries.stories.getStoriesByUserId(userId)
       .then((stories) => {
@@ -42,42 +43,6 @@ router.post('/', (req, res) => {
     .catch((error) => {
       console.log(error);
       res.status(500).send('Error creating story');
-    });
-});
-
-// POST author approved chapter from any other user
-router.post('/approve-chapter', requireAuth, (req, res) => {
-  const { story_id, chapter_id, email, password } = req.body;
-
-  storyQueries.stories.approve(story_id, chapter_id, email, password)
-    .then((success) => {
-      if (success) {
-        res.json({ message: 'Chapter approved successfully' });
-      } else {
-        res.status(401).json({ message: 'Chapter approval failed' });
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-      res.status(500).send('Error approving chapter');
-    });
-});
-
-// GET story title by ID
-router.get('/:id', (req, res) => {
-  const storyId = req.params.id;
-
-  storyQueries.stories.getTitleById(storyId)
-    .then((title) => {
-      if (title) {
-        res.render('story', { title: title });
-      } else {
-        res.status(404).send('Story not found');
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-      res.status(500).send('Error retrieving story title');
     });
 });
 

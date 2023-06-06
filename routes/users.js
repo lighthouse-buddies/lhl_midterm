@@ -55,7 +55,23 @@ router.get('/story/:id', (req, res) => {
     });
 });
 
-// POST user authentication
+// GET route for the registration
+router.get('/register', (req, res) => {
+  if (req.session.userId) {
+    return res.redirect('/home');
+  }
+  return res.render('register');
+});
+
+// GET route for the login page
+router.get('/login', (req, res) => {
+  if (req.session.userId) {
+    return res.redirect('/home');
+  }
+  return res.render('login');
+});
+
+// POST user login with authentication
 router.post('/login', (req, res) => {
   const { email, password } = req.body;
 
@@ -63,9 +79,9 @@ router.post('/login', (req, res) => {
     .then((userId) => {
       if (userId) {
         req.session.userId = userId;
-        res.json({ message: 'Authentication successful' });
+        res.redirect('/home');
       } else {
-        res.status(401).json({ message: 'Authentication failed' });
+        res.redirect('/login');
       }
     })
     .catch((error) => {
@@ -74,18 +90,33 @@ router.post('/login', (req, res) => {
     });
 });
 
-//POST a new user
-router.post('/', (req, res) => {
+// POST route for user registration
+router.post('/register', (req, res) => {
   const { username, email, password } = req.body;
 
   userQueries.users.create(username, email, password)
     .then((userId) => {
-      req.session.userId = userId;
-      res.status(201).json({ id: userId });
+      if (userId) {
+        userQueries.users.authenticate(email, password)
+          .then(userId => {
+            if (userId) {
+              req.session.userId = userId;
+              res.redirect('/home');
+            } else {
+              res.redirect('/register');
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            res.redirect('/register');
+          });
+      } else {
+        res.redirect('/register');
+      }
     })
     .catch((error) => {
       console.log(error);
-      res.status(500).send('Error: Could not create user');
+      res.redirect('/register');
     });
 });
 

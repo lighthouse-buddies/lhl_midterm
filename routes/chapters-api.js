@@ -24,7 +24,7 @@ app.post('/new', (req, res) => {
 
 // GET route to get chapter by id
 app.get('/:id', (req, res) => {
-  const chapterId = parseInt(req.params.id);
+  const chapterId = req.params.id;
 
   chapterQueries.chapters.getById(chapterId)
     .then((chapter) => {
@@ -42,7 +42,7 @@ app.get('/:id', (req, res) => {
 
 // GET route to get next chapters by id
 app.get('/next_chapter/:id', (req, res) => {
-  const chapterId = parseInt(req.params.id);
+  const chapterId = req.params.id;
 
   chapterQueries.chapters.getNextChapters(chapterId)
     .then((nextChapterIds) => {
@@ -55,15 +55,17 @@ app.get('/next_chapter/:id', (req, res) => {
 });
 
 // Route to remove a chapter by ID
-app.post('/remove-chapter/:id', (req, res) => {
-  const chapterId = parseInt(req.params.id);
-  const email = req.session.email;
-  const password = req.body.password;
+app.post('/:id/delete', (req, res) => {
+  const chapterId = req.params.id;
 
-  chapterQueries.chapters.remove(chapterId, email, password)
+  if (!req.session.user) {
+    return res.redirect('/login');
+  }
+
+  chapterQueries.chapters.remove(chapterId)
     .then((success) => {
       if (success) {
-        res.redirect('/chapters');
+        res.redirect('/home');
       } else {
         res.status(500).send('Chapter removal failed');
       }

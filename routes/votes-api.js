@@ -4,14 +4,14 @@ const voteQueries = require('../db/queries/queries');
 
 // POST creating a vote
 router.post('/', (req, res) => {
-  const { email, password, chapter_id } = req.body;
+  const { user_id, chapter_id } = req.body;
 
-  voteQueries.votes.create(email, password, chapter_id)
+  voteQueries.votes.create(user_id, chapter_id)
     .then((success) => {
       if (success) {
-        res.json({ message: 'Vote created successfully' });
+        res.send('Vote created successfully');
       } else {
-        res.status(500).json({ message: 'Error creating vote' });
+        res.status(500).send('Error creating vote');
       }
     })
     .catch((error) => {
@@ -20,16 +20,30 @@ router.post('/', (req, res) => {
     });
 });
 
+// GET route for vote count of a chapter
+router.get('/chapter/count', (req, res) => {
+  const chapterId = req.params.id;
+
+  voteQueries.votes.getChapter(chapterId)
+    .then((count) => {
+      res.status(200).send(`Vote count for chapter ${chapterId}: ${count}`);
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).send('Error retrieving vote count');
+    });
+});
+
 // DELETE removing a vote
 router.delete('/', (req, res) => {
-  const { email, password, chapter_id } = req.body;
+  const { user_id, chapter_id } = req.body;
 
-  voteQueries.votes.remove(email, password, chapter_id)
+  voteQueries.votes.remove(user_id, chapter_id)
     .then((success) => {
       if (success) {
-        res.json({ message: 'Vote removed successfully' });
+        res.status(200).send('Vote removed successfully');
       } else {
-        res.status(500).json({ message: 'Error removing vote' });
+        res.status(500).send('Error removing vote');
       }
     })
     .catch((error) => {
