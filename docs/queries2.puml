@@ -1,0 +1,64 @@
+@startuml
+
+package queries {
+  class chapters.js {
+    + create(content: string, prev: number|null, user_id: number): Promise<number|null>
+    + getById(id: number): Promise<Object|null>
+    + getNextChapters(chapter_id: number): Promise<Array<number>>
+    + remove(id: number): Promise<boolean>
+    + nextApproved(chapter_id: number): Promise<number>
+  }
+
+  class stories.js {
+    + create(title: string, chapter_id: number): Promise<boolean>
+    + remove(id: number): Promise<boolean>
+    + approve(story_id: number, chapter_id: number): Promise<boolean>
+    + getStoriesByUserId(user_id: number): Promise<number[]>
+    + getData(id: number): Promise<Object|null>
+    + complete(story_id: number): Promise<boolean>
+    + author(story_id: number): Promise<number>
+    + recent(limit: number): Promise<number[]>
+    + storyOfChapter(chapter_id: number): Promise<number>
+  }
+
+  class votes.js {
+    + create(user_id: number, chapter_id: number): Promise<boolean>
+    + remove(user_id: number, chapter_id: number): Promise<boolean>
+    + getChapter(chapterId: number): Promise<number>
+  }
+
+  class users.js {
+    + create(username: string, email: string, password: string): Promise<number|null>
+    + get(user_id: number): Promise<Object|null>
+    + authenticate(email: string, password: string): Promise<number|null>
+    + getIdByStoryId(story_id: number): Promise<number|null>
+    + remove(userId: number): Promise<boolean>
+  }
+}
+
+'layout_down
+
+'queries.chapters.js --> create: create(content: string, prev: number|null, user_id: number): Promise<number|null>
+'queries.chapters.js --> getById: getById(id: number): Promise<Object|null>
+'queries.chapters.js --> getNextChapters: getNextChapters(chapter_id: number): Promise<Array<number>>
+'queries.chapters.js --> remove: remove(id: number): Promise<boolean>
+'queries.chapters.js --> nextApproved: nextApproved(chapter_id: number): Promise<number>
+'
+'queries.stories.js --> create: create(title: string, chapter_id: number): Promise<boolean>
+'queries.stories.js --> remove: remove(id: number): Promise<boolean>
+'queries.stories.js --> approve: approve(story_id: number, chapter_id: number): Promise<boolean>
+'queries.stories.js --> getStoriesByUserId: getStoriesByUserId(user_id: number): Promise<number[]>
+'queries.stories.js --> getData: getData(id: number): Promise<Object|null>
+'queries.stories.js --> complete: complete(story_id: number): Promise<boolean>
+'queries.stories.js --> author: author(story_id: number): Promise<number>
+'queries.stories.js --> recent: recent(limit: number): Promise<number[]>
+'queries.stories.js --> storyOfChapter: storyOfChapter(chapter_id: number): Promise<number>
+'
+'queries.votes.js --> create: create(user_id: number, chapter_id: number): Promise<boolean>
+'queries.votes.js --> remove: remove(user_id: number, chapter_id: number): Promise<boolean>
+'queries.votes.js --> getChapter: getChapter(chapterId: number): Promise<number>
+'
+'queries.users.js --> create: create(username: string, email: string, password: string): Promise<number|null>
+'queries.users.js --> get: get(user_id: number): Promise<Object|null>
+'queries.users.js --> authenticate: authenticate(email: string, password: string): Promise<number|null>
+'queries.users.js --> getIdByStoryId: getIdByStoryId(story_id:
