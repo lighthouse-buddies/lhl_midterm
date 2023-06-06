@@ -56,7 +56,7 @@ app.use('/votes', voteRoutes);
 // Separate them into separate routes files (see above).
 
 app.get('/', (req, res) => {
-  res.render('index');
+  res.render('stories_index');
 });
 
 app.listen(PORT, () => {

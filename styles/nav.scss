@@ -1,0 +1,51 @@
+// <nav>
+//   <h1 id="logo">
+//     <span>Collab</span>Tales
+//   </h1>
+//   <div class="nav-menu">
+//     <a href="#">
+//       Start a Story
+//     </a>
+//     <a href="#">
+//       My Stories
+//     </a>
+//     <a href="#">
+//       Logout
+//     </a>
+//   </div>
+// </nav>
+
+@import 'layout';
+
+nav {
+  @include wrapper;
+  padding-top: 1rem;
+  height: 12vh;
+  width: 100vw;
+  display: flex;
+  background-color: $red;
+  justify-content: space-between;
+  align-items: flex-end;
+  position: fixed;
+}
+
+.nav-menu {
+  align-self: flex-start;
+}
+
+a {
+  text-decoration: none;
+  @include headings;
+  padding: 1rem;
+}
+
+#logo {
+  font-family: $playfair;
+  font-weight: 900;
+  font-size: 8rem;
+  margin: 0;
+}
+
+#logo span {
+  color: $dun;
+}
