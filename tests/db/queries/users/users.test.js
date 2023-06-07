@@ -1,4 +1,4 @@
-const users = require('../../../db/queries/users/users');
+const users = require('../../../../db/queries/users/users');
 const assert = require('assert');
 
 describe('users', function() {

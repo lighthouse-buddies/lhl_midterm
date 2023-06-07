@@ -1,5 +1,5 @@
 const assert = require('assert');
-const Chapters = require('./../../../db/queries/chapters/chapters');
+const Chapters = require('../../../../db/queries/chapters/chapters');
 
 
 
