@@ -24,3 +24,5 @@ const getAuthor = (story_id) => {
     });
   });
 };
+
+module.exports = getAuthor;
