@@ -1,0 +1,94 @@
+@import 'layout';
+
+#banner {
+  margin-top: 10vh;
+  height: 38vh;
+  width: 100vw;
+  background-image: url("https://en.idei.club/uploads/posts/2023-03/1679558431_en-idei-club-p-dark-academia-library-dizain-pinterest-5.jpg");
+  background-size: cover;
+  background-position: 50% 50%;
+}
+
+
+.story-preview-container {
+  @include wrapper;
+  margin: 2rem;
+  // width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+}
+
+.story-scroll {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: fit-content;
+  overflow-y: scroll;
+  margin: 1rem 4rem 2rem 4rem;
+}
+
+h2 {
+  font-family: $playfair;
+  color: $dun;
+  font-size: 3rem;
+  margin: 0 0 1rem 0;
+  text-align: center;
+  animation: transform ease-in-out;
+}
+
+
+.story-preview {
+  margin-bottom: 1.5rem;
+  background-color: $black;
+  font-size: 1.5rem;
+  border-radius: 10px;
+  text-align: center;
+  align-self: flex-end;
+
+  header {
+    height: 10%;
+    background-color: $red;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    @include headings;
+    text-align: center;
+    padding-top: 1rem;
+    animation: color;
+
+    a:hover {
+      @include color-on-hover;
+    }
+  }
+
+  p {
+    margin: 0 auto;
+    padding: 0.5rem;
+    background-color: $black;
+    color: $khaki;
+  }
+
+  footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
+    align-items: baseline;
+    background-color: $black;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    height: 7rem;
+  }
+
+  .user-handle-red {
+    @include user-handle-red;
+  }
+
+  .story-status {
+    @include button;
+
+    &:hover {
+      @include bounce(2s);
+    }
+  }
+
+}
