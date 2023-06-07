@@ -6,6 +6,8 @@ const getData = require("./getData");
 const recentStories = require("./recent");
 const completedStories = require("./complete");
 const storyOfChapter = require("./*storyOfChapter");
+const getAuthor = require("./getAuthor");
+
 
 module.exports = {
   create: createStory,
@@ -46,11 +48,7 @@ module.exports = {
    * @param {number} story_id - The ID of the story.
    * @returns {Promise<number>} A promise that resolves to the author user ID.
    */
-  author: (story_id) => {
-    return new Promise((resolve, reject) => {
-      resolve(1);
-    });
-  },
+  author: getAuthor,
   /**
    * Retrieves an array of story IDs of the most recently updated stories.
    * @param {number} limit - The maximum number of stories to retrieve.
