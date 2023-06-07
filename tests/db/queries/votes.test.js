@@ -18,7 +18,7 @@ describe('Votes', function() {
   describe('getChapter', function() {
     it('should retrieve the total count of votes for a given chapter ID', async function() {
       const count = await Votes.getChapter(chapterId);
-      assert.strictEqual(count, 1);
+      assert.strictEqual(count, (1).toString());
     });
   });
 
@@ -32,7 +32,7 @@ describe('Votes', function() {
   describe('getChapter', function() {
     it('should retrieve the total count of votes for a given chapter ID', async function() {
       const count = await Votes.getChapter(chapterId);
-      assert.strictEqual(count, 0);
+      assert.strictEqual(count, (0).toString());
       await Votes.remove(userId, chapterId2);
     });
   });
