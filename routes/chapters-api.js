@@ -2,6 +2,14 @@ const express = require('express');
 const router  = express.Router();
 const chapterQueries = require('../db/queries/queries');
 
+// GET route to render the form for creating a new story
+router.get('/new', (req, res) => {
+  if (!req.session.userId) {
+    return res.redirect('/login');
+  }
+  res.render('new-story');
+});
+
 // POST route to create a new chapter
 router.post('/new', (req, res) => {
   const { content, prev } = req.body;
@@ -36,7 +44,7 @@ router.get('/:id', (req, res) => {
   chapterQueries.chapters.getById(chapterId)
     .then((chapter) => {
       if (chapter !== null) {
-        res.render('chapter', { chapter });
+        res.render('stories_show', { chapter });
       } else {
         res.status(404).send('Chapter not found');
       }
