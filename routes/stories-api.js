@@ -11,7 +11,7 @@ router.get('/:id', (req, res) => {
   if (sessionUserId === userId) {
     storyQueries.stories.getStoriesByUserId(userId)
       .then((storyIds) => {
-        const storyPromises = storyIds.map((storyId) => getData(storyId));
+        const storyPromises = storyIds.map((storyId) => storyQueries.chapters.getById(storyId));
 
         Promise.all(storyPromises)
           .then((stories) => {
@@ -39,7 +39,7 @@ router.get('/completed/:id', (req, res) => {
     .then(story => {
       if (story) {
         const mark = story.complete ? 'Completed' : 'In-Progress';
-        res.send({ mark, story });
+        res.json({ mark, story });
       } else {
         res.status(404).send('Story not found');
       }
