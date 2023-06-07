@@ -121,7 +121,7 @@ router.post('/register', (req, res) => {
 });
 
 // POST route for logging out user
-app.post('/logout', (req, res) => {
+router.post('/logout', (req, res) => {
   res.clearCookie('session');
   res.clearCookie('session.sig');
   return res.redirect('/');
