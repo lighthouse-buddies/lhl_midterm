@@ -3,6 +3,7 @@ const getData = require("./getData");
 const nextChapters = require("./nextChapters");
 const remove = require("./remove");
 const nextApproved = require("./*nextApproved");
+const chapterNumber = require("./*chapterNumber");
 
 module.exports = {
   create: create,/**
@@ -33,4 +34,6 @@ module.exports = {
    * @param {number} chapter_id - The ID of the current chapter.
    * @returns {Promise<number>} A promise that resolves to the next approved chapter ID if found, or null if not found.
    */
+  getChapterNumber: chapterNumber,
+
 };
