@@ -3,6 +3,8 @@ const removeStory = require("./remove");
 const approveChapter = require("./approve");
 const getStoriesByUserId = require("./getStoriesByUser");
 const getData = require("./getData");
+const recentStories = require("./recent");
+const completedStories = require("./complete");
 
 module.exports = {
   create: createStory,
@@ -37,11 +39,7 @@ module.exports = {
    * @param {number} id - The ID of the row.
    * @returns {Promise<Object|null>} A promise that resolves to the row object if found, or null if not found.
    */
-  complete: (story_id) => {
-    return new Promise((resolve, reject) => {
-      resolve(true);
-    });
-  },
+  complete: completedStories,
   /**
    * Retrieves the author user ID of a story.
    * @param {number} story_id - The ID of the story.
@@ -57,15 +55,16 @@ module.exports = {
    * @param {number} limit - The maximum number of stories to retrieve.
    * @returns {Promise<number[]>} A promise that resolves to an array of story IDs.
    */
-  recent: (limit) => {
-    return new Promise((resolve, reject) => {
-      let arr = [];
-      for (let i = 0; i < limit; i++) {
-        arr.push(1);
-      }
-      resolve(arr);
-    });
-  },
+  recentStories,
+  // recent: (limit) => {
+  //   return new Promise((resolve, reject) => {
+  //     let arr = [];
+  //     for (let i = 0; i < limit; i++) {
+  //       arr.push(1);
+  //     }
+  //     resolve(arr);
+  //   });
+  // },
   /**
    * Retrieves the story ID associated with a given chapter ID.
    * @param {number} chapter_id - The ID of the chapter.

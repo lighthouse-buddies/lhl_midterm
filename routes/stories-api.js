@@ -10,16 +10,44 @@ router.get('/:id', (req, res) => {
 
   if (sessionUserId === userId) {
     storyQueries.stories.getStoriesByUserId(userId)
-      .then((stories) => {
-        res.render('stories_for_user', { stories, sessionUserId });
+      .then((storyIds) => {
+        const storyPromises = storyIds.map((storyId) => getData(storyId));
+
+        Promise.all(storyPromises)
+          .then((stories) => {
+            res.render('stories_for_user', { stories, sessionUserId });
+          })
+          .catch((error) => {
+            console.log(error);
+            res.status(500).send('Error: Could not retrieve stories');
+          });
       })
       .catch((error) => {
         console.log(error);
-        res.status(500).send('Error: Could not retrieve stories');
+        res.status(500).send('Error: Could not retrieve story IDs');
       });
   } else {
     res.status(401).send('Not Allowed');
   }
+});
+
+// GET completed stories
+router.get('/completed/:id', (req, res) => {
+  const storyId = req.params.storyId;
+
+  storyQueries.stories.complete(storyId)
+    .then(story => {
+      if (story) {
+        const mark = story.complete ? 'Completed' : 'In-Progress';
+        res.send({ mark, story });
+      } else {
+        res.status(404).send('Story not found');
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).send('An error occurred');
+    });
 });
 
 // POST creating a story
@@ -28,24 +56,28 @@ router.post('/', (req, res) => {
   const sessionUserId = req.session.userId;
 
   if (!sessionUserId) {
-    res.status(401).json({ message: 'Unauthorized' });
+    res.status(401).send('Unauthorized');
     return;
   }
 
   storyQueries.stories.create(title, chapterId, sessionUserId)
     .then((success) => {
-      if (success) {
-        res.redirect('/home');
-      } else {
-        res.status(500).json({ message: 'Error creating story' });
+      if (!success) {
+        throw new Error('Error creating story');
       }
+      return storyQueries.stories.getData(success);
+    })
+    .then((story) => {
+      if (!story) {
+        throw new Error('Story not found');
+      }
+      res.render('my-stories', { story });
     })
     .catch((error) => {
       console.log(error);
       res.status(500).send('Error creating story');
     });
 });
-
 
 //DELETE owner deleting a story
 router.delete('/:id', (req, res) => {
@@ -60,26 +92,21 @@ router.delete('/:id', (req, res) => {
 
   storyQueries.chapters.getById(storyId)
     .then((ownerId) => {
-      if (ownerId === sessionUserId) {
-        storyQueries.stories.remove(storyId, email, password)
-          .then((success) => {
-            if (success) {
-              res.redirect('/my_stories');
-            } else {
-              res.status(500).send('Error removing story');
-            }
-          })
-          .catch((err) => {
-            console.error(err);
-            res.status(500).send('Error removing story');
-          });
+      if (ownerId !== sessionUserId) {
+        throw new Error('Unauthorized: You do not have permission to remove this story');
+      }
+      return storyQueries.stories.remove(storyId, email, password);
+    })
+    .then((success) => {
+      if (success) {
+        res.redirect('/my_stories');
       } else {
-        res.status(401).send('Unauthorized: You do not have permission to remove this story');
+        throw new Error('Error removing story');
       }
     })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send('Error retrieving owner information');
+    .catch((error) => {
+      console.log(error);
+      res.status(500).send('Error removing story');
     });
 });
 
