@@ -58,7 +58,7 @@ router.get('/story/:id', (req, res) => {
 // GET route for the registration
 router.get('/register', (req, res) => {
   if (req.session.userId) {
-    return res.redirect('/home');
+    return res.redirect('/');
   }
   return res.render('register');
 });
@@ -66,7 +66,7 @@ router.get('/register', (req, res) => {
 // GET route for the login page
 router.get('/login', (req, res) => {
   if (req.session.userId) {
-    return res.redirect('/home');
+    return res.redirect('/');
   }
   return res.render('login');
 });
@@ -79,7 +79,7 @@ router.post('/login', (req, res) => {
     .then((userId) => {
       if (userId) {
         req.session.userId = userId;
-        res.redirect('/home');
+        res.redirect('/');
       } else {
         res.redirect('/login');
       }
@@ -118,6 +118,13 @@ router.post('/register', (req, res) => {
       console.log(error);
       res.redirect('/register');
     });
+});
+
+// POST route for logging out user
+app.post('/logout', (req, res) => {
+  res.clearCookie('session');
+  res.clearCookie('session.sig');
+  return res.redirect('/');
 });
 
 
