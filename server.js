@@ -49,7 +49,7 @@ app.get('/', (req, res) => {
 });
 
 
-//dummy route to style stories_show template (will eventually become /stories:chapterid)
+//dummy routes to style 
 app.get('/stories', (req, res) => {
   res.render('stories_show');
 });
@@ -61,6 +61,12 @@ app.get('/create', (req, res) => {
 app.get('/login', (req, res) => {
   res.render('login');
 });
+
+app.get('/mystories', (req, res) => {
+  res.render('my_stories');
+});
+
+//end of dummy routes
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
