@@ -1,5 +1,5 @@
 const assert = require('assert');
-const Votes = require('../../../db/queries/votes/votes');
+const Votes = require('../../../../db/queries/votes/votes');
 
 // Define the variables in the document scope
 let userId = 1;

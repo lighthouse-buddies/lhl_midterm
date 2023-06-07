@@ -5,6 +5,7 @@ const getStoriesByUserId = require("./getStoriesByUser");
 const getData = require("./getData");
 const recentStories = require("./recent");
 const completedStories = require("./complete");
+const storyOfChapter = require("./*storyOfChapter");
 
 module.exports = {
   create: createStory,
@@ -55,7 +56,7 @@ module.exports = {
    * @param {number} limit - The maximum number of stories to retrieve.
    * @returns {Promise<number[]>} A promise that resolves to an array of story IDs.
    */
-  recentStories,
+  recent: recentStories,
   // recent: (limit) => {
   //   return new Promise((resolve, reject) => {
   //     let arr = [];
@@ -70,9 +71,5 @@ module.exports = {
    * @param {number} chapter_id - The ID of the chapter.
    * @returns {Promise<number>} A promise that resolves to the story ID.
    */
-  storyOfChapter: (chapter_id) => {
-    return new Promise((resolve, reject) => {
-      resolve(1);
-    });
-  }
+  storyOfChapter: storyOfChapter,
 };

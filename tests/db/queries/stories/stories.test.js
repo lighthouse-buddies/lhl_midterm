@@ -1,5 +1,5 @@
 const assert = require('assert');
-const Stories = require('./../../../db/queries/stories/stories');
+const Stories = require('../../../../db/queries/stories/stories');
 
 // Declare test variables in document scope
 let createdStoryId;
