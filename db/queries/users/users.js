@@ -15,6 +15,7 @@ const getUsers = () => {
 
 
 module.exports = {
+  getUsers: getUsers,
     create: create,/**
    * Creates a new user in the database.
    * @param {string} username - The username of the user.
