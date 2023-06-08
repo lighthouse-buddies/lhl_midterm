@@ -99,10 +99,27 @@ router.get('/:id', (req, res) => {
   chapterQueries.chapters.getById(chapterId)
     .then((chapter) => {
       if (chapter !== null) {
-        const templateVars = {
-          chapter
-        };
-        res.render('stories_show', templateVars);
+        const userId = chapter.user_id;
+        const currentChapterNumber = chapter.prev + 1;
+
+        const usernamePromise = users.getUserById(userId).then((user) => user.username);
+        const storyIdPromise = stories.storyOfChapter(chapterId).then((story) => story.story_id);
+        const storyTitlePromise = stories.getData(storyIdPromise).then((story) => story.title);
+        const chapterCountPromise = chapters.getChapterCount(chapterId);
+
+        Promise.all([usernamePromise, storyTitlePromise, chapterCountPromise])
+          .then(([username, storyTitle, chapterCount]) => {
+            const templateVars = {
+              chapter,
+              username,
+              storyTitle
+            };
+            res.render('stories_show', templateVars);
+          })
+          .catch((error) => {
+            console.error(error);
+            res.status(500).send('Error retrieving data');
+          });
       } else {
         res.status(404).send('Chapter not found');
       }
