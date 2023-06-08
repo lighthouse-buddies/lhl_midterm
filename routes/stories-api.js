@@ -3,7 +3,7 @@ const router = express.Router();
 const storyQueries = require('../db/queries/queries');
 
 
-//GET stories from user by id
+// GET stories from user by id
 router.get('/:id', (req, res) => {
   const userId = req.params.id;
   const sessionUserId = req.session.userId;
@@ -11,10 +11,18 @@ router.get('/:id', (req, res) => {
   if (sessionUserId === userId) {
     storyQueries.stories.getStoriesByUserId(userId)
       .then((storyIds) => {
-        const storyPromises = storyIds.map((storyId) => storyQueries.chapters.getById(storyId));
+        const storyPromises = storyIds.map((storyId) => {
+          const storyPromise = storyQueries.stories.getById(storyId);
+          const chaptersPromise = storyQueries.chapters.getChaptersByStoryId(storyId);
+          return Promise.all([storyPromise, chaptersPromise]);
+        });
 
         Promise.all(storyPromises)
-          .then((stories) => {
+          .then((storiesWithChapters) => {
+            const stories = storiesWithChapters.map(([story, chapters]) => {
+              return { story, chapters };
+            });
+
             res.render('stories_for_user', { stories, sessionUserId });
           })
           .catch((error) => {
@@ -32,7 +40,7 @@ router.get('/:id', (req, res) => {
 });
 
 // GET completed stories
-router.get('/completed/:id', (req, res) => {
+router.get('/completed', (req, res) => {
   const storyId = req.params.storyId;
 
   storyQueries.stories.complete(storyId)

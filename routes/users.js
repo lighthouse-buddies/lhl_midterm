@@ -10,9 +10,9 @@ const router = express.Router();
 const userQueries = require('../db/queries/queries');
 
 
-router.get('/', (req, res) => {
-  res.render('users');
-});
+// router.get('/', (req, res) => {
+//   res.render('users');
+// });
 
 //GET user by id
 router.get('/user/:id', (req, res) => {
@@ -20,7 +20,7 @@ router.get('/user/:id', (req, res) => {
   const sessionUserId = req.session.userId;
 
   if (sessionUserId === userId) {
-    userQueries.users.getUserById(userId)
+    userQueries.users.get(userId)
       .then((user) => {
         if (user) {
           res.json(user);
@@ -57,18 +57,18 @@ router.get('/story/:id', (req, res) => {
 
 // GET route for the registration
 router.get('/register', (req, res) => {
-  if (req.session.userId) {
-    return res.redirect('/');
+  if (!req.session.userId) {
+    return res.render('register');
   }
-  return res.render('register');
+  return res.redirect('/');
 });
 
 // GET route for the login page
 router.get('/login', (req, res) => {
-  if (req.session.userId) {
-    return res.redirect('/');
+  if (!req.session.userId) {
+    return res.render('login');
   }
-  return res.render('login');
+  return res.redirect('/');
 });
 
 // POST user login with authentication
@@ -98,10 +98,10 @@ router.post('/register', (req, res) => {
     .then((userId) => {
       if (userId) {
         userQueries.users.authenticate(email, password)
-          .then(userId => {
+          .then((userId) => {
             if (userId) {
               req.session.userId = userId;
-              res.redirect('/home');
+              res.redirect('/');
             } else {
               res.redirect('/register');
             }

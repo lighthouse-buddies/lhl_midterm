@@ -45,7 +45,7 @@ const voteRoutes = require('./routes/votes-api');
 // Note: Endpoints that return data (eg. JSON) usually start with `/api`
 app.use('/api/users', userApiRoutes);
 app.use('/api/widgets', widgetApiRoutes);
-app.use('/users', usersRoutes);
+app.use('/', usersRoutes);
 app.use('/chapters', chapterRoutes);
 app.use('/stories', storyRoutes);
 app.use('/votes', voteRoutes);
@@ -60,7 +60,7 @@ app.get('/', (req, res) => {
 });
 
 
-//dummy routes to style 
+//dummy routes to style
 app.get('/stories', (req, res) => {
   res.render('stories_show');
 });
@@ -71,6 +71,10 @@ app.get('/create', (req, res) => {
 
 app.get('/login', (req, res) => {
   res.render('login');
+});
+
+app.get('/register', (req, res) => {
+  res.render('register');
 });
 
 app.get('/mystories', (req, res) => {
