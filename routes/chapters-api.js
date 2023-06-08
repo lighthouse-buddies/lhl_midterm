@@ -1,25 +1,26 @@
 const express = require('express');
 const res = require('express/lib/response');
 const router = express.Router();
-const chapterQueries = require('../db/queries/queries');
+const queries = require('../db/queries/queries');
 
 // POST route to create a new chapter, save the chapter to the databse. 
 // this post route will be getting prev from a hidden input in the form body. Which is linked to on contribute link on the stories_show template. 
 //<a href="/new?prevChapterId=chapID">Contribute</a>
 router.post('/new', (req, res) => {
-  const { content, prev } = req.body;
+  const content = req.body;
+  const prev = req.query.prevChapterId;
   const email = req.session.email;
   const password = req.body.password; //need to change to session so we can authenticate the user that way!!!
 
   // Call the authenticate function to retrieve the user ID
-  chapterQueries.users.authenticate(email, password)
+  queries.users.authenticate(email, password)
     .then((userId) => {
       if (userId !== null) {
         // Use the retrieved user ID for further processing
-        chapterQueries.chapters.create(content, prev, userId)
+        queries.chapters.create(content, prev, userId)
           .then((chapterId) => {
             if (chapterId !== null) {
-              return chapterQueries.chapters.getById(chapterId);
+              return queries.chapters.getById(chapterId);
             } else {
               res.status(500).send('Chapter creation failed');
             }
@@ -43,29 +44,51 @@ router.post('/new', (req, res) => {
       console.log(error);
       res.status(500).send('Error authenticating user');
     });
-});;
+});
+
+// Route to remove a chapter by ID
+router.post('/:id/delete', (req, res) => {
+  const chapterId = req.params.id;
+
+  if (!req.session.user) {
+    return res.redirect('/login');
+  }
+
+  queries.chapters.remove(chapterId)
+    .then((success) => {
+      if (success) {
+        res.redirect('/');
+      } else {
+        res.status(500).send('Chapter removal failed');
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).send('Chapter removal failed');
+    });
+});
 
 // GET Route handler for rendering HTML template stories_show using the chapter data. Also renders the username and storytitle as template vars.
 router.get('/:id', (req, res) => {
   const chapterId = req.params.id;
 
-  chapterQueries.chapters.getById(chapterId)
+  queries.chapters.getById(chapterId)
     .then((chapter) => {
       if (chapter !== null) {
         const userId = chapter.user_id;
         const currentChapterNumber = chapter.prev + 1;
 
-        const usernamePromise = users.getUserById(userId).then((user) => user.username);
-        const storyIdPromise = stories.storyOfChapter(chapterId).then((story) => story.story_id);
-        const storyTitlePromise = stories.getData(storyIdPromise).then((story) => story.title);
-        const chapterCountPromise = chapters.getChapterCount(chapterId);
+        const usernamePromise = queries.users.getUserById(userId).then((user) => user.username);
+        const storyIdPromise = queries.stories.storyOfChapter(chapterId).then((story) => story.story_id);
+        const storyTitlePromise = queries.stories.getData(storyIdPromise).then((story) => story.title);
 
-        Promise.all([usernamePromise, storyTitlePromise, chapterCountPromise])
+        Promise.all([usernamePromise, storyTitlePromise])
           .then(([username, storyTitle, chapterCount]) => {
             const templateVars = {
               chapter,
               username,
-              storyTitle
+              storyTitle,
+              currentChapterNumber
             };
             res.render('stories_show', templateVars);
           })
@@ -93,74 +116,29 @@ router.get('/new', (req, res) => {
 // Route handler for JSON response for CURRENT chapter data to be accessed on front end.
 //Includes the whole chapter row from db, username, story Title, chapter Count, and current chapter number. 
 //Also includes this same information for next approved chapter and next chapters.
-//need to ask Steve if nextChapters returns only current chapter +1, I'm guessing it does.
 router.get('/:id/json', (req, res) => {
   const chapterId = req.params.id;
 
-  // Function to fetch information for next chapters
-  function fetchNextChapters(chapterId) {
-    return chapters.getNextChapters(chapterId)
-      .then((nextChapters) => {
-        // Retrieve additional information for each next chapter
-        const promises = nextChapters.map((nextChapterId) => {
-          return chapterQueries.chapters.getById(nextChapterId);
-        });
-        return Promise.all(promises);
-      });
-  }
-
-  // Function to fetch information for the next approved chapter
-  function fetchNextApproved(chapterId) {
-    return chapters.nextApproved(chapterId)
-      .then((nextApprovedChapterId) => {
-        if (nextApprovedChapterId !== null) {
-          return chapterQueries.chapters.getById(nextApprovedChapterId);
-        }
-        return null;
-      });
-  }
+  const nextChaptersPromise = queries.chapters.getNextChapters(chapterId);
+  const nextApprovedPromise = queries.chapters.nextApproved(chapterId);
 
   // Fetch data for the current chapter
-  chapterQueries.chapters.getById(chapterId)
-    .then((chapter) => {
-      if (chapter !== null) {
-        const userId = chapter.user_id;
-        const currentChapterNumber = chapter.prev + 1;
+  fetchChapterData(chapterId)
+    .then((chapterData) => {
+      const currentChapterData = chapterData;
 
-        const usernamePromise = users.getUserById(userId).then((user) => user.username);
-        const storyIdPromise = stories.storyOfChapter(chapterId).then((story) => story.story_id);
-        const storyTitlePromise = stories.getData(storyIdPromise).then((story) => story.title);
-        const chapterCountPromise = chapters.getChapterCount(chapterId);
 
-        Promise.all([usernamePromise, storyTitlePromise, chapterCountPromise])
-          .then(([username, storyTitle, chapterCount]) => {
-            const data = {
-              username,
-              chapterNumber: currentChapterNumber,
-              chapter,
-              storyTitle,
-              chapterCount
-            };
-
-            // Fetch data for next chapters and next approved chapter
-            Promise.all([fetchNextChapters(chapterId), fetchNextApproved(chapterId)])
-              .then(([nextChapters, nextApprovedChapter]) => {
-                data.nextChapters = nextChapters;
-                data.nextApproved = nextApprovedChapter;
-                res.json(data);
-              })
-              .catch((error) => {
-                console.error(error);
-                res.status(500).json({ error: 'Error retrieving next chapter data' });
-              });
-          })
-          .catch((error) => {
-            console.error(error);
-            res.status(500).json({ error: 'Error retrieving data' });
-          });
-      } else {
-        res.status(404).json({ error: 'Chapter not found' });
-      }
+      // Fetch data for next chapters and next approved chapter
+      Promise.all([fetchNextChapters(chapterId), fetchNextApproved(chapterId)])
+        .then(([nextChapters, nextApprovedChapter]) => {
+          data.nextChapters = nextChapters;
+          data.nextApproved = nextApprovedChapter;
+          res.json(data);
+        })
+        .catch((error) => {
+          console.error(error);
+          res.status(500).json({ error: 'Error retrieving next chapter data' });
+        });
     })
     .catch((error) => {
       console.error(error);
@@ -168,28 +146,94 @@ router.get('/:id/json', (req, res) => {
     });
 });
 
-
-
-// Route to remove a chapter by ID
-router.post('/:id/delete', (req, res) => {
+router.get('/:id/json', (req, res) => {
   const chapterId = req.params.id;
 
-  if (!req.session.user) {
-    return res.redirect('/login');
-  }
+  const nextChaptersPromise = fetchNextChapters(chapterId);
+  const nextApprovedPromise = fetchNextApproved(chapterId);
+  const fetchChapterDataPromise = fetchChapterData(chapterId);
 
-  chapterQueries.chapters.remove(chapterId)
-    .then((success) => {
-      if (success) {
-        res.redirect('/');
+  Promise.all([fetchChapterDataPromise, nextChaptersPromise, nextApprovedPromise])
+    .then(([chapterData, nextChapters, nextApprovedChapter]) => {
+      const data = {
+        currentChapter: chapterData,
+        nextChapters: [],
+        nextApproved: null,
+      };
+
+      // Collect chapter data for next chapters
+      const nextChapterPromises = nextChapters.map((nextChapterId) => {
+        return fetchChapterData(nextChapterId)
+          .then((nextChapterData) => {
+            data.nextChapters.push(nextChapterData);
+          });
+      });
+
+      // Collect chapter data for next approved chapter
+      if (nextApprovedChapter !== null) {
+        nextChapterPromises.push(
+          fetchChapterData(nextApprovedChapter)
+            .then((nextApprovedData) => {
+              data.nextApproved = nextApprovedData;
+            })
+        );
+      }
+
+      // Wait for all chapter data promises to resolve
+      Promise.all(nextChapterPromises)
+        .then(() => {
+          res.json(data);
+        })
+        .catch((error) => {
+          console.error(error);
+          res.status(500).json({ error: 'Error retrieving next chapter data' });
+        });
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).json({ error: 'Error retrieving data' });
+    });
+});
+
+
+
+//HELPER FUNCTIONS:
+// Function to fetch chapter data.
+// RETURNS: an object {username, chapterNumber, chapter object {id, content, prev, user_id, created_at, deleted_at}, story title}
+function fetchChapterData(chapterId) {
+  const chapterData = {};
+
+  return queries.chapters.getById(chapterId)
+    .then((chapter) => {
+      if (chapter !== null) {
+        const userId = chapter.user_id;
+        const currentChapterNumber = chapter.prev + 1;
+
+        const usernamePromise = queries.users.get(userId).then((user) => user.username);
+        const storyIdPromise = queries.stories.storyOfChapter(chapterId).then((story) => story.story_id);
+        const storyTitlePromise = queries.stories.getData(storyIdPromise).then((story) => story.title);
+
+        return Promise.all([usernamePromise, storyTitlePromise])
+          .then(([username, storyTitle, chapterCount]) => {
+            chapterData.username = username;
+            chapterData.chapterNumber = currentChapterNumber;
+            chapterData.chapter = chapter;
+            chapterData.storyTitle = storyTitle;
+
+            return chapterData;
+          });
       } else {
-        res.status(500).send('Chapter removal failed');
+        throw new Error('Chapter not found');
       }
     })
     .catch((error) => {
-      console.log(error);
-      res.status(500).send('Chapter removal failed');
+      console.error(error);
+      throw new Error('Error retrieving chapter');
     });
-});
+};
+
+
+
+
 
 module.exports = router;
