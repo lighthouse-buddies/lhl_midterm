@@ -36,7 +36,7 @@ router.post('/new', (req, res) => {
 //GET route to get the chapter contribution form from the previous chapter ID. 
 router.get('/new', (req, res) => {
   const prevChapterId = req.query.prevChapterId;
-  res.render();
+  res.render('stories_contribute', { prevChapterId });
 });
 
 // GET route to get chapter by id
