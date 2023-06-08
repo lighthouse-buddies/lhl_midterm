@@ -153,22 +153,6 @@ router.get('/:id/json', (req, res) => {
     });
 });
 
-// Wait for all chapter data promises to resolve
-Promise.all(nextChapterPromises)
-  .then(() => {
-    res.json(data);
-  })
-  .catch((error) => {
-    console.error(error);
-    res.status(500).json({ error: 'Error retrieving next chapter data' });
-  });
-    })
-    .catch ((error) => {
-  console.error(error);
-  res.status(500).json({ error: 'Error retrieving data' });
-});
-
-
 //HELPER FUNCTIONS:
 // Function to fetch chapter data.
 // RETURNS: an object {username, chapterNumber, chapter object {id, content, prev, user_id, created_at, deleted_at}, story title}
