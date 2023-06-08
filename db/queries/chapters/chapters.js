@@ -4,6 +4,7 @@ const nextChapters = require("./nextChapters");
 const remove = require("./remove");
 const getUsername = require("./getUsername")
 const nextApproved = require("./nextApproved");
+const nextApproved = require("./*nextApproved");
 const chapterNumber = require("./chapterNumber");
 
 module.exports = {
