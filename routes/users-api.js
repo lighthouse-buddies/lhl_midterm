@@ -7,7 +7,7 @@
 
 const express = require('express');
 const router = express.Router();
-const userQueries = require('../db/queries/queries');
+const userQueries = require('../db/queries/users/users');
 
 router.get('/', (req, res) => {
   userQueries.getUsers()

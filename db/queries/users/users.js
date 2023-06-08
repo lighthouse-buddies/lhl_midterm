@@ -1,7 +1,7 @@
 const create = require('./create');
 const getUserById = require('./getData');
 const authenticate = require('./authenticate');
-const getIdByStoryId = require('./getIdByStory');
+const getIdByStoryId = require('./**deprecate?_getIdByStory');
 const removeUser = require('./remove');
 const db = require("../../connection");
 
@@ -15,6 +15,7 @@ const getUsers = () => {
 
 
 module.exports = {
+  getUsers: getUsers,
     create: create,/**
    * Creates a new user in the database.
    * @param {string} username - The username of the user.
@@ -31,14 +32,14 @@ module.exports = {
    * Authenticates a user based on their email and password.
    * @param {string} email - The email address of the user.
    * @param {string} password - The password of the user.
-   * @returns {Promise<number|null>} A promise that resolves to the user ID (as a number) if authentication is successful, or null if authentication fails.
+   * @returns {Promise<boolean>} A promise that resolves to the user ID (as a number) if authentication is successful, or null if authentication fails.
    */
 
-    getIdByStoryId: getIdByStoryId,/**
-   * Retrieves the user ID associated with a given story ID.
-   * @param {number} story_id - The ID of the story.
-   * @returns {Promise<number|null>} A promise that resolves to the user ID (as a number) if found, or null if not found.
-   */
+   //  getIdByStoryId: getIdByStoryId,/**
+   // * Retrieves the user ID associated with a given story ID.
+   // * @param {number} story_id - The ID of the story.
+   // * @returns {Promise<number|null>} A promise that resolves to the user ID (as a number) if found, or null if not found.
+   // */
     remove: removeUser,/**
    * Soft deletes a user from the database by setting the "deleted_at" field.
    * @param {number} userId - The ID of the user to be soft deleted.

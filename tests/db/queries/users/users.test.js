@@ -4,12 +4,15 @@ const assert = require('assert');
 describe('users', function() {
   let userId;
   //get unix timestamp
+  let username;
+  let email;
+  let password;
   let timestamp = (new Date().getTime()).toString();
 
   before(async function() {
-    const username = '1';
-    const email = timestamp;
-    const password = '1';
+    username = '1';
+    email = timestamp;
+    password = '1';
 
     userId = await users.create(username, email, password);
   });
@@ -26,6 +29,17 @@ describe('users', function() {
     const user = await users.get(nonExistentUserId);
     assert.strictEqual(user, null);
   });
+
+
+  it(`should return true if authentication is successful`, async function() {
+
+    const result = await users.authenticate(email, password);
+    assert.strictEqual(result, true);
+  });
+  it(`should return false if authentication is unsuccessful`, async function() {
+    const result = await users.authenticate(email, 'wrong password');
+    assert.strictEqual(result, false);
+  } );
 
   it('should remove a user by their ID', async function() {
     const result = await users.remove(userId);
