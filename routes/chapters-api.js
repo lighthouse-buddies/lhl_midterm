@@ -11,7 +11,8 @@ router.get('/new', (req, res) => {
   res.render('stories_contribute', { prevChapterId });
 });
 
-//NOT WORKING because of queries.chapters.getById. Everything else working fine. Issue with db function
+//TODO 
+//not working because of queries.chapters.getById. Everything else working fine. Issue with db function
 // GET Route handler for rendering HTML template stories_show using the chapter data. Also renders the username and storytitle as template vars.
 router.get('/:id', (req, res) => {
   const chapterId = req.params.id;
@@ -50,7 +51,8 @@ router.get('/:id', (req, res) => {
     });
 });
 
-///NOT WORKING because authenticate_user returning a boolean, but needs to be user id. Issue with db function because authenticate_user has been changted to a function returning boolean rather than original authenticate function which returned user id. NEEDS TO BE FIXED.
+//TODO 
+// not working because authenticate_user returning a boolean, but needs to be user id. Issue with db function because authenticate_user has been changted to a function returning boolean rather than original authenticate function which returned user id. NEEDS TO BE FIXED.
 // POST route to create a new chapter, save the chapter to the databse. 
 // this post route will be getting prev from a hidden input in the form body. Which is linked to on contribute link on the stories_show template. 
 //<a href="/new?prevChapterId=chapID">Contribute</a>
@@ -94,6 +96,7 @@ router.post('/new', (req, res) => {
     });
 });
 
+//TODO 
 //NOT WORKING because of queries.chapters.getById. Everything else working fine. Issue with db function
 // Route handler for JSON response for chapter data to be accessed on the front end.
 // Includes the whole chapter row from the db, username, story Title, chapter Count, and current chapter number.
