@@ -119,75 +119,33 @@ router.get('/new', (req, res) => {
 router.get('/:id/json', (req, res) => {
   const chapterId = req.params.id;
 
-  const nextChaptersPromise = queries.chapters.getNextChapters(chapterId);
-  const nextApprovedPromise = queries.chapters.nextApproved(chapterId);
-
-  // Fetch data for the current chapter
-  fetchChapterData(chapterId)
-    .then((chapterData) => {
-      const currentChapterData = chapterData;
-
-
-      // Fetch data for next chapters and next approved chapter
-      Promise.all([fetchNextChapters(chapterId), fetchNextApproved(chapterId)])
-        .then(([nextChapters, nextApprovedChapter]) => {
-          data.nextChapters = nextChapters;
-          data.nextApproved = nextApprovedChapter;
-          res.json(data);
-        })
-        .catch((error) => {
-          console.error(error);
-          res.status(500).json({ error: 'Error retrieving next chapter data' });
-        });
-    })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).json({ error: 'Error retrieving chapter' });
+  const nextChaptersPromise = queries.chapters.getNextChapters(chapterId)
+    .then((nextChapterIds) => {
+      const promises = nextChapterIds.map((nextChapterId) => {
+        return queries.chapters.getById(nextChapterId);
+      });
+      return Promise.all(promises);
     });
-});
 
-router.get('/:id/json', (req, res) => {
-  const chapterId = req.params.id;
+  const nextApprovedPromise = queries.chapters.nextApproved(chapterId)
+    .then((nextApprovedChapterId) => {
+      if (nextApprovedChapterId !== null) {
+        return queries.chapters.getById(nextApprovedChapterId);
+      }
+      return null;
+    });
 
-  const nextChaptersPromise = fetchNextChapters(chapterId);
-  const nextApprovedPromise = fetchNextApproved(chapterId);
-  const fetchChapterDataPromise = fetchChapterData(chapterId);
+  const fetchChapterDataPromise = fetchChapterData(chapterId, nextApprovedPromise, nextChaptersPromise);
 
   Promise.all([fetchChapterDataPromise, nextChaptersPromise, nextApprovedPromise])
     .then(([chapterData, nextChapters, nextApprovedChapter]) => {
       const data = {
-        currentChapter: chapterData,
-        nextChapters: [],
-        nextApproved: null,
+        currentChapter: chapterData.currentChapter,
+        nextChapters: chapterData.nextChapters,
+        nextApproved: chapterData.nextApproved,
       };
 
-      // Collect chapter data for next chapters
-      const nextChapterPromises = nextChapters.map((nextChapterId) => {
-        return fetchChapterData(nextChapterId)
-          .then((nextChapterData) => {
-            data.nextChapters.push(nextChapterData);
-          });
-      });
-
-      // Collect chapter data for next approved chapter
-      if (nextApprovedChapter !== null) {
-        nextChapterPromises.push(
-          fetchChapterData(nextApprovedChapter)
-            .then((nextApprovedData) => {
-              data.nextApproved = nextApprovedData;
-            })
-        );
-      }
-
-      // Wait for all chapter data promises to resolve
-      Promise.all(nextChapterPromises)
-        .then(() => {
-          res.json(data);
-        })
-        .catch((error) => {
-          console.error(error);
-          res.status(500).json({ error: 'Error retrieving next chapter data' });
-        });
+      res.json(data);
     })
     .catch((error) => {
       console.error(error);
@@ -195,12 +153,28 @@ router.get('/:id/json', (req, res) => {
     });
 });
 
+// Wait for all chapter data promises to resolve
+Promise.all(nextChapterPromises)
+  .then(() => {
+    res.json(data);
+  })
+  .catch((error) => {
+    console.error(error);
+    res.status(500).json({ error: 'Error retrieving next chapter data' });
+  });
+    })
+    .catch ((error) => {
+  console.error(error);
+  res.status(500).json({ error: 'Error retrieving data' });
+});
+
+
 
 
 //HELPER FUNCTIONS:
 // Function to fetch chapter data.
 // RETURNS: an object {username, chapterNumber, chapter object {id, content, prev, user_id, created_at, deleted_at}, story title}
-function fetchChapterData(chapterId) {
+function fetchChapterData(chapterId, nextApprovedPromise, nextChaptersPromise) {
   const chapterData = {};
 
   return queries.chapters.getById(chapterId)
@@ -213,12 +187,16 @@ function fetchChapterData(chapterId) {
         const storyIdPromise = queries.stories.storyOfChapter(chapterId).then((story) => story.story_id);
         const storyTitlePromise = queries.stories.getData(storyIdPromise).then((story) => story.title);
 
-        return Promise.all([usernamePromise, storyTitlePromise])
-          .then(([username, storyTitle, chapterCount]) => {
-            chapterData.username = username;
-            chapterData.chapterNumber = currentChapterNumber;
-            chapterData.chapter = chapter;
-            chapterData.storyTitle = storyTitle;
+        return Promise.all([usernamePromise, storyTitlePromise, nextApprovedPromise, nextChaptersPromise])
+          .then(([username, storyTitle, nextApprovedChapter, nextChapters]) => {
+            chapterData.currentChapter = {
+              username,
+              chapterNumber: currentChapterNumber,
+              chapter,
+              storyTitle,
+            };
+            chapterData.nextChapters = nextChapters;
+            chapterData.nextApproved = nextApprovedChapter;
 
             return chapterData;
           });
@@ -230,7 +208,8 @@ function fetchChapterData(chapterId) {
       console.error(error);
       throw new Error('Error retrieving chapter');
     });
-};
+}
+
 
 
 
