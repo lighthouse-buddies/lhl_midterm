@@ -31,14 +31,14 @@ describe('users', function() {
   });
 
 
-  it(`should return id if authentication is successful`, async function() {
+  it(`should return true if authentication is successful`, async function() {
 
     const result = await users.authenticate(email, password);
-    assert.strictEqual(result, userId);
+    assert.strictEqual(result, true);
   });
-  it(`should return null if authentication is unsuccessful`, async function() {
+  it(`should return false if authentication is unsuccessful`, async function() {
     const result = await users.authenticate(email, 'wrong password');
-    assert.strictEqual(result, null);
+    assert.strictEqual(result, false);
   } );
 
   it('should remove a user by their ID', async function() {
