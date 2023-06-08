@@ -78,6 +78,7 @@ router.post('/login', (req, res) => {
   userQueries.users.authenticate(email, password)
     .then((userId) => {
       if (userId) {
+        req.session.password = req.body.password;
         req.session.userId = userId;
         res.redirect('/');
       } else {
@@ -100,6 +101,7 @@ router.post('/register', (req, res) => {
         userQueries.users.authenticate(email, password)
           .then((userId) => {
             if (userId) {
+              req.session.password = req.body.password;
               req.session.userId = userId;
               res.redirect('/');
             } else {
