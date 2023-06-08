@@ -1,5 +1,5 @@
 const express = require('express');
-const router  = express.Router();
+const router = express.Router();
 const chapterQueries = require('../db/queries/queries');
 
 // GET route to render the form for creating a new story
@@ -17,24 +17,24 @@ router.post('/new', (req, res) => {
   const password = req.body.password;
 
   chapterQueries.chapters.create(content, prev, email, password)
-  .then((chapterId) => {
-    if (chapterId !== null) {
-      return chapterQueries.chapters.getById(chapterId);
-    } else {
+    .then((chapterId) => {
+      if (chapterId !== null) {
+        return chapterQueries.chapters.getById(chapterId);
+      } else {
+        res.status(500).send('Chapter creation failed');
+      }
+    })
+    .then((chapter) => {
+      if (chapter !== null) {
+        res.redirect(`/${chapter.id}`);
+      } else {
+        res.status(500).send('Chapter retrieval failed');
+      }
+    })
+    .catch((error) => {
+      console.log(error);
       res.status(500).send('Chapter creation failed');
-    }
-  })
-  .then((chapter) => {
-    if (chapter !== null) {
-      res.redirect(`/${chapter.id}`);
-    } else {
-      res.status(500).send('Chapter retrieval failed');
-    }
-  })
-  .catch((error) => {
-    console.log(error);
-    res.status(500).send('Chapter creation failed');
-  });
+    });
 });
 
 // GET route to get chapter by id
@@ -47,23 +47,32 @@ router.get('/:id', (req, res) => {
         let authorId;
         let authorUsername;
         let numVotes;
+        let nextApprovedChapter;
         let nextChapters;
 
-        chapterQueries.getAuthor(chapter.story_id)
+        chapterQueries.stories.author(chapter.story_id)
           .then((id) => {
             authorId = id;
-            return chapterQueries.getUsername(authorId);
+            return chapterQueries.chapters.getUsername(authorId);
           })
           .then((username) => {
             authorUsername = username;
-            return chapterQueries.getChapterCount(chapterId);
+            return chapterQueries.votes.getChapter(chapterId);
           })
           .then((count) => {
             numVotes = count;
-            return chapterQueries.nextApproved(chapterId);
+            return chapterQueries.chapters.nextApproved(chapterId);
+          })
+          .then((approvedChapterId) => {
+            nextApprovedChapter = approvedChapterId;
+            return chapterQueries.chapters.getNextChapters(chapterId);
           })
           .then((chapters) => {
             nextChapters = chapters;
+            return chapterQueries.chapters.getChapterNumber(chapterId);
+          })
+          .then((number) => {
+            chapterNumber = number;
 
             res.render('stories_show', {
               chapter,
@@ -72,7 +81,9 @@ router.get('/:id', (req, res) => {
               storyTitle: chapter.story_title,
               chapterText: chapter.content,
               numVotes,
-              nextChapters
+              nextApprovedChapter,
+              nextChapters,
+              chapterNumber
             });
           })
           .catch((error) => {
@@ -89,19 +100,19 @@ router.get('/:id', (req, res) => {
     });
 });
 
-// GET route to get next chapters by id
-router.get('/:id', (req, res) => {
-  const chapterId = req.params.id;
+// // GET route to get next chapters by id
+// router.get('/:id', (req, res) => {
+//   const chapterId = req.params.id;
 
-  chapterQueries.chapters.getNextChapters(chapterId)
-    .then((nextChapterIds) => {
-      res.render('nextChapter', { nextChapterIds });
-    })
-    .catch((error) => {
-      console.log(error);
-      res.status(500).send('Error retrieving next chapters');
-    });
-});
+//   chapterQueries.chapters.getNextChapters(chapterId)
+//     .then((nextChapterIds) => {
+//       res.render('nextChapter', { nextChapterIds });
+//     })
+//     .catch((error) => {
+//       console.log(error);
+//       res.status(500).send('Error retrieving next chapters');
+//     });
+// });
 
 // Route to remove a chapter by ID
 router.post('/:id/delete', (req, res) => {
