@@ -83,17 +83,16 @@ router.post('/', (req, res) => {
 router.delete('/:id', (req, res) => {
   const storyId = req.params.id;
   const sessionUserId = req.session.userId;
-  const { email, password } = req.body;
 
   if (!sessionUserId) {
     res.status(401).send('Unauthorized');
     return;
   }
 
-  storyQueries.chapters.getById(storyId)
+  storyQueries.stories.author(storyId)
     .then((ownerId) => {
       if (ownerId !== sessionUserId) {
-        throw new Error('Unauthorized: You do not have permission to remove this story');
+        throw new Error('You do not have permission to remove this story');
       }
       return storyQueries.stories.remove(storyId, email, password);
     })

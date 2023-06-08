@@ -44,13 +44,47 @@ router.get('/:id', (req, res) => {
   chapterQueries.chapters.getById(chapterId)
     .then((chapter) => {
       if (chapter !== null) {
-        res.render('stories_show', { chapter });
+        let authorId;
+        let authorUsername;
+        let numVotes;
+        let nextChapters;
+
+        chapterQueries.getAuthor(chapter.story_id)
+          .then((id) => {
+            authorId = id;
+            return chapterQueries.getUsername(authorId);
+          })
+          .then((username) => {
+            authorUsername = username;
+            return chapterQueries.getChapterCount(chapterId);
+          })
+          .then((count) => {
+            numVotes = count;
+            return chapterQueries.nextApproved(chapterId);
+          })
+          .then((chapters) => {
+            nextChapters = chapters;
+
+            res.render('stories_show', {
+              chapter,
+              authorId,
+              authorUsername,
+              storyTitle: chapter.story_title,
+              chapterText: chapter.content,
+              numVotes,
+              nextChapters
+            });
+          })
+          .catch((error) => {
+            console.log(error);
+            res.status(500).send('Could not find chapter information');
+          });
       } else {
         res.status(404).send('Chapter not found');
       }
     })
     .catch((error) => {
-      console.error(error);
+      console.log(error);
       res.status(500).send('Error retrieving chapter');
     });
 });
