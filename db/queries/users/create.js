@@ -8,27 +8,17 @@ const db = require('../../connection');
  * @returns {Promise<number|null>} A promise that resolves to the user ID (as a number) if the user is created successfully, or null if the user creation fails.
  */
 const create = (username, email, password) => {
-  // Prepare the SQL query with parameter placeholders
-  const query = 'INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING id;';
-
-  // Prepare the values to be inserted into the query
+  const query = 'SELECT create_user($1, $2, $3) AS user_id;';
   const values = [username, email, password];
 
-  // Execute the query using the database connection
   return db.query(query, values)
     .then(data => {
-      // Check if a user ID is returned
-      if (data.rows.length === 1) {
-        // Extract the user ID from the query response
-        const userId = data.rows[0].id;
-        return userId;
-      } else {
-        return null; // User creation failed
-      }
+      const userId = data.rows[0].user_id;
+      return userId;
     })
     .catch(error => {
       console.error('Error creating user:', error);
-      return null; // User creation failed
+      return null;
     });
 };
 
