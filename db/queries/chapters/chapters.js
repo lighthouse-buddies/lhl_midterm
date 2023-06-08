@@ -3,7 +3,7 @@ const getData = require("./getData");
 const nextChapters = require("./nextChapters");
 const remove = require("./remove");
 const nextApproved = require("./*nextApproved");
-const chapterNumber = require("./*chapterNumber");
+const chapterNumber = require("./chapterNumber");
 
 module.exports = {
   create: create,/**
