@@ -169,8 +169,6 @@ Promise.all(nextChapterPromises)
 });
 
 
-
-
 //HELPER FUNCTIONS:
 // Function to fetch chapter data.
 // RETURNS: an object {username, chapterNumber, chapter object {id, content, prev, user_id, created_at, deleted_at}, story title}
