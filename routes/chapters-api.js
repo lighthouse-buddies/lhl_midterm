@@ -3,6 +3,54 @@ const res = require('express/lib/response');
 const router = express.Router();
 const queries = require('../db/queries/queries');
 
+//WORKING, tested with CURL.
+// GET route to get the chapter contribution form from the previous chapter ID stories_show page.
+// This route is accessed from the 'contribute' link on the stories_show template, which has the current chap ID passed in as a prevChapterId parameter.
+router.get('/new', (req, res) => {
+  const prevChapterId = req.query.prevChapterId;
+  res.render('stories_contribute', { prevChapterId });
+});
+
+//NOT WORKING because of queries.chapters.getById. Everything else working fine. Issue with db function
+// GET Route handler for rendering HTML template stories_show using the chapter data. Also renders the username and storytitle as template vars.
+router.get('/:id', (req, res) => {
+  const chapterId = req.params.id;
+
+  queries.chapters.getById(chapterId)
+    .then((chapter) => {
+      if (chapter !== null) {
+        const userId = chapter.user_id;
+        const currentChapterNumber = chapter.prev + 1;
+
+        const usernamePromise = queries.users.getUserById(userId).then((user) => user.username);
+        const storyIdPromise = queries.stories.storyOfChapter(chapterId).then((story) => story.story_id);
+        const storyTitlePromise = queries.stories.getData(storyIdPromise).then((story) => story.title);
+
+        Promise.all([usernamePromise, storyTitlePromise])
+          .then(([username, storyTitle, chapterCount]) => {
+            const templateVars = {
+              chapter,
+              username,
+              storyTitle,
+              currentChapterNumber
+            };
+            res.render('stories_show', templateVars);
+          })
+          .catch((error) => {
+            console.error(error);
+            res.status(500).send('Error retrieving data');
+          });
+      } else {
+        res.status(404).send('Chapter not found');
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send('Error retrieving chapter');
+    });
+});
+
+///NOT WORKING because authenticate_user returning a boolean, but needs to be user id. Issue with db function because authenticate_user has been changted to a function returning boolean rather than original authenticate function which returned user id. NEEDS TO BE FIXED.
 // POST route to create a new chapter, save the chapter to the databse. 
 // this post route will be getting prev from a hidden input in the form body. Which is linked to on contribute link on the stories_show template. 
 //<a href="/new?prevChapterId=chapID">Contribute</a>
@@ -46,76 +94,10 @@ router.post('/new', (req, res) => {
     });
 });
 
-// Route to remove a chapter by ID
-router.post('/:id/delete', (req, res) => {
-  const chapterId = req.params.id;
-
-  if (!req.session.user) {
-    return res.redirect('/login');
-  }
-
-  queries.chapters.remove(chapterId)
-    .then((success) => {
-      if (success) {
-        res.redirect('/');
-      } else {
-        res.status(500).send('Chapter removal failed');
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-      res.status(500).send('Chapter removal failed');
-    });
-});
-
-// GET Route handler for rendering HTML template stories_show using the chapter data. Also renders the username and storytitle as template vars.
-router.get('/:id', (req, res) => {
-  const chapterId = req.params.id;
-
-  queries.chapters.getById(chapterId)
-    .then((chapter) => {
-      if (chapter !== null) {
-        const userId = chapter.user_id;
-        const currentChapterNumber = chapter.prev + 1;
-
-        const usernamePromise = queries.users.getUserById(userId).then((user) => user.username);
-        const storyIdPromise = queries.stories.storyOfChapter(chapterId).then((story) => story.story_id);
-        const storyTitlePromise = queries.stories.getData(storyIdPromise).then((story) => story.title);
-
-        Promise.all([usernamePromise, storyTitlePromise])
-          .then(([username, storyTitle, chapterCount]) => {
-            const templateVars = {
-              chapter,
-              username,
-              storyTitle,
-              currentChapterNumber
-            };
-            res.render('stories_show', templateVars);
-          })
-          .catch((error) => {
-            console.error(error);
-            res.status(500).send('Error retrieving data');
-          });
-      } else {
-        res.status(404).send('Chapter not found');
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).send('Error retrieving chapter');
-    });
-});
-
-//GET route to get the chapter contribution form from the previous chapter ID.
-//this route is redirected to from the 'contribute' link on the stories_show template, which has the current chap ID passed in as a prevChapterId parameter. 
-router.get('/new', (req, res) => {
-  const prevChapterId = req.query.prevChapterId;
-  res.render('stories_contribute', { prevChapterId });
-});
-
-// Route handler for JSON response for CURRENT chapter data to be accessed on front end.
-//Includes the whole chapter row from db, username, story Title, chapter Count, and current chapter number. 
-//Also includes this same information for next approved chapter and next chapters.
+//NOT WORKING because of queries.chapters.getById. Everything else working fine. Issue with db function
+// Route handler for JSON response for chapter data to be accessed on the front end.
+// Includes the whole chapter row from the db, username, story Title, chapter Count, and current chapter number.
+// Also includes this same information for next approved chapter and next chapters.
 router.get('/:id/json', (req, res) => {
   const chapterId = req.params.id;
 
@@ -153,10 +135,32 @@ router.get('/:id/json', (req, res) => {
     });
 });
 
+// Route to remove a chapter by ID
+router.post('/:id/delete', (req, res) => {
+  const chapterId = req.params.id;
 
-//HELPER FUNCTIONS:
-// Function to fetch chapter data.
-// RETURNS: an object {username, chapterNumber, chapter object {id, content, prev, user_id, created_at, deleted_at}, story title}
+  if (!req.session.user) {
+    return res.redirect('/login');
+  }
+
+  queries.chapters.remove(chapterId)
+    .then((success) => {
+      if (success) {
+        res.redirect('/');
+      } else {
+        res.status(500).send('Chapter removal failed');
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).send('Chapter removal failed');
+    });
+});
+
+
+// //HELPER FUNCTIONS:
+// // Function to fetch chapter data.
+// // RETURNS: an object {username, chapterNumber, chapter object {id, content, prev, user_id, created_at, deleted_at}, story title}
 function fetchChapterData(chapterId, nextApprovedPromise, nextChaptersPromise) {
   const chapterData = {};
 
@@ -192,7 +196,5 @@ function fetchChapterData(chapterId, nextApprovedPromise, nextChaptersPromise) {
       throw new Error('Error retrieving chapter');
     });
 }
-
-
 
 module.exports = router;
