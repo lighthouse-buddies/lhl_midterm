@@ -45,54 +45,7 @@ router.post('/new', (req, res) => {
     });
 });;
 
-//GET route to get the chapter contribution form from the previous chapter ID.
-//this route is redirected to from the 'contribute' link on the stories_show template, which has the current chap ID passed in as a prevChapterId parameter. 
-router.get('/new', (req, res) => {
-  const prevChapterId = req.query.prevChapterId;
-  res.render('stories_contribute', { prevChapterId });
-});
-
-// Route handler for JSON response for chapter data to be accessed on front end which includes the whole chapter row from db, username, story Title, chapter Count, and current chapter number
-router.get('/:id/json', (req, res) => {
-  const chapterId = req.params.id;
-
-  chapterQueries.chapters.getById(chapterId)
-    .then((chapter) => {
-      if (chapter !== null) {
-        const userId = chapter.user_id;
-        const currentChapterNumber = chapter.prev + 1;
-
-        const usernamePromise = users.getUserById(userId).then((user) => user.username);
-        const storyIdPromise = stories.storyOfChapter(chapterId).then((story) => story.story_id);
-        const storyTitlePromise = stories.getData(storyIdPromise).then((story) => story.title);
-        const chapterCountPromise = chapters.getChapterCount(chapterId);
-
-        Promise.all([usernamePromise, storyTitlePromise, chapterCountPromise])
-          .then(([username, storyTitle, chapterCount]) => {
-            const data = {
-              username,
-              chapterNumber: currentChapterNumber,
-              chapter,
-              storyTitle,
-              chapterCount
-            };
-            res.json(data);
-          })
-          .catch((error) => {
-            console.error(error);
-            res.status(500).json({ error: 'Error retrieving data' });
-          });
-      } else {
-        res.status(404).json({ error: 'Chapter not found' });
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).json({ error: 'Error retrieving chapter' });
-    });
-});
-
-// Route handler for rendering HTML template stories_show using the chapter data
+// GET Route handler for rendering HTML template stories_show using the chapter data. Also renders the username and storytitle as template vars.
 router.get('/:id', (req, res) => {
   const chapterId = req.params.id;
 
@@ -130,20 +83,92 @@ router.get('/:id', (req, res) => {
     });
 });
 
+//GET route to get the chapter contribution form from the previous chapter ID.
+//this route is redirected to from the 'contribute' link on the stories_show template, which has the current chap ID passed in as a prevChapterId parameter. 
+router.get('/new', (req, res) => {
+  const prevChapterId = req.query.prevChapterId;
+  res.render('stories_contribute', { prevChapterId });
+});
 
-// GET route to get next chapters by id
-router.get('/:id', (req, res) => {
+// Route handler for JSON response for CURRENT chapter data to be accessed on front end.
+//Includes the whole chapter row from db, username, story Title, chapter Count, and current chapter number. 
+//Also includes this same information for next approved chapter and next chapters.
+//need to ask Steve if nextChapters returns only current chapter +1, I'm guessing it does.
+router.get('/:id/json', (req, res) => {
   const chapterId = req.params.id;
 
-  chapterQueries.chapters.getNextChapters(chapterId)
-    .then((nextChapterIds) => {
-      res.render('nextChapter', { nextChapterIds });
+  // Function to fetch information for next chapters
+  function fetchNextChapters(chapterId) {
+    return chapters.getNextChapters(chapterId)
+      .then((nextChapters) => {
+        // Retrieve additional information for each next chapter
+        const promises = nextChapters.map((nextChapterId) => {
+          return chapterQueries.chapters.getById(nextChapterId);
+        });
+        return Promise.all(promises);
+      });
+  }
+
+  // Function to fetch information for the next approved chapter
+  function fetchNextApproved(chapterId) {
+    return chapters.nextApproved(chapterId)
+      .then((nextApprovedChapterId) => {
+        if (nextApprovedChapterId !== null) {
+          return chapterQueries.chapters.getById(nextApprovedChapterId);
+        }
+        return null;
+      });
+  }
+
+  // Fetch data for the current chapter
+  chapterQueries.chapters.getById(chapterId)
+    .then((chapter) => {
+      if (chapter !== null) {
+        const userId = chapter.user_id;
+        const currentChapterNumber = chapter.prev + 1;
+
+        const usernamePromise = users.getUserById(userId).then((user) => user.username);
+        const storyIdPromise = stories.storyOfChapter(chapterId).then((story) => story.story_id);
+        const storyTitlePromise = stories.getData(storyIdPromise).then((story) => story.title);
+        const chapterCountPromise = chapters.getChapterCount(chapterId);
+
+        Promise.all([usernamePromise, storyTitlePromise, chapterCountPromise])
+          .then(([username, storyTitle, chapterCount]) => {
+            const data = {
+              username,
+              chapterNumber: currentChapterNumber,
+              chapter,
+              storyTitle,
+              chapterCount
+            };
+
+            // Fetch data for next chapters and next approved chapter
+            Promise.all([fetchNextChapters(chapterId), fetchNextApproved(chapterId)])
+              .then(([nextChapters, nextApprovedChapter]) => {
+                data.nextChapters = nextChapters;
+                data.nextApproved = nextApprovedChapter;
+                res.json(data);
+              })
+              .catch((error) => {
+                console.error(error);
+                res.status(500).json({ error: 'Error retrieving next chapter data' });
+              });
+          })
+          .catch((error) => {
+            console.error(error);
+            res.status(500).json({ error: 'Error retrieving data' });
+          });
+      } else {
+        res.status(404).json({ error: 'Chapter not found' });
+      }
     })
     .catch((error) => {
-      console.log(error);
-      res.status(500).send('Error retrieving next chapters');
+      console.error(error);
+      res.status(500).json({ error: 'Error retrieving chapter' });
     });
 });
+
+
 
 // Route to remove a chapter by ID
 router.post('/:id/delete', (req, res) => {
