@@ -49,6 +49,7 @@ router.get('/:id', (req, res) => {
         let numVotes;
         let nextApprovedChapter;
         let nextChapters;
+        let chapterNumber;
 
         chapterQueries.stories.author(chapter.story_id)
           .then((id) => {
