@@ -52,14 +52,57 @@ router.get('/new', (req, res) => {
   res.render('stories_contribute', { prevChapterId });
 });
 
-// GET route to get chapter by id
+// Route handler for JSON response for chapter data to be accessed on front end which includes the whole chapter row from db, username, story Title, chapter Count, and current chapter number
+router.get('/:id/json', (req, res) => {
+  const chapterId = req.params.id;
+
+  chapterQueries.chapters.getById(chapterId)
+    .then((chapter) => {
+      if (chapter !== null) {
+        const userId = chapter.user_id;
+        const currentChapterNumber = chapter.prev + 1;
+
+        const usernamePromise = users.getUserById(userId).then((user) => user.username);
+        const storyIdPromise = stories.storyOfChapter(chapterId).then((story) => story.story_id);
+        const storyTitlePromise = stories.getData(storyIdPromise).then((story) => story.title);
+        const chapterCountPromise = chapters.getChapterCount(chapterId);
+
+        Promise.all([usernamePromise, storyTitlePromise, chapterCountPromise])
+          .then(([username, storyTitle, chapterCount]) => {
+            const data = {
+              username,
+              chapterNumber: currentChapterNumber,
+              chapter,
+              storyTitle,
+              chapterCount
+            };
+            res.json(data);
+          })
+          .catch((error) => {
+            console.error(error);
+            res.status(500).json({ error: 'Error retrieving data' });
+          });
+      } else {
+        res.status(404).json({ error: 'Chapter not found' });
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).json({ error: 'Error retrieving chapter' });
+    });
+});
+
+// Route handler for rendering HTML template stories_show using the chapter data
 router.get('/:id', (req, res) => {
   const chapterId = req.params.id;
 
   chapterQueries.chapters.getById(chapterId)
     .then((chapter) => {
       if (chapter !== null) {
-        res.render('chapter', { chapter });
+        const templateVars = {
+          chapter
+        };
+        res.render('stories_show', templateVars);
       } else {
         res.status(404).send('Chapter not found');
       }
@@ -69,6 +112,7 @@ router.get('/:id', (req, res) => {
       res.status(500).send('Error retrieving chapter');
     });
 });
+
 
 // GET route to get next chapters by id
 router.get('/:id', (req, res) => {
