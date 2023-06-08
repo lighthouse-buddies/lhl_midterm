@@ -71,7 +71,7 @@ router.get('/login', (req, res) => {
   return res.redirect('/');
 });
 
-// POST user login with authentication
+// POST user login with authentication(working)
 router.post('/login', (req, res) => {
   const { email, password } = req.body;
 
@@ -91,7 +91,7 @@ router.post('/login', (req, res) => {
     });
 });
 
-// POST route for user registration
+// POST route for user registration(working)
 router.post('/register', (req, res) => {
   const { username, email, password } = req.body;
 
@@ -122,6 +122,7 @@ router.post('/register', (req, res) => {
     });
 });
 
+//TODO in the _header.ejs
 // POST route for logging out user
 router.post('/logout', (req, res) => {
   res.clearCookie('session');
