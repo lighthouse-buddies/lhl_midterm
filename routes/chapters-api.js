@@ -2,6 +2,7 @@ const express = require('express');
 const res = require('express/lib/response');
 const router = express.Router();
 const queries = require('../db/queries/queries');
+const { fetchChapterData } = require('./route-helpers');
 
 //WORKING, tested with CURL.
 // GET route to get the chapter contribution form from the previous chapter ID stories_show page.
@@ -158,43 +159,6 @@ router.post('/:id/delete', (req, res) => {
 });
 
 
-// //HELPER FUNCTIONS:
-// // Function to fetch chapter data.
-// // RETURNS: an object {username, chapterNumber, chapter object {id, content, prev, user_id, created_at, deleted_at}, story title}
-function fetchChapterData(chapterId, nextApprovedPromise, nextChaptersPromise) {
-  const chapterData = {};
 
-  return queries.chapters.getById(chapterId)
-    .then((chapter) => {
-      if (chapter !== null) {
-        const userId = chapter.user_id;
-        const currentChapterNumber = chapter.prev + 1;
-
-        const usernamePromise = queries.users.get(userId).then((user) => user.username);
-        const storyIdPromise = queries.stories.storyOfChapter(chapterId).then((story) => story.story_id);
-        const storyTitlePromise = queries.stories.getData(storyIdPromise).then((story) => story.title);
-
-        return Promise.all([usernamePromise, storyTitlePromise, nextApprovedPromise, nextChaptersPromise])
-          .then(([username, storyTitle, nextApprovedChapter, nextChapters]) => {
-            chapterData.currentChapter = {
-              username,
-              chapterNumber: currentChapterNumber,
-              chapter,
-              storyTitle,
-            };
-            chapterData.nextChapters = nextChapters;
-            chapterData.nextApproved = nextApprovedChapter;
-
-            return chapterData;
-          });
-      } else {
-        throw new Error('Chapter not found');
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-      throw new Error('Error retrieving chapter');
-    });
-}
 
 module.exports = router;
