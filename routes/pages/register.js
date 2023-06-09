@@ -1,8 +1,9 @@
 const Users = require('../../db/queries/users/users');
 
 const registerGetHandler = (req, res) => {
-  //TODO: check if user is logged in
-  //TODO: if user is logged in, redirect to home page
+  if(req.session.userId){
+    return res.redirect('/');
+  }
   res.render('register', {userCookie: req.session.userId});
 }
 
@@ -14,7 +15,7 @@ const registerPostHandler = (req, res) => {
       req.session.userId = userId; //TODO: set user cookie
       res.redirect('/');
     } else {
-      res.status(500).send('User creation failed');
+      res.redirect('/register');
     }
   });
 

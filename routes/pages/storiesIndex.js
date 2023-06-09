@@ -7,7 +7,7 @@ module.exports = (req, res) => {
         if (story !== null) {
           res.render('stories_index', {stories: stories});
         } else {
-          res.status(404).send('Story not found');
+          // res.status(404).send('Story not found');
         }
       })
     }
