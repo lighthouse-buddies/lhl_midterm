@@ -30,14 +30,14 @@
       <div class="chapter-information">
         <header class="story-details">
           <h1>
-            Chapter 1: Whatever Title
+            Chapter <%= currentChapterNumber %>: <%= storyTitle %>
           </h1>
           <button>
-            @Author
+            <%= username %>
           </button>
         </header>
         <footer>
-          <a href="/chapters/new?prevChapterId=">Contribute</a>
+          <a href="/chapters/new?prevChapterId=<%= chapter.id %>">Contribute</a>
           <button>
             3000 Likes
           </button>
@@ -46,52 +46,8 @@
       <div class="page-content">
         <div class="story-text">
           <p>
-            Once upon a time in a small village, there lived a curious and determined young girl named Lily.
-            She had heard
-            marvelous stories about the world of coding and its ability to create wonders. Fascinated by the idea of
-            bringing
-            ideas to life through programming, Lily embarked on a journey to learn how to code.
-            With her laptop in hand and a heart filled with excitement, Lily dove into the vast ocean of coding
-            languages.
-            At first, the unfamiliar syntax and complex logic seemed daunting, but she was not one to give up easily.
-            She
-            began
-            her adventure by learning the basics of HTML and CSS, laying the foundation for her coding prowess.
-            As she progressed, Lily encountered challenges that tested her patience and problem-solving skills. But with
-            each
-            hurdle, she grew stronger and more determined. She sought guidance from online tutorials and interactive
-            coding
-            platforms, always hungry for knowledge. Late nights were spent debugging, tracing every line of code until
-            she
-            found the elusive bug.
-            Lily discovered that coding was not merely about writing lines of text; it was about creating art.Lily
-            discovered that coding was not merely about writing lines of text; it was about creating art.Lily discovered
-            that coding was not merely about writing lines of text; it was about creating art.Lily discovered that
-            coding
-            was not merely about writing lines of text; it was about creating art.Lily discovered that coding was not
-            merely about writing lines of text; it was about creating art.
-            determined. She sought guidance from online tutorials and interactive
-            coding
-            platforms, always hungry for knowledge. Late nights were spent debugging, tracing every line of code until
-            she
-            found the elusive bug.
-            Lily discovered that coding was not merely about writing lines of text; it was about creating art.Lily
-            discovered that coding was not merely about writing lines of text; it was about creating art.Lily discovered
-            that coding was not merely about writing lines of text; it was about creating art.Lily discovered that
-            coding
-            was not merely about writing lines of text; it was about creating art.Lily discovered that coding was not
-            merely about writing lines of text; it was about creating art.
-            determined. She sought guidance from online tutorials and interactive
-            coding
-            platforms, always hungry for knowledge. Late nights were spent debugging, tracing every line of code until
-            she
-            found the elusive bug.
-            Lily discovered that coding was not merely about writing lines of text; it was about creating art.Lily
-            discovered that coding was not merely about writing lines of text; it was about creating art.Lily discovered
-            that coding was not merely about writing lines of text; it was about creating art.Lily discovered that
-            coding
-            was not merely about writing lines of text; it was about creating art.Lily discovered that coding was not
-            merely about writing lines of text; it was about creating art.</p>
+            <%= chapter.content %>
+          </p>
         </div>
         <div class="story-container">
           <h2>
@@ -99,25 +55,28 @@
           </h2>
           <div class="story-scroll">
             <!-- Repeat this article block for each article -->
+            <% stories.forEach((story) => { %>
             <article class="story-preview">
               <header class="story-title">
-                <a href="">This is the story title</a>
+                <a href=""><%= storyTitle %></a>
               </header>
               <p>
-                This is the story content, the first line will be typed here to get the reader hooked. Until a certain
-                limit
-                is
-                reached the story will show...
+                <%= chapter.content.slice(0, 25) %>
               </p>
               <footer>
                 <button class="story-status">
-                  Approved
+                  <% if (chapter.complete) { %>
+                    Completed
+                  <% } else { %>
+                    In-progress
+                  <% } %>
                 </button>
                 <h4 class="user-handle-red">
-                  @userhandle
+                  <%= chapter.user_id %>
                 </h4>
               </footer>
             </article>
+            <% }) %>
             <!-- Repeat this article block for each article -->
             <article class="story-preview">
               <header class="story-title">
