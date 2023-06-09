@@ -32,9 +32,8 @@ module.exports = {
    * Authenticates a user based on their email and password.
    * @param {string} email - The email address of the user.
    * @param {string} password - The password of the user.
-   * @returns {Promise<boolean>} A promise that resolves to the user ID (as a number) if authentication is successful, or null if authentication fails.
+   * @returns {Promise<number|null>} A promise that resolves to the user ID (as a number) if authentication is successful, or null if authentication fails.
    */
-
    //  getIdByStoryId: getIdByStoryId,/**
    // * Retrieves the user ID associated with a given story ID.
    // * @param {number} story_id - The ID of the story.

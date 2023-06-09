@@ -4,12 +4,11 @@ const db = require('../../connection');
  * Authenticates a user based on their email and password.
  * @param {string} email - The email address of the user.
  * @param {string} password - The password of the user.
- * @returns {Promise<boolean>} A promise that resolves to the user ID (as a number) if authentication is successful, or null if authentication fails.
+ * @returns {Promise<number|null>} A promise that resolves to the user ID (as a number) if authentication is successful, or null if authentication fails.
  */
-const authenticate = (email, password) => {
+const authenticateUser = (email, password) => {
   // Prepare the SQL query with parameter placeholders
-  const query = `SELECT authenticate_user($1, $2) AS id;`;
-
+  const query = 'SELECT id FROM users WHERE email = $1 AND password = $2;';
 
   // Prepare the values to be inserted into the query
   const values = [email, password];
@@ -32,4 +31,4 @@ const authenticate = (email, password) => {
     });
 };
 
-module.exports = authenticate;
+module.exports = authenticateUser;

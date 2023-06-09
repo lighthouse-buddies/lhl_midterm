@@ -9,7 +9,7 @@ router.get('/:id', (req, res) => {
   const sessionUserId = req.session.userId;
 
   if (sessionUserId === userId) {
-    storyQueries.stories.getStoriesByUserId(userId)
+    storyQueries.stories.storyOfUser(userId)
       .then((storyIds) => {
         const storyPromises = storyIds.map((storyId) => {
           const storyPromise = storyQueries.stories.getById(storyId);

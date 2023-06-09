@@ -1,6 +1,12 @@
--- \i functions/find_first_chapter_by_chapter.sql
--- \i functions/find_last_chapter_by_story.sql
--- \i functions/find_next_approved_chapter.sql
--- \i functions/find_next_approved_chapter_from_chapter.sql
--- \i functions/find_story_by_first_chapter.sql
-
+\i functions/chapters/find_first_chapter_by_chapter.sql
+\i functions/chapters/find_last_chapter_by_story.sql
+\i functions/chapters/find_next_approved_chapter.sql
+\i functions/chapters/find_next_approved_chapter_from_chapter.sql
+\i functions/chapters/get_chapter_number.sql
+\i functions/chapters/soft_delete_chapter.sql
+\i functions/functions.sql
+\i functions/stories/find_author.sql
+\i functions/stories/find_story_by_first_chapter.sql
+\i functions/users/authenticate_user.sql
+\i functions/users/create_user.sql
+\i functions/users/soft_delete_user.sql
