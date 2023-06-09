@@ -1,8 +1,8 @@
 const express = require('express');
-const router  = express.Router();
+const router = express.Router();
 const chapterQueries = require('../../db/queries/queries');
 
-const chaptersNewGetHandler = require('./newGet')
+const chaptersNewGetHandler = require('./newGet');
 const chaptersNewPostHandler = require('./newPost');
 const chaptersIdGetHandler = require('./idGet');
 const chaptersDeleteHandler = require('./chapterDelete');
@@ -14,7 +14,7 @@ router.get('/new', chaptersNewGetHandler);
 // POST route to create a new chapter
 router.post('/new', chaptersNewPostHandler);
 
-// GET route to getData chapter by id
+// GET route to render chapter by id
 router.get('/:id', chaptersIdGetHandler);
 
 // GET route to get JSON data from chapter by id

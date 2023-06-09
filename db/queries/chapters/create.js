@@ -34,7 +34,7 @@ const createChapter = (content, prev, user_id) => {
       // Check if a chapter ID is returned
       if (data.rows.length === 1) {
         // Extract the chapter ID from the query response
-        return data.rows[0]
+        return data.rows[0];
       } else {
         return null; // Chapter creation failed
       }

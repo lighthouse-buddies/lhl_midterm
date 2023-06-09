@@ -29,12 +29,9 @@
     <main>
       <div class="sidebar-image"></div>
       <div class="form-container">
-        <form method="POST" action="/stories">
+        <form method="POST" action="/stories/new">
           <label for="story-title">Give your story a title:</label>
-          <input type="text" id="story-title" name="story_title" class="form-input" required>
-
-          <label for="chapter-title">Title your chapter:</label>
-          <input type="text" id="chapter-title" name="chapter_id" class="form-input" required>
+          <input type="text" id="story-title" name="title" class="form-input" required>
 
           <label for="chapter-content">Now get writing!</label>
           <textarea id="chapter-content" name="chapter_content" class="form-input" rows="15" required></textarea>

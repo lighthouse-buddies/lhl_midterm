@@ -1,21 +1,21 @@
 <nav>
-    <h1 id="logo">
-        <span>Collab</span>Tales
-    </h1>
-    <div class="nav-menu">
-        <% if (userCookie) { %>
-            <a href="#">
-                Start a Story
-            </a>
-            <a href="#">
-                My Stories
-            </a>
-            <a href="#">
-                <a href="/logout">Logout</a>
-            </a>
-        <% } else { %>
-            <a href="/login">Login</a>
-            <a href="/register">Register</a>
+  <h1 id="logo">
+    <span>Collab</span>Tales
+  </h1>
+  <div class="nav-menu">
+    <% if (userCookie) { %>
+      <a href="/stories/new">
+        Start a Story
+      </a>
+      <a href="/stories/<%= userCookie %>">
+        My Stories
+      </a>
+      <a href="/logout">Logout
+
+      </a>
+      <% } else { %>
+        <a href="/login">Login</a>
+        <a href="/register">Register</a>
         <% } %>
-    </div>
+  </div>
 </nav>
