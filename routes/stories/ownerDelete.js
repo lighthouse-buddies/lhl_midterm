@@ -14,12 +14,12 @@ const ownerDeleteHandler = (req, res) => {
     return;
   }
 
-  queries.chapters.getById(storyId)
+  queries.chapters.getData(storyId)
     .then((ownerId) => {
       if (ownerId !== sessionUserId) {
         throw new Error('You do not have permission to remove this story');
       }
-      return queries.stories.remove(storyId, email, password);
+      return queries.stories.remove(storyId);
     })
     .then((success) => {
       if (success) {

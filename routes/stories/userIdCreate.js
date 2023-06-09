@@ -12,7 +12,7 @@ const userCreateStoryHandler = (req, res) => {
     return;
   }
 
-  queries.stories.create(title, chapterId, sessionUserId)
+  queries.stories.create(title, chapterId,)
     .then((success) => {
       if (!success) {
         throw new Error('Error creating story');
