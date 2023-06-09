@@ -5,7 +5,7 @@ const queries = require("../../db/queries/queries");
 // This route is accessed from the 'contribute' link on the stories_show template, which has the current chap ID passed in as a prevChapterId parameter.
 const chaptersNewGetHandler = (req, res) => {
   const prevChapterId = req.query.prevChapterId;
-  res.render('stories_contribute', { prevChapterId });
+  res.render('stories_contribute', { prevChapterId, userCookie: req.session.userId });
 };
 
 module.exports = chaptersNewGetHandler;
