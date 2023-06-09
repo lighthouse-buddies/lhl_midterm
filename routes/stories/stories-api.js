@@ -9,14 +9,16 @@ const userCreateStoryHandler = require('./userIdCreate');
 //get recent stories as json (for homepage)
 router.get('/recent/json', recentStoriesJsonHandler);
 
-//get stories for user 
+
+//user creates new story
+router.post('/new', userCreateStoryHandler);
+
+//get stories for user
 router.get('/:id', myStoriesGetHandler);
 
 //owner deletes their stories
 router.delete('/:id', ownerDeleteHandler);
 
-//user creates new story
-router.post('/new', userCreateStoryHandler);
 
 
 //**NOT USING
