@@ -2,8 +2,9 @@ const express = require('express');
 const router = express.Router();
 const queries = require('../../db/queries/queries');
 
+// POST route for user to create a story
 const userCreateStoryHandler = (req, res) => {
-  const { title, chapter_content } = req.body;
+  const { title, chapterId } = req.body;
   const sessionUserId = req.session.userId;
 
   if (!sessionUserId) {
@@ -11,13 +12,7 @@ const userCreateStoryHandler = (req, res) => {
     return;
   }
 
-  queries.chapters.createChapter(chapter_content, null, sessionUserId)
-    .then((chapter) => {
-      if (!chapter) {
-        throw new Error('Error creating chapter');
-      }
-      return queries.stories.create(title, chapter.id);
-    })
+  queries.stories.create(title, chapterId,)
     .then((success) => {
       if (!success) {
         throw new Error('Error creating story');
@@ -29,7 +24,6 @@ const userCreateStoryHandler = (req, res) => {
       res.status(500).send('Error creating story');
     });
 };
-
 
 
 module.exports = userCreateStoryHandler;

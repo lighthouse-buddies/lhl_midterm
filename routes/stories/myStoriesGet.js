@@ -4,7 +4,7 @@ const queries = require('../../db/queries/queries');
 const { compileLastStoryData } = require('../route-helpers');
 
 //this is the route handler for passing the completed and in progress stories for the user to my_stories template
-//with their associated data for last chapters  
+//with their associated data for last chapters
 //(my_stories template will show the in progress and completed stories for that user)
 //the stories will be shown with preview of the last chapter on my_stories
 //Should pass an object with the following structure to my_stories:
@@ -59,8 +59,9 @@ const myStoriesGetHandler = (req, res) => {
   const sessionUserId = req.session.userId;
 
   if (sessionUserId === userId) {
-    queries.stories.getStoriesByUserId(userId)
-      .then((storyIds) => {
+    queries.stories.author(userId).then
+    ((authorId) => {
+      queries.stories.storiesOfUser(authorId).then((storyIds) => {
         const storyPromises = storyIds.map((storyId) => queries.stories.getData(storyId));
         Promise.all(storyPromises)
           .then((stories) => {
@@ -73,21 +74,17 @@ const myStoriesGetHandler = (req, res) => {
 
 
                 return res.render('my_stories', { storyData, sessionUserId });
-              });
-          })
-          .catch((error) => {
-            console.log(error);
-            res.status(500).send('Error: Could not retrieve stories');
-          });
-      })
+               })
       .catch((error) => {
         console.log(error);
         res.status(500).send('Error: Could not retrieve story IDs');
       });
+    });
+  });
+});
   } else {
-    res.status(401).send('Not Allowed');
+    res.send("Not Allowed2")
   }
 };
-
 
 module.exports = myStoriesGetHandler;
