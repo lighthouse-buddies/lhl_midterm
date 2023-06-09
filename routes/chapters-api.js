@@ -1,13 +1,8 @@
 const express = require('express');
-<<<<<<< HEAD
-const router  = express.Router();
-const chapterQueries = require('../db/queries/queries');
-=======
 const res = require('express/lib/response');
 const router = express.Router();
 const queries = require('../db/queries/queries');
 const { fetchChapterData } = require('./route-helpers');
->>>>>>> 59f2341 (refactor helper functions out of chaptersapi and storiesapi into route-helpers.js)
 
 // POST route to create a new chapter
 router.post('/new', (req, res) => {
@@ -16,24 +11,24 @@ router.post('/new', (req, res) => {
   const password = req.body.password;
 
   chapterQueries.chapters.create(content, prev, email, password)
-  .then((chapterId) => {
-    if (chapterId !== null) {
-      return chapterQueries.chapters.getData(chapterId);
-    } else {
+    .then((chapterId) => {
+      if (chapterId !== null) {
+        return chapterQueries.chapters.getData(chapterId);
+      } else {
+        res.status(500).send('Chapter creation failed');
+      }
+    })
+    .then((chapter) => {
+      if (chapter !== null) {
+        res.redirect(`/${chapter.id}`);
+      } else {
+        res.status(500).send('Chapter retrieval failed');
+      }
+    })
+    .catch((error) => {
+      console.log(error);
       res.status(500).send('Chapter creation failed');
-    }
-  })
-  .then((chapter) => {
-    if (chapter !== null) {
-      res.redirect(`/${chapter.id}`);
-    } else {
-      res.status(500).send('Chapter retrieval failed');
-    }
-  })
-  .catch((error) => {
-    console.log(error);
-    res.status(500).send('Chapter creation failed');
-  });
+    });
 });
 
 // GET route to getData chapter by id
@@ -90,10 +85,7 @@ router.post('/:id/delete', (req, res) => {
     });
 });
 
-<<<<<<< HEAD
-=======
 
 
 
->>>>>>> 59f2341 (refactor helper functions out of chaptersapi and storiesapi into route-helpers.js)
 module.exports = router;
