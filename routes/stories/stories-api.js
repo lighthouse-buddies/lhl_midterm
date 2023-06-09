@@ -1,14 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const queries = require('../db/queries/queries');
-const { compileLastStoryData, compileFirstStoryData } = require('./route-helpers');
+const queries = require('../../db/queries/queries');
+const { compileLastStoryData, compileFirstStoryData } = require('../route-helpers');
 
 
-//TODO 
+//TODO
 //not working because db functions are still messed up
-//HOWEVER, without adding any of the variables from the template to the database, this does work. 
-//GET stories for user by userID 
-//This route will be used to render stories to the My_Stories template. 
+//HOWEVER, without adding any of the variables from the template to the database, this does work.
+//GET stories for user by userID
+//This route will be used to render stories to the My_Stories template.
 //The purpose is to show the user's in progress and completed stories on the template.
 //Uses a helper function from route-helpers to organize storyData.
 //Should pass an object with the following structure to my_stories:
