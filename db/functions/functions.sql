@@ -1,6 +1,11 @@
--- \i functions/find_first_chapter_by_chapter.sql
--- \i functions/find_last_chapter_by_story.sql
--- \i functions/find_next_approved_chapter.sql
--- \i functions/find_next_approved_chapter_from_chapter.sql
--- \i functions/find_story_by_first_chapter.sql
---
+\i chapters/find_first_chapter_by_chapter.sql
+\i chapters/find_last_chapter_by_story.sql
+\i chapters/find_next_approved_chapter.sql
+\i chapters/find_next_approved_chapter_from_chapter.sql
+\i chapters/get_chapter_number.sql
+\i chapters/soft_delete_chapter.sql
+\i stories/find_author.sql
+\i stories/find_story_by_first_chapter.sql
+\i users/authenticate_user.sql
+\i users/create_user.sql
+\i users/soft_delete_user.sql
