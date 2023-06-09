@@ -54,86 +54,38 @@ const { compileLastStoryData } = require('../route-helpers');
 //     // Additional in-progress stories...
 //   ]
 // };
-// const myStoriesGetHandler = (req, res) => {
-//   const userId = req.params.id;
-//   const sessionUserId = req.session.userId;
-
-//   console.log(userId, sessionUserId);
-
-//   if (sessionUserId === userId) {
-//     queries.stories.getStoriesByUserId(userId)
-//       .then((storyIds) => {
-//         const storyPromises = storyIds.map((storyId) => queries.stories.getData(storyId));
-//         Promise.all(storyPromises)
-//           .then((stories) => {
-//             const lastChaptersPromise = stories.map((story) => queries.chapters.getData(story.last_chapter_id));
-
-//             Promise.all(lastChaptersPromise)
-//               .then((lastChapters) => {
-
-//                 const storyData = compileLastStoryData(stories, lastChapters);
-
-
-//                 return res.render('my_stories', { storyData, sessionUserId });
-//               });
-//           })
-//           .catch((error) => {
-//             console.log(error);
-//             res.status(500).send('Error: Could not retrieve stories');
-//           });
-//       })
-//       .catch((error) => {
-//         console.log(error);
-//         res.status(500).send('Error: Could not retrieve story IDs');
-//       });
-//   } else {
-//     res.status(401).send('Not Allowed');
-//   }
-// };
-
 
 const myStoriesGetHandler = (req, res) => {
   const userId = req.params.id;
   const sessionUserId = req.session.userId;
 
-  console.log('userId:', userId);
-  console.log('sessionUserId:', sessionUserId);
+  if (sessionUserId == userId) {
+    queries.stories.storiesOfUser(userId)
+      .then((storyIds) => {
 
-  // if (sessionUserId === userId) {
-  queries.stories.storiesOfUser(userId)
-    .then((storyIds) => {
-      console.log('storyIds:', storyIds);
+        const storyPromises = storyIds.map((storyId) => queries.stories.getData(storyId));
+        Promise.all(storyPromises)
+          .then((stories) => {
 
-      const storyPromises = storyIds.map((storyId) => queries.stories.getData(storyId));
-      Promise.all(storyPromises)
-        .then((stories) => {
-          console.log('stories:', stories);
+            const lastChaptersPromise = stories.map((story) => queries.chapters.getData(story.last_chapter_id));
+            Promise.all(lastChaptersPromise)
+              .then((lastChapters) => {
 
-          const lastChaptersPromise = stories.map((story) => queries.chapters.getData(story.last_chapter_id));
-          Promise.all(lastChaptersPromise)
-            .then((lastChapters) => {
-              console.log('lastChapters:', lastChapters);
+                const storyData = compileLastStoryData(stories, lastChapters);
 
-              const storyData = compileLastStoryData(stories, lastChapters);
-
-              console.log('storyData:', storyData);
-
-              return res.render('my_stories', { storyData, userCookie: sessionUserId });
-            });
-        })
-        .catch((error) => {
-          console.log('Error retrieving stories:', error);
-          res.status(500).send('Error: Could not retrieve stories');
-        });
-    })
-    .catch((error) => {
-      console.log('Error retrieving story IDs:', error);
-      res.status(500).send('Error: Could not retrieve story IDs');
-    });
-  // } else {
-  //   console.log('Authorization failed');
-  //   res.status(401).send('Not Allowed');
-  // };
+                return res.render('my_stories', { storyData, userCookie: sessionUserId });
+              });
+          })
+          .catch((error) => {
+            res.status(500).send('Error: Could not retrieve stories');
+          });
+      })
+      .catch((error) => {
+        res.status(500).send('Error: Could not retrieve story IDs');
+      });
+  } else {
+    res.status(401).send('Not Allowed');
+  };
 };
 
 module.exports = myStoriesGetHandler;
