@@ -17,7 +17,7 @@ const userCreateStoryHandler = (req, res) => {
       if (!success) {
         throw new Error('Error creating story');
       }
-      res.redirect('/my_stories');
+      res.redirect(`/stories/${sessionUserId}`);
     })
     .catch((error) => {
       console.log(error);
