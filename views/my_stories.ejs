@@ -25,135 +25,67 @@
 </head>
 
 <body>
-  <%- include('partials/_header.ejs') %>
+  <% include('partials/_header.ejs') %>
     <header id="banner">
     </header>
     <main class='story-preview-container'>
       <div class='in-progress'>
         <h2> In Progress </h2>
         <div class="story-scroll">
-          <article class="story-preview">
-            <header class="story-title">
-              <a href="">This is the story title</a>
-            </header>
-            <p>
-              This is the story content, the first line will be typed here to get the reader hooked. Until a certain
-              limit
-              is
-              reached the story will show...
-            </p>
-            <footer>
-              <button class="story-status">
-                In Progress
-              </button>
-              <h4 class="user-handle-red">
-                @userhandle
-              </h4>
-            </footer>
-          </article>
-          <article class="story-preview">
-            <header class="story-title">
-              <a href="">This is the story title</a>
-            </header>
-            <p>
-              This is the story content, the first line will be typed here to get the reader hooked. Until a certain
-              limit
-              is
-              reached the story will show...
-            </p>
-            <footer>
-              <button class="story-status">
-                In Progress
-              </button>
-              <h4 class="user-handle-red">
-                @userhandle
-              </h4>
-            </footer>
-          </article>
-          <article class="story-preview">
-            <header class="story-title">
-              <a href="">This is the story title</a>
-            </header>
-            <p>
-              This is the story content, the first line will be typed here to get the reader hooked. Until a certain
-              limit
-              is
-              reached the story will show...
-            </p>
-            <footer>
-              <button class="story-status">
-                In Progress
-              </button>
-              <h4 class="user-handle-red">
-                @userhandle
-              </h4>
-            </footer>
-          </article>
-        </div>
+          <% for (const complete of storyData.completed) { %>
+            <article class="story-preview">
+              <header class="story-title">
+                <a href="">
+                  <%= complete.story.title %>
+                </a>
+              </header>
+              <p>
+                <% const words=complete.lastChapter.content.split(' '); %>
+            <% const remainingWords = words.slice(25); %>
+            <%= remainingWords.join(' ') %>
+          </p>
+          <footer>
+            <button class="story-status">
+              In Progress
+            </button>
+            <h4 class="user-handle-red">
+              <@userhandle>
+            </h4>
+          </footer>
+        </article>
+        <% } %>
       </div>
-      <div class='Completed'>
-        <h2> Completed </h2>
-        <div class="story-scroll">
-          <article class="story-preview">
-            <header class="story-title">
-              <a href="">This is the story title</a>
-            </header>
-            <p>
-              This is the story content, the first line will be typed here to get the reader hooked. Until a certain
-              limit
-              is
-              reached the story will show...
-            </p>
-            <footer>
-              <button class="story-status">
-                Completed
-              </button>
-              <h4 class="user-handle-red">
-                @userhandle
-              </h4>
-            </footer>
-          </article>
-          <article class="story-preview">
-            <header class="story-title">
-              <a href="">This is the story title</a>
-            </header>
-            <p>
-              This is the story content, the first line will be typed here to get the reader hooked. Until a certain
-              limit
-              is
-              reached the story will show...
-            </p>
-            <footer>
-              <button class="story-status">
-                Completed
-              </button>
-              <h4 class="user-handle-red">
-                @userhandle
-              </h4>
-            </footer>
-          </article>
-          <article class="story-preview">
-            <header class="story-title">
-              <a href="">This is the story title</a>
-            </header>
-            <p>
-              This is the story content, the first line will be typed here to get the reader hooked. Until a certain
-              limit
-              is
-              reached the story will show...
-            </p>
-            <footer>
-              <button class="story-status">
-                Completed
-              </button>
-              <h4 class="user-handle-red">
-                @userhandle
-              </h4>
-            </footer>
-          </article>
-        </div>
+    </div>
+    <div class=' Completed'>
+                  <h2> Completed </h2>
+                  <div class="story-scroll">
+                    <% for (const inProgress of storyData.inProgress) { %>
+                      <article class="story-preview">
+                        <header class="story-title">
+                          <a href="">
+                            <%= inProgress.story.title %>
+                          </a>
+                        </header>
+                        <p>
+                          <% const words=inProgress.lastChapter.content.split(' '); %>
+            <% const remainingWords = words.slice(25); %>
+            <%= remainingWords.join(' ') %>
+          </p>
+          <footer>
+            <button class="story-status">
+              In Progress
+            </button>
+            <h4 class="user-handle-red">
+              <@userhandle>
+            </h4>
+          </footer>
+        </article>
+        <% } %>
       </div>
-    </main>
+    </div>
+  </main>
 </body>
+
+</html>
 
 </html>

@@ -1,14 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const queries = require('../db/queries/queries');
-const { compileLastStoryData, compileFirstStoryData } = require('./route-helpers');
+const queries = require('../../db/queries/queries');
+const { compileLastStoryData, compileFirstStoryData } = require('../route-helpers');
 
 
-//TODO 
+//TODO
 //not working because db functions are still messed up
-//HOWEVER, without adding any of the variables from the template to the database, this does work. 
-//GET stories for user by userID 
-//This route will be used to render stories to the My_Stories template. 
+//HOWEVER, without adding any of the variables from the template to the database, this does work.
+//GET stories for user by userID
+//This route will be used to render stories to the My_Stories template.
 //The purpose is to show the user's in progress and completed stories on the template.
 //Uses a helper function from route-helpers to organize storyData.
 //Should pass an object with the following structure to my_stories:
@@ -128,6 +128,7 @@ router.get('/recent/json', (req, res) => {
 
 
 // GET completed stories
+//NOT USING
 router.get('/completed', (req, res) => {
   const storyId = req.params.storyId;
 
@@ -145,66 +146,5 @@ router.get('/completed', (req, res) => {
       res.status(500).send('An error occurred');
     });
 });
-
-// POST creating a story
-router.post('/', (req, res) => {
-  const { title, chapterId } = req.body;
-  const sessionUserId = req.session.userId;
-
-  if (!sessionUserId) {
-    res.status(401).send('Unauthorized');
-    return;
-  }
-
-  queries.stories.create(title, chapterId, sessionUserId)
-    .then((success) => {
-      if (!success) {
-        throw new Error('Error creating story');
-      }
-      return queries.stories.getData(success);
-    })
-    .then((story) => {
-      if (!story) {
-        throw new Error('Story not found');
-      }
-      res.render('my_stories', { story });
-    })
-    .catch((error) => {
-      console.log(error);
-      res.status(500).send('Error creating story');
-    });
-});
-
-//DELETE owner deleting a story
-router.delete('/:id', (req, res) => {
-  const storyId = req.params.id;
-  const sessionUserId = req.session.userId;
-
-  if (!sessionUserId) {
-    res.status(401).send('Unauthorized');
-    return;
-  }
-
-  queries.chapters.getById(storyId)
-    .then((ownerId) => {
-      if (ownerId !== sessionUserId) {
-        throw new Error('You do not have permission to remove this story');
-      }
-      return queries.stories.remove(storyId, email, password);
-    })
-    .then((success) => {
-      if (success) {
-        res.redirect('my_stories');
-      } else {
-        throw new Error('Error removing story');
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-      res.status(500).send('Error removing story');
-    });
-});
-
-
 
 module.exports = router;
