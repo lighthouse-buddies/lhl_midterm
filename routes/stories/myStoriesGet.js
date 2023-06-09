@@ -60,30 +60,30 @@ const myStoriesGetHandler = (req, res) => {
 
   if (sessionUserId === userId) {
     queries.stories.author(userId).then
-    ((authorId) => {
-      queries.stories.storiesOfUser(authorId).then((storyIds) => {
-        const storyPromises = storyIds.map((storyId) => queries.stories.getData(storyId));
-        Promise.all(storyPromises)
-          .then((stories) => {
-            const lastChaptersPromise = stories.map((story) => queries.chapters.getData(story.last_chapter_id));
+      ((authorId) => {
+        queries.stories.storiesOfUser(authorId).then((storyIds) => {
+          const storyPromises = storyIds.map((storyId) => queries.stories.getData(storyId));
+          Promise.all(storyPromises)
+            .then((stories) => {
+              const lastChaptersPromise = stories.map((story) => queries.chapters.getData(story.last_chapter_id));
 
-            Promise.all(lastChaptersPromise)
-              .then((lastChapters) => {
+              Promise.all(lastChaptersPromise)
+                .then((lastChapters) => {
 
-                const storyData = compileLastStoryData(stories, lastChapters);
+                  const storyData = compileLastStoryData(stories, lastChapters);
 
 
-                return res.render('my_stories', { storyData, sessionUserId });
-               })
-      .catch((error) => {
-        console.log(error);
-        res.status(500).send('Error: Could not retrieve story IDs');
+                  return res.render('my_stories', { storyData, sessionUserId });
+                })
+                .catch((error) => {
+                  console.log(error);
+                  res.status(500).send('Error: Could not retrieve story IDs');
+                });
+            });
+        });
       });
-    });
-  });
-});
   } else {
-    res.send("Not Allowed2")
+    res.send("Not Allowed");
   }
 };
 
