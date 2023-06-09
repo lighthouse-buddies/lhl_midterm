@@ -30,13 +30,13 @@ module.exports = {
    * @param {number} chapter_id - The ID of the chapter to approve.
    * @returns {Promise<boolean>} A promise that resolves to a boolean indicating the success of the approval.
    */
-  getStoriesByUserId,
+  storyOfUser: getStoriesByUserId,
   /**
    * Retrieves an array of story IDs associated with a given user ID.
    * @param {number} user_id - The ID of the user.
    * @returns {Promise<number[]>} A promise that resolves to an array of story IDs.
    */
-  getData,
+  getData: getData,
   /**
    * Retrieves a row by its ID from the stories table in the database.
    * @param {number} id - The ID of the row.

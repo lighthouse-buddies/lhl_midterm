@@ -11,7 +11,7 @@ router.post('/new', (req, res) => {
   chapterQueries.chapters.create(content, prev, email, password)
   .then((chapterId) => {
     if (chapterId !== null) {
-      return chapterQueries.chapters.getById(chapterId);
+      return chapterQueries.chapters.getData(chapterId);
     } else {
       res.status(500).send('Chapter creation failed');
     }
@@ -33,7 +33,7 @@ router.post('/new', (req, res) => {
 router.get('/:id', (req, res) => {
   const chapterId = req.params.id;
 
-  chapterQueries.chapters.getById(chapterId)
+  chapterQueries.chapters.getData(chapterId)
     .then((chapter) => {
       if (chapter !== null) {
         res.render('chapter', { chapter });

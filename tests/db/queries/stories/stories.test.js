@@ -45,7 +45,7 @@ describe('Stories', function() {
 
   describe('getStoriesByUserId', function() {
     it('should retrieve an array of story IDs associated with a user ID', async function() {
-      const stories = await Stories.getStoriesByUserId(userId);
+      const stories = await Stories.storyOfUser(userId);
       console.log('Retrieved stories:', stories); // Console log the retrieved stories
       assert(Array.isArray(stories));
     });
