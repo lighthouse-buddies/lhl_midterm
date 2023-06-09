@@ -14,10 +14,16 @@
   <link rel="stylesheet" href="/styles/layout.css" />
   <link rel="stylesheet" href="/styles/nav.css" />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
     href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Hind:wght@400;600&family=Playfair+Display+SC:ital,wght@1,900&display=swap"
+    rel="stylesheet"> -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Hind:wght@400;600&family=Playfair&family=Playfair+Display+SC:ital,wght@1,900&display=swap"
     rel="stylesheet">
 
   <script src="/vendor/jquery-3.0.0.js"></script>
@@ -41,49 +47,47 @@
               </header>
               <p>
                 <% const words=complete.lastChapter.content.split(' '); %>
-            <% const remainingWords = words.slice(25); %>
+            <% const remainingWords = words.slice(0, 25); %>
             <%= remainingWords.join(' ') %>
-          </p>
+          ...</p>
           <footer>
             <button class="story-status">
               In Progress
             </button>
-            <h4 class="user-handle-red">
-              <@userhandle>
-            </h4>
-          </footer>
-        </article>
-        <% } %>
+            <a href=' delete/:id' id="delete-link">
+                  Delete this story</a>
+                  </footer>
+            </article>
+            <% } %>
+        </div>
       </div>
-    </div>
-    <div class=' Completed'>
-                  <h2> Completed </h2>
-                  <div class="story-scroll">
-                    <% for (const inProgress of storyData.inProgress) { %>
-                      <article class="story-preview">
-                        <header class="story-title">
-                          <a href="">
-                            <%= inProgress.story.title %>
-                          </a>
-                        </header>
-                        <p>
-                          <% const words=inProgress.lastChapter.content.split(' '); %>
-            <% const remainingWords = words.slice(25); %>
-            <%= remainingWords.join(' ') %>
-          </p>
+      <div class=' Completed'>
+        <h2> Completed </h2>
+        <div class="story-scroll">
+          <% for (const inProgress of storyData.inProgress) { %>
+            <article class="story-preview">
+              <header class="story-title">
+                <a href="">
+                  <%= inProgress.story.title %>
+                </a>
+              </header>
+              <p>
+                <% const words=inProgress.lastChapter.content.split(' '); %>
+            <% const remainingWords = words.slice(0, 25); %>
+            <%= remainingWords.join(' ')%>
+          ...</p>
           <footer>
             <button class="story-status">
-              In Progress
+              Completed
             </button>
-            <h4 class="user-handle-red">
-              <@userhandle>
-            </h4>
-          </footer>
-        </article>
-        <% } %>
+            <a href=' delete/:id' id="delete-link">
+                  Delete this story</a>
+                  </footer>
+            </article>
+            <% } %>
+        </div>
       </div>
-    </div>
-  </main>
+    </main>
 </body>
 
 </html>
