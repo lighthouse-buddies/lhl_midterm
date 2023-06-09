@@ -70,6 +70,8 @@ h2 {
   p {
     margin: 0 auto;
     padding: 0.5rem;
+    height: 15vh;
+    min-width: 30vw;
     background-color: $black;
     color: $khaki;
   }
@@ -82,7 +84,6 @@ h2 {
     background-color: $black;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
-    height: 7rem;
   }
 
   #delete-link {

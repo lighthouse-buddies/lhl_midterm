@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>Home Page</title>
+  <title>Read Chapter</title>
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -34,6 +34,7 @@
           </h1>
           <button>
             <%= username %>
+              @john.doe
           </button>
         </header>
         <footer>
@@ -59,86 +60,78 @@
           </h2>
           <div class="story-scroll">
             <!-- Repeat this article block for each article -->
-            <% stories.forEach((story)=> { %>
-              <article class="story-preview">
-                <header class="story-title">
-                  <a href="">
-                    A Surprise in the Mail
-                    <%= storyTitle %>
-                  </a>
-                </header>
-                <p>
-                  The next thing Lily new, she woke up to see that she had a big surpise in the mail. She was so
-                  excited, her dreams were finally...
-                  <%= chapter.content.slice(0, 25) %>
-                </p>
-                <footer>
-                  <button class="story-status">
-                    <% if (chapter.complete) { %>
-                      Completed
-                      <% } else { %>
-                        In-progress
-                        <% } %>
-                          Approved
-                  </button>
-                  <h4 class="user-handle-red">
-                    <%= chapter.user_id %>
-                      @lily.rue
-                  </h4>
-                </footer>
-              </article>
-              <% }) %>
-                <!-- Repeat this article block for each article -->
-                <article class="story-preview">
-                  <header class="story-title">
-                    <a href="">Lily Quits Coding</a>
-                  </header>
-                  <p>
-                    Eventually Lily got so tired of dealing with all the late nights and debugging, that she decided she
-                    had enough...
-                  </p>
-                  <footer>
-                    <button class="story-status">
-                      Rejected
-                    </button>
-                    <h4 class="user-handle-red">
-                      @bernie.sanders
-                    </h4>
-                  </footer>
-                </article>
-                <article class="story-preview">
-                  <header class="story-title">
-                    <a href="">Lily Gets A Job</a>
-                  </header>
-                  <p>
-                    Lily was so excited! She had finally heard back after months of interviewing...
-                  </p>
-                  <footer>
-                    <button class="story-status">
-                      Rejected
-                    </button>
-                    <h4 class="user-handle-red">
-                      @elon.musk
-                    </h4>
-                  </footer>
-                </article>
-                <article class="story-preview">
-                  <header class="story-title">
-                    <a href="">Lily Shares Her Passion</a>
-                  </header>
-                  <p>
-                    Lily thought she would never come to like coding, but boy was she wrong! Now it was all she could
-                    think about...
-                  </p>
-                  <footer>
-                    <button class="story-status">
-                      Rejected
-                    </button>
-                    <h4 class="user-handle-red">
-                      @jane.doe
-                    </h4>
-                  </footer>
-                </article>
+            <article class="story-preview">
+              <header class="story-title">
+                <a href="">
+                  A Surprise in the Mail
+                  <!-- <%= storyTitle %> -->
+                </a>
+              </header>
+              <p>
+                The next thing Lily new, she woke up to see that she had a big surpise in the mail. She was so
+                excited, her dreams were finally...
+              </p>
+              <footer>
+                <button class="story-status">
+                  Approved
+                </button>
+                <h4 class="user-handle-red">
+                  <!-- <%= chapter.user_id %> -->
+                  @lily.rue
+                </h4>
+              </footer>
+            </article>
+            <!-- Repeat this article block for each article -->
+            <article class="story-preview">
+              <header class="story-title">
+                <a href="">Lily Quits Coding</a>
+              </header>
+              <p>
+                Eventually Lily got so tired of dealing with all the late nights and debugging, that she decided she
+                had enough...
+              </p>
+              <footer>
+                <button class="story-status">
+                  Rejected
+                </button>
+                <h4 class="user-handle-red">
+                  @bernie.sanders
+                </h4>
+              </footer>
+            </article>
+            <article class="story-preview">
+              <header class="story-title">
+                <a href="">Lily Gets A Job</a>
+              </header>
+              <p>
+                Lily was so excited! She had finally heard back after months of interviewing...
+              </p>
+              <footer>
+                <button class="story-status">
+                  Rejected
+                </button>
+                <h4 class="user-handle-red">
+                  @elon.musk
+                </h4>
+              </footer>
+            </article>
+            <article class="story-preview">
+              <header class="story-title">
+                <a href="">Lily Shares Her Passion</a>
+              </header>
+              <p>
+                Lily thought she would never come to like coding, but boy was she wrong! Now it was all she could
+                think about...
+              </p>
+              <footer>
+                <button class="story-status">
+                  Rejected
+                </button>
+                <h4 class="user-handle-red">
+                  @jane.doe
+                </h4>
+              </footer>
+            </article>
           </div>
         </div>
       </div>
