@@ -54,37 +54,40 @@ const { compileLastStoryData } = require('../route-helpers');
 //     // Additional in-progress stories...
 //   ]
 // };
+
 const myStoriesGetHandler = (req, res) => {
   const userId = req.params.id;
   const sessionUserId = req.session.userId;
 
-  if (sessionUserId === userId) {
-    queries.stories.author(userId).then
-      ((authorId) => {
-        queries.stories.storiesOfUser(authorId).then((storyIds) => {
-          const storyPromises = storyIds.map((storyId) => queries.stories.getData(storyId));
-          Promise.all(storyPromises)
-            .then((stories) => {
-              const lastChaptersPromise = stories.map((story) => queries.chapters.getData(story.last_chapter_id));
+  if (sessionUserId == userId) {
+    queries.stories.storiesOfUser(userId)
+      .then((storyIds) => {
 
-              Promise.all(lastChaptersPromise)
-                .then((lastChapters) => {
+        const storyPromises = storyIds.map((storyId) => queries.stories.getData(storyId));
+        Promise.all(storyPromises)
+          .then((stories) => {
 
-                  const storyData = compileLastStoryData(stories, lastChapters);
+            const lastChaptersPromise = stories.map((story) => queries.chapters.getData(story.last_chapter_id));
+            Promise.all(lastChaptersPromise)
+              .then((lastChapters) => {
 
+                const storyData = compileLastStoryData(stories, lastChapters);
 
-                  return res.render('my_stories', { storyData, sessionUserId });
-                })
-                .catch((error) => {
-                  console.log(error);
-                  res.status(500).send('Error: Could not retrieve story IDs');
-                });
-            });
-        });
+                return res.render('my_stories', { storyData, userCookie: sessionUserId });
+              });
+          })
+          .catch((error) => {
+            res.status(500).send('Error: Could not retrieve stories');
+          });
+      })
+      .catch((error) => {
+        res.status(500).send('Error: Could not retrieve story IDs');
       });
   } else {
-    res.send("Not Allowed");
-  }
+    res.status(401).send('Not Allowed');
+  };
 };
 
 module.exports = myStoriesGetHandler;
+
+
