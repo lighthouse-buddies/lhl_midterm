@@ -1,6 +1,6 @@
 const express = require('express');
 const router  = express.Router();
-const voteQueries = require('../db/queries/queries');
+const voteQueries = require('../../db/queries/queries');
 
 // POST creating a vote
 router.post('/', (req, res) => {
