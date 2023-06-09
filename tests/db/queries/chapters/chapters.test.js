@@ -28,7 +28,7 @@ describe('Chapters', function() {
     assert.strictEqual(chapter.user_id, 1); // Replace with the expected user ID
   });
 
-  it('should get the next chapters', async function() {
+  it('should getData the next chapters', async function() {
     const nextChapters = await Chapters.getNextChapters(chapterId);
     console.log(await Chapters.getData(chapterId));
     assert.deepStrictEqual(nextChapters, [chapterId2]); // Replace with the expected array of chapter IDs

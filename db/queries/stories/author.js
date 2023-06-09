@@ -6,7 +6,7 @@ const db = require('../../connection');
  * @param {number} story_id - The ID of the story.
  * @returns {Promise<number>} A promise that resolves to the author user ID.
  */
-const getAuthor = (story_id) => {
+const author = (story_id) => {
   return new Promise((resolve, reject) => {
     const query = `
       SELECT user_id FROM chapters
@@ -25,4 +25,4 @@ const getAuthor = (story_id) => {
   });
 };
 
-module.exports = getAuthor;
+module.exports = author;

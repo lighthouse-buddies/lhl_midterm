@@ -8,10 +8,10 @@ const chaptersIdGetHandler = require('./*idGet');
 // POST route to create a new chapter
 router.post('/new', chaptersNewPostHandler);
 
-// GET route to get chapter by id
+// GET route to getData chapter by id
 router.get('/:id', chaptersIdGetHandler);
 
-// GET route to get next chapters by id
+// GET route to getData next chapters by id
 router.get('/:id', (req, res) => {
   const chapterId = req.params.id;
 

@@ -5,7 +5,7 @@ const db = require('../../connection');
  * @param {number} user_id - The ID of the user.
  * @returns {Promise<number[]>} A promise that resolves to an array of story IDs.
  */
-const getStoriesByUser = (user_id) => {
+const storiesOfUser = (user_id) => {
   // Prepare the SQL query with parameter placeholders
   const query = 'SELECT id FROM stories WHERE first_chapter_id IN (SELECT id FROM chapters WHERE user_id = $1);';
 
@@ -25,4 +25,4 @@ const getStoriesByUser = (user_id) => {
     });
 };
 
-module.exports = getStoriesByUser;
+module.exports = storiesOfUser;

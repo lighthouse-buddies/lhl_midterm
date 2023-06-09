@@ -15,7 +15,7 @@ module.exports = {
    * @param {number} user_id - The ID of the user creating the chapter.
    * @returns {Promise<number|null>} A promise that resolves to the chapter ID (as a number) if the chapter is created successfully, or null if the chapter creation fails.
    */
-  getData: getData, //TODO? change to get data?
+  getData: getData, //TODO? change to getData data?
   /**
    * Retrieves a chapter by its ID.
    * @param {number} id - The ID of the chapter.

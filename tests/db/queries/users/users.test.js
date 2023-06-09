@@ -3,7 +3,7 @@ const assert = require('assert');
 
 describe('users', function() {
   let userId;
-  //get unix timestamp
+  //getData unix timestamp
   let username;
   let email;
   let password;
@@ -18,7 +18,7 @@ describe('users', function() {
   });
 
   it('should retrieve a user by their user ID', async function() {
-    const user = await users.get(userId);
+    const user = await users.getData(userId);
     assert.strictEqual(user.id, userId);
     assert.strictEqual(user.username, '1');
     assert.strictEqual(user.email, timestamp);
@@ -26,7 +26,7 @@ describe('users', function() {
 
   it('should return null if user is not found', async function() {
     const nonExistentUserId = 999;
-    const user = await users.get(nonExistentUserId);
+    const user = await users.getData(nonExistentUserId);
     assert.strictEqual(user, null);
   });
 

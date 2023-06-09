@@ -1,12 +1,12 @@
 const createStory = require("./create");
 const removeStory = require("./remove");
 const approveChapter = require("./approve");
-const getStoriesByUserId = require("./getStoriesByUser");
+const getStoriesByUserId = require("./storiesOfUser");
 const getData = require("./getData");
 const recentStories = require("./recent");
 const completedStories = require("./complete");
 const storyOfChapter = require("./storyOfChapter");
-const getAuthor = require("./getAuthor");
+const getAuthor = require("./author");
 
 
 module.exports = {
@@ -30,7 +30,7 @@ module.exports = {
    * @param {number} chapter_id - The ID of the chapter to approve.
    * @returns {Promise<boolean>} A promise that resolves to a boolean indicating the success of the approval.
    */
-  storyOfUser: getStoriesByUserId,
+  storiesOfUser: getStoriesByUserId,
   /**
    * Retrieves an array of story IDs associated with a given user ID.
    * @param {number} user_id - The ID of the user.
