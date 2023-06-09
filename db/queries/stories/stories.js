@@ -15,7 +15,7 @@ module.exports = {
    * Creates a story with the first chapter in the database.
    * @param {string} title - The title of the story.
    * @param {number} chapter_id - The ID of the first chapter.
-   * @returns {Promise<boolean>} A promise that resolves to a boolean indicating the success of the story creation.
+   * @returns {Promise<number|null>} A promise that resolves to the ID of the created story, or null if creation fails.
    */
   remove: removeStory,
   /**
