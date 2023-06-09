@@ -10,7 +10,7 @@ const router = express.Router();
 const userQueries = require('../../db/queries/queries');
 
 
-// router.get('/', (req, res) => {
+// router.getData('/', (req, res) => {
 //   res.render('users');
 // });
 
@@ -20,7 +20,7 @@ router.get('/user/:id', (req, res) => {
   const sessionUserId = req.session.userId;
 
   if (sessionUserId === userId) {
-    userQueries.users.get(userId)
+    userQueries.users.getData(userId)
       .then((user) => {
         if (user) {
           res.json(user);

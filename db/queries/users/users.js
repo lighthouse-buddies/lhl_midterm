@@ -1,7 +1,6 @@
 const create = require('./create');
-const getUserById = require('./getData');
+const getData = require('./getData');
 const authenticate = require('./authenticate');
-const getIdByStoryId = require('./**deprecate?_getIdByStory');
 const removeUser = require('./remove');
 const db = require("../../connection");
 
@@ -23,7 +22,7 @@ module.exports = {
    * @param {string} password - The password of the user.
    * @returns {Promise<number|null>} A promise that resolves to the user ID (as a number) if the user is created successfully, or null if the user creation fails.
    */
-    get:getUserById,/**
+    getData:getData,/**
    * Retrieves a user by their user ID.
    * @param {number} user_id - The ID of the user.
    * @returns {Promise<Object|null>} A promise that resolves to an object containing user details if found, or null if not found.
