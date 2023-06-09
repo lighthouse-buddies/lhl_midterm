@@ -5,7 +5,7 @@ const getStoriesByUserId = require("./getStoriesByUser");
 const getData = require("./getData");
 const recentStories = require("./recent");
 const completedStories = require("./complete");
-const storyOfChapter = require("./*storyOfChapter");
+const storyOfChapter = require("./storyOfChapter");
 const getAuthor = require("./getAuthor");
 
 
