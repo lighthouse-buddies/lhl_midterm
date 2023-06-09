@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const queries = require('../db/queries/queries');
-const { compileStoryData } = require('./route-helpers');
+const { compileLastStoryData, compileFirstStoryData } = require('./route-helpers');
 
 
 //TODO 
@@ -73,7 +73,7 @@ router.get('/:id', (req, res) => {
             Promise.all(lastChaptersPromise)
               .then((lastChapters) => {
 
-                const storyData = compileStoryData(stories, lastChapters);
+                const storyData = compileLastStoryData(stories, lastChapters);
 
 
                 return res.render('my_stories', { storyData, sessionUserId });
@@ -92,6 +92,32 @@ router.get('/:id', (req, res) => {
     res.status(401).send('Not Allowed');
   }
 });
+
+//WORKING! renders json object properly.
+//GET recent stories to render from front-end to homepage
+//This route should return a JSON object containing the 15 most recent stories' information, and corresponding chapter information, which can then be accessed by the front end.
+router.get('/recent/json', (req, res) => {
+
+  queries.stories.recent(15)
+    .then(recentStoryIds => {
+      const recentStoryPromises = recentStoryIds.map((storyId) => queries.stories.getData(storyId));
+      Promise.all(recentStoryPromises)
+        .then(recentStories => {
+          const firstChaptersPromise = recentStories.map((story) => queries.chapters.getById(story.first_chapter_id));
+          Promise.all(firstChaptersPromise)
+            .then(firstChapters => {
+              const storyData = compileFirstStoryData(recentStories, firstChapters);
+
+              res.json({ storyData });
+            });
+        });
+
+    }).catch((error) => {
+      console.log(error);
+      res.status(500).send('Error: Could not retrieve stories');
+    });
+});
+
 
 // GET completed stories
 router.get('/completed/:id', (req, res) => {
@@ -133,7 +159,7 @@ router.post('/', (req, res) => {
       if (!story) {
         throw new Error('Story not found');
       }
-      res.render('my-stories', { story });
+      res.render('my_stories', { story });
     })
     .catch((error) => {
       console.log(error);
@@ -161,7 +187,7 @@ router.delete('/:id', (req, res) => {
     })
     .then((success) => {
       if (success) {
-        res.redirect('/my_stories');
+        res.redirect('my_stories');
       } else {
         throw new Error('Error removing story');
       }
