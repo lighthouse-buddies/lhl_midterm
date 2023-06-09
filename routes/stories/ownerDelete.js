@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const queries = require('../../db/queries/queries');
-const { compileLastStoryData, compileFirstStoryData } = require('.route-helpers');
 
 //this is the route for the user (owner) to delete the stories they created
 

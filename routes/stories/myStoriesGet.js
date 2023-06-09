@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const queries = require('../../db/queries/queries');
-const { compileLastStoryData } = require('.route-helpers');
+const { compileLastStoryData } = require('../route-helpers');
 
 //this is the route handler for passing the completed and in progress stories for the user to my_stories template
 //with their associated data for last chapters  
