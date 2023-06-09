@@ -17,13 +17,13 @@ router.get('/new', (req, res) => {
 router.get('/:id', (req, res) => {
   const chapterId = req.params.id;
 
-  queries.chapters.getById(chapterId)
+  queries.chapters.getData(chapterId)
     .then((chapter) => {
       if (chapter !== null) {
         const userId = chapter.user_id;
         const currentChapterNumber = chapter.prev + 1;
 
-        const usernamePromise = queries.users.getUserById(userId).then((user) => user.username);
+        const usernamePromise = queries.users.getData(userId).then((user) => user.username);
         const storyIdPromise = queries.stories.storyOfChapter(chapterId).then((story) => story.story_id);
         const storyTitlePromise = queries.stories.getData(storyIdPromise).then((story) => story.title);
 
@@ -69,7 +69,7 @@ router.post('/new', (req, res) => {
         queries.chapters.create(content, prev, userId)
           .then((chapterId) => {
             if (chapterId !== null) {
-              return queries.chapters.getById(chapterId);
+              return queries.chapters.getData(chapterId);
             } else {
               res.status(500).send('Chapter creation failed');
             }
@@ -105,7 +105,7 @@ router.get('/:id/json', (req, res) => {
   const nextChaptersPromise = queries.chapters.getNextChapters(chapterId)
     .then((nextChapterIds) => {
       const promises = nextChapterIds.map((nextChapterId) => {
-        return queries.chapters.getById(nextChapterId);
+        return queries.chapters.getData(nextChapterId);
       });
       return Promise.all(promises);
     });
@@ -113,7 +113,7 @@ router.get('/:id/json', (req, res) => {
   const nextApprovedPromise = queries.chapters.nextApproved(chapterId)
     .then((nextApprovedChapterId) => {
       if (nextApprovedChapterId !== null) {
-        return queries.chapters.getById(nextApprovedChapterId);
+        return queries.chapters.getData(nextApprovedChapterId);
       }
       return null;
     });
