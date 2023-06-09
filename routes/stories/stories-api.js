@@ -1,20 +1,28 @@
 const express = require('express');
 const router = express.Router();
-const queries = require('../../db/queries/queries');
+const storyQueries = require('../db/queries/queries');
 
 
-//GET stories from user by id
+// GET stories from user by id
 router.get('/:id', (req, res) => {
   const userId = req.params.id;
   const sessionUserId = req.session.userId;
 
   if (sessionUserId === userId) {
-    queries.stories.getStoriesByUserId(userId)
+    storyQueries.stories.getStoriesByUserId(userId)
       .then((storyIds) => {
-        const storyPromises = storyIds.map((storyId) => getData(storyId));
+        const storyPromises = storyIds.map((storyId) => {
+          const storyPromise = storyQueries.stories.getById(storyId);
+          const chaptersPromise = storyQueries.chapters.getChaptersByStoryId(storyId);
+          return Promise.all([storyPromise, chaptersPromise]);
+        });
 
         Promise.all(storyPromises)
-          .then((stories) => {
+          .then((storiesWithChapters) => {
+            const stories = storiesWithChapters.map(([story, chapters]) => {
+              return { story, chapters };
+            });
+
             res.render('stories_for_user', { stories, sessionUserId });
           })
           .catch((error) => {
@@ -32,14 +40,14 @@ router.get('/:id', (req, res) => {
 });
 
 // GET completed stories
-router.get('/completed/:id', (req, res) => {
+router.get('/completed', (req, res) => {
   const storyId = req.params.storyId;
 
-  queries.stories.complete(storyId)
+  storyQueries.stories.complete(storyId)
     .then(story => {
       if (story) {
         const mark = story.complete ? 'Completed' : 'In-Progress';
-        res.send({ mark, story });
+        res.json({ mark, story });
       } else {
         res.status(404).send('Story not found');
       }
@@ -60,12 +68,12 @@ router.post('/', (req, res) => {
     return;
   }
 
-  queries.stories.create(title, chapterId, sessionUserId)
+  storyQueries.stories.create(title, chapterId, sessionUserId)
     .then((success) => {
       if (!success) {
         throw new Error('Error creating story');
       }
-      return queries.stories.getData(success);
+      return storyQueries.stories.getData(success);
     })
     .then((story) => {
       if (!story) {
@@ -83,19 +91,18 @@ router.post('/', (req, res) => {
 router.delete('/:id', (req, res) => {
   const storyId = req.params.id;
   const sessionUserId = req.session.userId;
-  const { email, password } = req.body;
 
   if (!sessionUserId) {
     res.status(401).send('Unauthorized');
     return;
   }
 
-  queries.chapters.getData(storyId)
+  storyQueries.stories.author(storyId)
     .then((ownerId) => {
       if (ownerId !== sessionUserId) {
-        throw new Error('Unauthorized: You do not have permission to remove this story');
+        throw new Error('You do not have permission to remove this story');
       }
-      return queries.stories.remove(storyId, email, password);
+      return storyQueries.stories.remove(storyId, email, password);
     })
     .then((success) => {
       if (success) {

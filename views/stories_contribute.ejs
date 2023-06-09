@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>Home Page</title>
+  <title>Contribute</title>
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="/vendor/border-box.css" />
   <link rel="stylesheet" href="/styles/layout.css" />
   <link rel="stylesheet" href="/styles/nav.css" />
-  <link rel="stylesheet" href="/styles/login-register.css" />
+  <link rel="stylesheet" href="/styles/create-story.css" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,14 +29,12 @@
     <main>
       <div class="sidebar-image"></div>
       <div class="form-container">
-        <h1>Login to <span>Collab<span class="change-color">Tales</span></span></h1>
-        <form action="/login" method="POST">
-          <label for="email">Email:</label>
-          <input type="email" id="email" name="email" required>
+        <form method="POST" action="/chapters/new">
+          <input type="hidden" name="prevChapterId" value="<%= prevChapterId %>">
+          <label for="chapter-content"> Add your contribution: </label>
+          <textarea id="chapter-content" name="chapter_content" class="form-input" rows="15" required></textarea>
 
-          <label for="password">Password:</label>
-          <input type="password" id="password" name="password" required>
-          <button type="submit">Login</button>
+          <button type="submit" class="form-submit">Submit</button>
         </form>
       </div>
     </main>

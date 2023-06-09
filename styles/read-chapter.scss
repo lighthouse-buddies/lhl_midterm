@@ -21,7 +21,9 @@ main {
   justify-content: space-between;
   position: fixed;
 
-  button {
+  button,
+  a {
+    text-decoration: none;
     @include button;
     margin: 0 1rem 1rem 2rem;
   }

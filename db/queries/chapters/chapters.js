@@ -2,8 +2,10 @@ const create = require("./create");
 const getData = require("./getData");
 const nextChapters = require("./nextChapters");
 const remove = require("./remove");
-const nextApproved = require("./*nextApproved");
-const chapterNumber = require("./*chapterNumber");
+const getUsername = require("./getUsername")
+const nextApproved = require("./nextApproved");
+// const nextApproved = require("./*nextApproved");
+const chapterNumber = require("./chapterNumber");
 
 module.exports = {
   create: create,/**
@@ -29,6 +31,12 @@ module.exports = {
    * @param {number} id - The ID of the story to be soft deleted.
    * @returns {Promise<boolean>} A promise that resolves to a boolean indicating the success of the operation.
    */
+  getUsername,
+  /**
+ * Retrieves the username of a user based on the user_id in the chapters table.
+ * @param {number} user_id - The ID of the user.
+ * @returns {Promise<string>} A promise that resolves to the username.
+ */
   nextApproved: nextApproved,/**
    * Retrieves the next chapter IDs for a given chapter ID.
    * @param {number} chapter_id - The ID of the current chapter.
