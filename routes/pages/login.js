@@ -1,8 +1,9 @@
 const Users = require('../../db/queries/users/users');
 
 const loginGetHandler = (req, res) => {
-  //TODO: check if user is logged in
-  //TODO: if user is logged in, redirect to home page
+  if(req.session.userId){
+    return res.redirect('/');
+  }
   res.render('login', {userCookie: req.session.userId});
 }
 
