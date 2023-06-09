@@ -3,7 +3,7 @@
 //check if the story is complete or not
 //then the story data and last chapter data to appropriate category
 //in order to make rendering to template easier
-const compileStoryData = (stories, lastChapters) => {
+const compileLastStoryData = (stories, lastChapters) => {
   let storyData = {
     completed: [],
     inProgress: []
@@ -24,6 +24,38 @@ const compileStoryData = (stories, lastChapters) => {
             {
               story: stories[i],
               lastChapter: lastChapters[j]
+            }
+          );
+        }
+      }
+    }
+  }
+  return storyData;
+};
+
+
+//does the same thing as compileLastStoryData but for first chapters (which we will be rendering via client on homepage)
+const compileFirstStoryData = (stories, firstChapters) => {
+  let storyData = {
+    completed: [],
+    inProgress: [],
+  };
+
+  for (let i = 0; i < stories.length; i++) {
+    for (let j = 0; j < firstChapters.length; j++) {
+      if (stories[i].first_chapter_id === firstChapters[j].id) {
+        if (!stories[i].complete) {
+          storyData.inProgress.push(
+            {
+              story: stories[i],
+              firstChapter: firstChapters[j]
+            }
+          );
+        } else {
+          storyData.completed.push(
+            {
+              story: stories[i],
+              firstChapter: firstChapters[j]
             }
           );
         }
@@ -77,4 +109,4 @@ const fetchChapterData = (chapterId, nextApprovedPromise, nextChaptersPromise) =
 
 
 
-module.exports = { compileStoryData, fetchChapterData };
+module.exports = { compileLastStoryData, fetchChapterData, compileFirstStoryData };
