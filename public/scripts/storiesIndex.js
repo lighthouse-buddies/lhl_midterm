@@ -1,39 +1,41 @@
-function createStoryPreviewElement(story) {
-    const article = document.createElement('article');
-    article.classList.add('story-preview');
+function createStoryPreviewElement(story, firstChapter) {
+  const article = document.createElement('article');
+  article.classList.add('story-preview');
 
-    const header = document.createElement('header');
-    header.classList.add('story-title');
+  const header = document.createElement('header');
+  header.classList.add('story-title');
 
-    const link = document.createElement('a');
-    link.href = '';
-    link.textContent = story.title;
+  const link = document.createElement('a');
+  link.href = `/chapters/${story.firstChapter.id}`;
+  link.textContent = story.story.title;
 
-    header.appendChild(link);
-    article.appendChild(header);
+  header.appendChild(link);
+  article.appendChild(header);
 
-    const paragraph = document.createElement('p');
-    paragraph.textContent = 'This is the story content, the first line will be typed here to get the reader hooked. Until a certain limit is reached the story will show...';
+  const paragraph = document.createElement('p');
+  // paragraph.textContent = 'This is the story content, the first line will be typed here to get the reader hooked. Until a certain limit is reached the story will show...';
+  const first25Words = story.firstChapter.content.split(" ").slice(0, 25).join(" ");
+  paragraph.textContent = first25Words + "...";
 
-    article.appendChild(paragraph);
+  article.appendChild(paragraph);
 
-    const footer = document.createElement('footer');
+  const footer = document.createElement('footer');
 
-    const button = document.createElement('button');
-    button.classList.add('story-status');
-    button.textContent = 'In Progress';
+  const button = document.createElement('button');
+  button.classList.add('story-status');
+  button.textContent = 'In Progress';
 
-    footer.appendChild(button);
+  footer.appendChild(button);
 
-    const h4 = document.createElement('h4');
-    h4.classList.add('user-handle-red');
-    h4.textContent = '@' + story.firstChapter.username;
+  const h4 = document.createElement('h4');
+  h4.classList.add('user-handle-red');
+  h4.textContent = '@' + story.firstChapter.username;
 
-    footer.appendChild(h4);
-    article.appendChild(footer);
+  footer.appendChild(h4);
+  article.appendChild(footer);
 
-    return article;
-  }
+  return article;
+}
 
 
 $(document).ready(function() {
