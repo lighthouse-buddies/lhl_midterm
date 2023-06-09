@@ -6,7 +6,7 @@ function createStoryPreviewElement(story, firstChapter) {
   header.classList.add('story-title');
 
   const link = document.createElement('a');
-  link.href = '';
+  link.href = `/chapters/${story.firstChapter.id}`;
   link.textContent = story.story.title;
 
   header.appendChild(link);
