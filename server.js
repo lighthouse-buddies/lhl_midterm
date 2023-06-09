@@ -60,7 +60,7 @@ app.use('/votes', voteRoutes);
 // Separate them into separate routes files (see above).
 
 app.get('/', storiesIndexHandler);
-app.get('/login', lo.get);
+app.get('/login', loginHandler.get);
 app.post('/login', loginHandler.post);
 app.get('/register', registerHandler.get);
 app.post('/register', registerHandler.post);
