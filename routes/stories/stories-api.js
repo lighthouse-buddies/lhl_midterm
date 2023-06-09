@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const queries = require('../db/queries/queries');
+const { compileStoryData } = require('./route-helpers');
 
 
 //GET stories for user by userID 
 //This route will be used to render stories to the My_Stories template. 
-//The purpose is to show the user's in progress and completed stories. 
+//The purpose is to show the user's in progress and completed stories on the template.
 router.get('/:id', (req, res) => {
   const userId = req.params.id;
   const sessionUserId = req.session.userId;
@@ -13,15 +14,19 @@ router.get('/:id', (req, res) => {
   if (sessionUserId === userId) {
     queries.stories.getStoriesByUserId(userId)
       .then((storyIds) => {
-        const storyPromises = storyIds.map((storyId) => {
-          const storyPromise = storyQueries.stories.getById(storyId);
-          const chaptersPromise = storyQueries.chapters.getChaptersByStoryId(storyId);
-          return Promise.all([storyPromise, chaptersPromise]);
-        });
-
+        const storyPromises = storyIds.map((storyId) => queries.stories.getData(storyId));
         Promise.all(storyPromises)
           .then((stories) => {
-            res.render('my_stories', { stories, sessionUserId });
+            const lastChaptersPromise = stories.map((story) => queries.chapters.getById(story.last_chapter_id));
+
+            Promise.all(lastChaptersPromise)
+              .then((lastChapters) => {
+
+                const storyData = compileStoryData(stories, lastChapters);
+
+
+                return res.render('my_stories', { storyData, sessionUserId });
+              });
           })
           .catch((error) => {
             console.log(error);
@@ -114,6 +119,7 @@ router.delete('/:id', (req, res) => {
       res.status(500).send('Error removing story');
     });
 });
+
 
 
 module.exports = router;

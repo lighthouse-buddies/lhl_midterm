@@ -1,6 +1,13 @@
 const express = require('express');
+<<<<<<< HEAD
 const router  = express.Router();
 const chapterQueries = require('../db/queries/queries');
+=======
+const res = require('express/lib/response');
+const router = express.Router();
+const queries = require('../db/queries/queries');
+const { fetchChapterData } = require('./route-helpers');
+>>>>>>> 59f2341 (refactor helper functions out of chaptersapi and storiesapi into route-helpers.js)
 
 // POST route to create a new chapter
 router.post('/new', (req, res) => {
@@ -83,4 +90,10 @@ router.post('/:id/delete', (req, res) => {
     });
 });
 
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> 59f2341 (refactor helper functions out of chaptersapi and storiesapi into route-helpers.js)
 module.exports = router;
