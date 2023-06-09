@@ -25,7 +25,7 @@ const ownerDeleteHandler = (req, res) => {
       if (success) {
         res.redirect('my_stories');
       } else {
-        throw new Error('Error removing story');
+        throw new Error('Error getting story');
       }
     })
     .catch((error) => {

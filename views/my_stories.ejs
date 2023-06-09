@@ -36,12 +36,12 @@
     </header>
     <main class='story-preview-container'>
       <div class='in-progress'>
-        <h2> In Progress </h2>
+        <h2> Complete </h2>
         <div class="story-scroll">
           <% for (const complete of storyData.completed) { %>
             <article class="story-preview">
               <header class="story-title">
-                <a href="">
+                <a href="/chapters/<%= complete.story.last_chapter_id%>">
                   <%= complete.story.title %>
                 </a>
               </header>
@@ -52,9 +52,9 @@
           ...</p>
           <footer>
             <button class="story-status">
-              In Progress
+              Complete
             </button>
-            <a href=' delete/:id' id="delete-link">
+            <a href=' /delete/<%=storyData.id%>' id="delete-link">
                   Delete this story</a>
                   </footer>
             </article>
@@ -62,12 +62,12 @@
         </div>
       </div>
       <div class=' Completed'>
-        <h2> Completed </h2>
+        <h2> In Progress </h2>
         <div class="story-scroll">
           <% for (const inProgress of storyData.inProgress) { %>
             <article class="story-preview">
               <header class="story-title">
-                <a href="">
+                <a href="/chapters/<%= inProgress.story.last_chapter_id%>">
                   <%= inProgress.story.title %>
                 </a>
               </header>
@@ -78,9 +78,9 @@
           ...</p>
           <footer>
             <button class="story-status">
-              Completed
+              In Progress
             </button>
-            <a href=' delete/:id' id="delete-link">
+            <a href=' /delete/<%=storyData.id%>' id="delete-link">
                   Delete this story</a>
                   </footer>
             </article>
