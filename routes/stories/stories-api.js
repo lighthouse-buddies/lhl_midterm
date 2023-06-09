@@ -128,14 +128,14 @@ router.get('/recent/json', (req, res) => {
 
 
 // GET completed stories
-router.get('/completed/:id', (req, res) => {
+router.get('/completed', (req, res) => {
   const storyId = req.params.storyId;
 
   queries.stories.complete(storyId)
     .then(story => {
       if (story) {
         const mark = story.complete ? 'Completed' : 'In-Progress';
-        res.send({ mark, story });
+        res.json({ mark, story });
       } else {
         res.status(404).send('Story not found');
       }
@@ -179,7 +179,6 @@ router.post('/', (req, res) => {
 router.delete('/:id', (req, res) => {
   const storyId = req.params.id;
   const sessionUserId = req.session.userId;
-  const { email, password } = req.body;
 
   if (!sessionUserId) {
     res.status(401).send('Unauthorized');
@@ -189,7 +188,7 @@ router.delete('/:id', (req, res) => {
   queries.chapters.getById(storyId)
     .then((ownerId) => {
       if (ownerId !== sessionUserId) {
-        throw new Error('Unauthorized: You do not have permission to remove this story');
+        throw new Error('You do not have permission to remove this story');
       }
       return queries.stories.remove(storyId, email, password);
     })
