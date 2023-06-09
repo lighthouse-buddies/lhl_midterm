@@ -1,15 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const storyQueries = require('../db/queries/queries');
+const queries = require('../db/queries/queries');
 
 
-// GET stories from user by id
+//GET stories for user by userID 
+//This route will be used to render stories to the My_Stories template. 
+//The purpose is to show the user's in progress and completed stories. 
 router.get('/:id', (req, res) => {
   const userId = req.params.id;
   const sessionUserId = req.session.userId;
 
   if (sessionUserId === userId) {
-    storyQueries.stories.storiesOfUser(userId)
+    queries.stories.getStoriesByUserId(userId)
       .then((storyIds) => {
         const storyPromises = storyIds.map((storyId) => {
           const storyPromise = storyQueries.stories.getById(storyId);
@@ -18,12 +20,8 @@ router.get('/:id', (req, res) => {
         });
 
         Promise.all(storyPromises)
-          .then((storiesWithChapters) => {
-            const stories = storiesWithChapters.map(([story, chapters]) => {
-              return { story, chapters };
-            });
-
-            res.render('stories_for_user', { stories, sessionUserId });
+          .then((stories) => {
+            res.render('my_stories', { stories, sessionUserId });
           })
           .catch((error) => {
             console.log(error);
@@ -43,7 +41,7 @@ router.get('/:id', (req, res) => {
 router.get('/completed', (req, res) => {
   const storyId = req.params.storyId;
 
-  storyQueries.stories.complete(storyId)
+  queries.stories.complete(storyId)
     .then(story => {
       if (story) {
         const mark = story.complete ? 'Completed' : 'In-Progress';
@@ -68,12 +66,12 @@ router.post('/', (req, res) => {
     return;
   }
 
-  storyQueries.stories.create(title, chapterId, sessionUserId)
+  queries.stories.create(title, chapterId, sessionUserId)
     .then((success) => {
       if (!success) {
         throw new Error('Error creating story');
       }
-      return storyQueries.stories.getData(success);
+      return queries.stories.getData(success);
     })
     .then((story) => {
       if (!story) {
@@ -97,12 +95,12 @@ router.delete('/:id', (req, res) => {
     return;
   }
 
-  storyQueries.stories.author(storyId)
+  queries.chapters.getById(storyId)
     .then((ownerId) => {
       if (ownerId !== sessionUserId) {
         throw new Error('You do not have permission to remove this story');
       }
-      return storyQueries.stories.remove(storyId, email, password);
+      return queries.stories.remove(storyId, email, password);
     })
     .then((success) => {
       if (success) {
