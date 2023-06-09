@@ -5,7 +5,7 @@ const queries = require('../../db/queries/queries');
 //this is the route for the user (owner) to delete the stories they created
 
 //DELETE owner deleting a story
-router.delete('/:id', (req, res) => {
+const ownerDeleteHandler = (req, res) => {
   const storyId = req.params.id;
   const sessionUserId = req.session.userId;
 
@@ -32,7 +32,7 @@ router.delete('/:id', (req, res) => {
       console.log(error);
       res.status(500).send('Error removing story');
     });
-});
+};
 
 
-module.exports = router;
+module.exports = ownerDeleteHandler;

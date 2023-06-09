@@ -3,7 +3,7 @@ const router = express.Router();
 const queries = require('../../db/queries/queries');
 
 // POST route for user to create a story
-router.post('/new', (req, res) => {
+const userCreateStoryHandler = (req, res) => {
   const { title, chapterId } = req.body;
   const sessionUserId = req.session.userId;
 
@@ -29,7 +29,7 @@ router.post('/new', (req, res) => {
       console.log(error);
       res.status(500).send('Error creating story');
     });
-});
+};
 
 
-module.exports = router;
+module.exports = userCreateStoryHandler;

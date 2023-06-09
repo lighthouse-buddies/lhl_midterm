@@ -6,7 +6,10 @@ const { compileFirstStoryData } = require('../route-helpers');
 
 //GET recent stories to render from front-end to homepage
 //This route should return a JSON object containing the 15 most recent stories' information, and corresponding chapter information, as well as the username for each first chapter which can then be accessed by the front end.
-router.get('/recent/json', (req, res) => {
+
+
+
+const recentStoriesJsonHandler = (req, res) => {
   queries.stories.recent(15)
     .then(recentStoryIds => {
       const recentStoryPromises = recentStoryIds.map(storyId => queries.stories.getData(storyId));
@@ -33,7 +36,7 @@ router.get('/recent/json', (req, res) => {
       console.log(error);
       res.status(500).send('Error: Could not retrieve stories');
     });
-});
+};
 
 
-module.exports = router;
+module.exports = recentStoriesJsonHandler;

@@ -1,134 +1,26 @@
 const express = require('express');
 const router = express.Router();
 const queries = require('../../db/queries/queries');
-const { compileLastStoryData, compileFirstStoryData } = require('../route-helpers');
+const recentStoriesJsonHandler = require('./indexGet');
+const myStoriesGetHandler = require('./myStoriesGet');
+const ownerDeleteHandler = require('./ownerDelete');
+const userCreateStoryHandler = require('./userIdCreate');
+
+//get recent stories as json (for homepage)
+router.get('/recent/json', recentStoriesJsonHandler);
+
+//get stories for user 
+router.get('/:id', myStoriesGetHandler);
+
+//owner deletes their stories
+router.delete('/:id', ownerDeleteHandler);
+
+//user creates new story
+router.post('/new', userCreateStoryHandler);
 
 
-//TODO
-//not working because db functions are still messed up
-//HOWEVER, without adding any of the variables from the template to the database, this does work.
-//GET stories for user by userID
-//This route will be used to render stories to the My_Stories template.
-//The purpose is to show the user's in progress and completed stories on the template.
-//Uses a helper function from route-helpers to organize storyData.
-//Should pass an object with the following structure to my_stories:
-//const storyData = {
-//   completed: [
-//     {
-//       story: {
-//         id: 2,
-//         title: 'Story 2',
-//         first_chapter_id: 15,
-//         last_chapter_id: 25,
-//         complete: true,
-//         deleted_at: null
-//       },
-//       lastChapter: {
-//         id: 25,
-//         story_id: 2,
-//         chapter_number: 5,
-//         title: 'Chapter 5',
-//         content: 'This is the content of Chapter 5',
-//         created_at: '2022-01-01 10:00:00',
-//         updated_at: '2022-01-02 09:00:00'
-//       }
-//     },
-//     // Additional completed stories...
-//   ],
-//   inProgress: [
-//     {
-//       story: {
-//         id: 1,
-//         title: 'Story 1',
-//         first_chapter_id: 10,
-//         last_chapter_id: 20,
-//         complete: false,
-//         deleted_at: null
-//       },
-//       lastChapter: {
-//         id: 20,
-//         story_id: 1,
-//         chapter_number: 4,
-//         title: 'Chapter 4',
-//         content: 'This is the content of Chapter 4',
-//         created_at: '2022-01-01 08:00:00',
-//         updated_at: '2022-01-01 09:30:00'
-//       }
-//     },
-//     // Additional in-progress stories...
-//   ]
-// };
-router.get('/:id', (req, res) => {
-  const userId = req.params.id;
-  const sessionUserId = req.session.userId;
-
-  if (sessionUserId === userId) {
-    queries.stories.getStoriesByUserId(userId)
-      .then((storyIds) => {
-        const storyPromises = storyIds.map((storyId) => queries.stories.getData(storyId));
-        Promise.all(storyPromises)
-          .then((stories) => {
-            const lastChaptersPromise = stories.map((story) => queries.chapters.getById(story.last_chapter_id));
-
-            Promise.all(lastChaptersPromise)
-              .then((lastChapters) => {
-
-                const storyData = compileLastStoryData(stories, lastChapters);
-
-
-                return res.render('my_stories', { storyData, sessionUserId });
-              });
-          })
-          .catch((error) => {
-            console.log(error);
-            res.status(500).send('Error: Could not retrieve stories');
-          });
-      })
-      .catch((error) => {
-        console.log(error);
-        res.status(500).send('Error: Could not retrieve story IDs');
-      });
-  } else {
-    res.status(401).send('Not Allowed');
-  }
-});
-
-//WORKING! renders json object properly.
-//GET recent stories to render from front-end to homepage
-//This route should return a JSON object containing the 15 most recent stories' information, and corresponding chapter information, as well as the username for each first chapter which can then be accessed by the front end.
-router.get('/recent/json', (req, res) => {
-  queries.stories.recent(15)
-    .then(recentStoryIds => {
-      const recentStoryPromises = recentStoryIds.map(storyId => queries.stories.getData(storyId));
-      Promise.all(recentStoryPromises)
-        .then(recentStories => {
-          const firstChaptersPromise = recentStories.map(story => {
-            return queries.chapters.getById(story.first_chapter_id)
-              .then(firstChapter => {
-                return queries.users.get(firstChapter.user_id)
-                  .then(user => {
-                    firstChapter.username = user ? user.username : null;
-                    return firstChapter;
-                  });
-              });
-          });
-          Promise.all(firstChaptersPromise)
-            .then(firstChapters => {
-              const storyData = compileFirstStoryData(recentStories, firstChapters);
-              res.json({ storyData });
-            });
-        });
-    })
-    .catch(error => {
-      console.log(error);
-      res.status(500).send('Error: Could not retrieve stories');
-    });
-});
-
-
-
-// GET completed stories
-//NOT USING
+//**NOT USING
+//GET completed stories
 router.get('/completed', (req, res) => {
   const storyId = req.params.storyId;
 
@@ -146,5 +38,6 @@ router.get('/completed', (req, res) => {
       res.status(500).send('An error occurred');
     });
 });
+
 
 module.exports = router;
