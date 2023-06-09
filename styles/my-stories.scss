@@ -11,12 +11,17 @@
 
 
 .story-preview-container {
-  @include wrapper;
+  // @include wrapper;
   margin: 2rem;
-  // width: 100%;
+  max-width: 90%;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
 
+}
+
+.completed,
+.in-progress {
+  max-width: 40%;
 }
 
 .story-scroll {
@@ -25,7 +30,7 @@
   align-items: flex-start;
   width: fit-content;
   overflow-y: scroll;
-  margin: 1rem 4rem 2rem 4rem;
+  // margin: 1rem 4rem 2rem 4rem;
 }
 
 h2 {
@@ -40,6 +45,7 @@ h2 {
 
 .story-preview {
   margin-bottom: 1.5rem;
+  max-width: 30vw;
   background-color: $black;
   font-size: 1.5rem;
   border-radius: 10px;
