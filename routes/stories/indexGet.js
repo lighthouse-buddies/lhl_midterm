@@ -16,9 +16,9 @@ const recentStoriesJsonHandler = (req, res) => {
       Promise.all(recentStoryPromises)
         .then(recentStories => {
           const firstChaptersPromise = recentStories.map(story => {
-            return queries.chapters.getById(story.first_chapter_id)
+            return queries.chapters.getData(story.first_chapter_id)
               .then(firstChapter => {
-                return queries.users.get(firstChapter.user_id)
+                return queries.users.getData(firstChapter.user_id)
                   .then(user => {
                     firstChapter.username = user ? user.username : null;
                     return firstChapter;
