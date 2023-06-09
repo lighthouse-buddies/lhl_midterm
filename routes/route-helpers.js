@@ -3,6 +3,7 @@
 //check if the story is complete or not
 //then the story data and last chapter data to appropriate category
 //in order to make rendering to template easier
+const queries = require("../db/queries/queries");
 const compileLastStoryData = (stories, lastChapters) => {
   let storyData = {
     completed: [],
@@ -73,13 +74,13 @@ const compileFirstStoryData = (stories, firstChapters) => {
 const fetchChapterData = (chapterId, nextApprovedPromise, nextChaptersPromise) => {
   const chapterData = {};
 
-  return queries.chapters.getById(chapterId)
+  return queries.chapters.getData(chapterId)
     .then((chapter) => {
       if (chapter !== null) {
         const userId = chapter.user_id;
         const currentChapterNumber = chapter.prev + 1;
 
-        const usernamePromise = queries.users.get(userId).then((user) => user.username);
+        const usernamePromise = queries.users.getData(userId).then((user) => user.username);
         const storyIdPromise = queries.stories.storyOfChapter(chapterId).then((story) => story.story_id);
         const storyTitlePromise = queries.stories.getData(storyIdPromise).then((story) => story.title);
 
