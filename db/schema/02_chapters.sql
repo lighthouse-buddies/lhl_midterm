@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS chapters;
 -- Create table
 CREATE TABLE chapters (
                         id SERIAL PRIMARY KEY,
-                        content VARCHAR(5000) NOT NULL,
+                        content TEXT NOT NULL,
                         prev INT,
                         user_id INT,
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
