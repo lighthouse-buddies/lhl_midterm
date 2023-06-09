@@ -40,6 +40,10 @@ const chapterRoutes = require('./routes/chapters/chapters-api');
 const storyRoutes = require('./routes/stories/stories-api');
 const voteRoutes = require('./routes/votes/votes-api');
 
+const storiesIndexHandler = require('./routes/pages/storiesIndex');
+const loginHandler = require('./routes/pages/login');
+const registerHandler = require('./routes/pages/register');
+const logoutGetHandler = require('./routes/pages/logoutGet');
 // Mount all resource routes
 // Note: Feel free to replace the example routes below with your own
 // Note: Endpoints that return data (eg. JSON) usually start with `/api`
@@ -55,10 +59,12 @@ app.use('/votes', voteRoutes);
 // Warning: avoid creating more routes in this file!
 // Separate them into separate routes files (see above).
 
-app.get('/', (req, res) => {
-  res.render('stories_index');
-});
-
+app.get('/', storiesIndexHandler);
+app.get('/login', lo.get);
+app.post('/login', loginHandler.post);
+app.get('/register', registerHandler.get);
+app.post('/register', registerHandler.post);
+app.get('/logout', logoutGetHandler);
 
 //dummy routes to style
 app.get('/stories', (req, res) => {
