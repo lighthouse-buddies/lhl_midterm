@@ -4,9 +4,60 @@ const queries = require('../db/queries/queries');
 const { compileStoryData } = require('./route-helpers');
 
 
+//TODO 
+//not working because db functions are still messed up
+//HOWEVER, without adding any of the variables from the template to the database, this does work. 
 //GET stories for user by userID 
 //This route will be used to render stories to the My_Stories template. 
 //The purpose is to show the user's in progress and completed stories on the template.
+//Uses a helper function from route-helpers to organize storyData.
+//Should pass an object with the following structure to my_stories:
+//const storyData = {
+//   completed: [
+//     {
+//       story: {
+//         id: 2,
+//         title: 'Story 2',
+//         first_chapter_id: 15,
+//         last_chapter_id: 25,
+//         complete: true,
+//         deleted_at: null
+//       },
+//       lastChapter: {
+//         id: 25,
+//         story_id: 2,
+//         chapter_number: 5,
+//         title: 'Chapter 5',
+//         content: 'This is the content of Chapter 5',
+//         created_at: '2022-01-01 10:00:00',
+//         updated_at: '2022-01-02 09:00:00'
+//       }
+//     },
+//     // Additional completed stories...
+//   ],
+//   inProgress: [
+//     {
+//       story: {
+//         id: 1,
+//         title: 'Story 1',
+//         first_chapter_id: 10,
+//         last_chapter_id: 20,
+//         complete: false,
+//         deleted_at: null
+//       },
+//       lastChapter: {
+//         id: 20,
+//         story_id: 1,
+//         chapter_number: 4,
+//         title: 'Chapter 4',
+//         content: 'This is the content of Chapter 4',
+//         created_at: '2022-01-01 08:00:00',
+//         updated_at: '2022-01-01 09:30:00'
+//       }
+//     },
+//     // Additional in-progress stories...
+//   ]
+// };
 router.get('/:id', (req, res) => {
   const userId = req.params.id;
   const sessionUserId = req.session.userId;
