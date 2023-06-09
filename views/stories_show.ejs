@@ -37,10 +37,14 @@
           </button>
         </header>
         <footer>
-          <a href="/chapters/new?prevChapterId=<%= chapter.id %>">Contribute</a>
-          <button>
-            3000 Likes
-          </button>
+            <% if (!complete) { %>
+                <a href="/chapters/new?prevChapterId=<%= chapter.id %>">Contribute</a>
+            <% } %>
+
+                <button>
+                    <%= votes %> Likes
+                </button>
+
         </footer>
       </div>
       <div class="page-content">
