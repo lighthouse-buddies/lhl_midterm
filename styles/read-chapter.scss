@@ -10,7 +10,7 @@ main {
 
 .chapter-information {
   margin-top: 12vh;
-  width: 25%;
+  width: 35%;
   height: 90vh;
   background-image: url(https://preview.redd.it/dark-academia-aesthetic-architecture-europe-v0-7oogqx48mhba1.jpg?width=640&crop=smart&auto=webp&s=ea552866cd6cf9c64ec82e14d8998473ffe0c893);
   @include headings;
@@ -39,9 +39,10 @@ main {
 }
 
 .page-content {
-  width: 75%;
+  width: 65%;
   @include wrapper;
-  margin-left: 26%;
+  padding-left: 2rem;
+  margin-left: 35%;
   margin-top: 11vh;
   font-size: 1.8rem;
   display: flex;
