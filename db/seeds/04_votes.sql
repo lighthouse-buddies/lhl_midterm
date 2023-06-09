@@ -1,5 +1,32 @@
 -- -- Insert seed votes
--- INSERT INTO votes (user_id, chapter_id) VALUES
---                                           (1, 1),
---                                           (2, 2),
---                                           (3, 3);
+INSERT INTO votes (user_id, chapter_id) VALUES
+  (1, 1),  -- John Doe voted for Chapter 1
+  (1, 2),  -- John Doe voted for Chapter 2
+  (1, 3),  -- John Doe voted for Chapter 3
+  (2, 1),  -- Jane Smith voted for Chapter 1
+  (2, 2),  -- Jane Smith voted for Chapter 2
+  (3, 1),  -- Mark Johnson voted for Chapter 1
+  (3, 2),  -- Mark Johnson voted for Chapter 2
+  (1, 4),   -- John Doe voted for Chapter 4
+  (2, 3),   -- Jane Smith voted for Chapter 3
+  (2, 4),   -- Jane Smith voted for Chapter 4
+  (3, 3),   -- Mark Johnson voted for Chapter 3
+  (3, 4),   -- Mark Johnson voted for Chapter 4
+  (1, 5),   -- John Doe voted for Chapter 5
+  (2, 5),   -- Jane Smith voted for Chapter 5
+  (3, 5),   -- Mark Johnson voted for Chapter 5
+  (1, 6),   -- John Doe voted for Chapter 6
+  (2, 6),   -- Jane Smith voted for Chapter 6
+  (3, 6),   -- Mark Johnson voted for Chapter 6
+  (1, 7),   -- John Doe voted for Chapter 7
+  (2, 7),   -- Jane Smith voted for Chapter 7
+  (3, 7),   -- Mark Johnson voted for Chapter 7
+  (1, 8),   -- John Doe voted for Chapter 8
+  (2, 8),   -- Jane Smith voted for Chapter 8
+  (3, 8),   -- Mark Johnson voted for Chapter 8
+  (1, 9),   -- John Doe voted for Chapter 9
+  (2, 9),   -- Jane Smith voted for Chapter 9
+  (3, 9),   -- Mark Johnson voted for Chapter 9
+  (1, 10),  -- John Doe voted for Chapter 10
+  (2, 10),  -- Jane Smith voted for Chapter 10
+  (3, 10);  -- Mark Johnson voted for Chapter 10
