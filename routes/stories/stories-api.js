@@ -9,6 +9,18 @@ const userCreateStoryHandler = require('./userIdCreate');
 //get recent stories as json (for homepage)
 router.get('/recent/json', recentStoriesJsonHandler);
 
+//get create new story page (stories_create)
+router.get('/new', (req, res) => {
+  const userSession = req.session.userId;
+
+  if (!userSession) {
+    res.status(401).send('Unauthorized');
+    return;
+  }
+
+  res.render('stories_create', { userCookie: userSession });
+});
+
 //get stories for user 
 router.get('/:id', myStoriesGetHandler);
 
@@ -17,6 +29,8 @@ router.delete('/:id', ownerDeleteHandler);
 
 //user creates new story
 router.post('/new', userCreateStoryHandler);
+
+
 
 
 //**NOT USING
@@ -38,6 +52,7 @@ router.get('/completed', (req, res) => {
       res.status(500).send('An error occurred');
     });
 });
+
 
 
 module.exports = router;
