@@ -85,8 +85,12 @@ h2 {
     height: 7rem;
   }
 
-  .user-handle-red {
+  #delete-link {
     @include user-handle-red;
+
+    &:hover {
+      @include color-on-hover;
+    }
   }
 
   .story-status {

@@ -28,7 +28,7 @@ router.post('/new', userCreateStoryHandler);
 router.get('/:id', myStoriesGetHandler);
 
 //owner deletes their stories
-router.delete('/:id', ownerDeleteHandler);
+router.delete('delete/:id', ownerDeleteHandler);
 
 
 //**NOT USING
