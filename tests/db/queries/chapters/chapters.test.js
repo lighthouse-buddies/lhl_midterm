@@ -21,7 +21,7 @@ describe('Chapters', function() {
   });
 
   it('should retrieve a chapter by its ID', async function() {
-    const chapter = await Chapters.getById(chapterId);
+    const chapter = await Chapters.getData(chapterId);
     console.log(chapter);
     assert.strictEqual(chapter.id, chapterId);
     assert.strictEqual(chapter.content, content);
@@ -36,5 +36,11 @@ describe('Chapters', function() {
   it('should remove a chapter by its ID', async function() {
     const result = await Chapters.remove(chapterId);
     assert.strictEqual(result, true);
+  });
+  //should return false when remove non existent chapter
+  it('should return false if chapter removal fails', async function() {
+    const nonExistentChapterId = 999;
+    const result = await Chapters.remove(nonExistentChapterId);
+    assert.strictEqual(result, false);
   });
 });
