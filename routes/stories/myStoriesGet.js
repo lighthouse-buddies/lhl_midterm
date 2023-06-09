@@ -54,7 +54,7 @@ const { compileLastStoryData } = require('../route-helpers');
 //     // Additional in-progress stories...
 //   ]
 // };
-router.get('/:id', (req, res) => {
+const myStoriesGetHandler = (req, res) => {
   const userId = req.params.id;
   const sessionUserId = req.session.userId;
 
@@ -87,7 +87,7 @@ router.get('/:id', (req, res) => {
   } else {
     res.status(401).send('Not Allowed');
   }
-});
+};
 
 
-module.exports = router;
+module.exports = myStoriesGetHandler;
