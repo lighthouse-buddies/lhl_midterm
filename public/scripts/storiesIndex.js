@@ -23,7 +23,8 @@ function createStoryPreviewElement(story, firstChapter) {
 
   const button = document.createElement('button');
   button.classList.add('story-status');
-  button.textContent = 'In Progress';
+  const status = story.story.complete ? 'Completed' : 'In Progress';
+  button.textContent = status;
 
   footer.appendChild(button);
 
