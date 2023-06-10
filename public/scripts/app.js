@@ -1,6 +1,5 @@
 // Client facing scripts here
 
-const res = require("express/lib/response");
 
 // $(document).ready(function() {
 //   $('#likes').on('click', function() {
