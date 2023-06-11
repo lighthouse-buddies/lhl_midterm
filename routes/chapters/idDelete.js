@@ -1,26 +1,24 @@
 const queries = require("../../db/queries/queries");
 const Chapter = require("../../db/sequelize").Chapter;
 
-//DELETE deleting a chapter
-const chaptersDeleteHandler = (req, res) => {
+const chaptersDeleteHandler = async (req, res) => {
   const chapterId = req.params.id;
 
   if (!req.session.user) {
     return res.redirect('/login');
   }
 
-  queries.chapters.remove(chapterId)
-    .then((success) => {
-      if (success) {
-        res.redirect('/');
-      } else {
-        res.status(500).send('Chapter removal failed');
-      }
-    })
-    .catch((error) => {
-      console.log(error);
+  try {
+    const success = await queries.chapters.remove(chapterId);
+    if (success) {
+      res.redirect('/');
+    } else {
       res.status(500).send('Chapter removal failed');
-    });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send('Chapter removal failed');
+  }
 };
 
 module.exports = chaptersDeleteHandler;
