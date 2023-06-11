@@ -21,7 +21,7 @@ const chaptersIdGetHandler = async (req, res) => {
     const templateVars = {
       chapter,
       complete: story.complete,
-      username: user.name,
+      username: user.username,
       storyTitle: story.title,
       currentChapterNumber: chapterNumber,
       storyId,
