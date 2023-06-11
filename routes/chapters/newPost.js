@@ -2,7 +2,7 @@ const queries = require("../../db/queries/queries");
 
 //<a href="/new?prevChapterId=chapID">Contribute</a>
 const chaptersNewPostHandler = async (req, res) => {
-  const { chapter_content } = req.body;
+  const { prevChapterId, chapter_content } = req.body;
   const userId = req.session.userId;
 
   if (userId !== null) {
