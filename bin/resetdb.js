@@ -3,6 +3,7 @@ require('dotenv').config();
 
 // other dependencies
 const fs = require('fs');
+const path = require('path');
 const chalk = require('chalk');
 const db = require('../db/connection');
 
@@ -14,23 +15,33 @@ const db = require('../db/connection');
 // Loads the schema files from db/schema
 const runSchemaFiles = async () => {
   console.log(chalk.cyan(`-> Loading Schema Files ...`));
-  const schemaFilenames = fs.readdirSync('./db/schema');
+  const schemaDirectory = path.join(__dirname, '../db/schema');
+  const schemaFilenames = fs.readdirSync(schemaDirectory);
 
   for (const fn of schemaFilenames) {
-    const sql = fs.readFileSync(`./db/schema/${fn}`, 'utf8');
-    console.log(`\t-> Running ${chalk.green(fn)}`);
-    await db.query(sql);
+    const filePath = path.join(schemaDirectory, fn);
+
+    if (fs.statSync(filePath).isFile()) {
+      const sql = fs.readFileSync(filePath, 'utf8');
+      console.log(`\t-> Running ${chalk.green(fn)}`);
+      await db.query(sql);
+    }
   }
 };
 
 const runSeedFiles = async () => {
   console.log(chalk.cyan(`-> Loading Seeds ...`));
-  const schemaFilenames = fs.readdirSync('./db/seeds');
+  const seedsDirectory = path.join(__dirname, '../db/seeds');
+  const seedFilenames = fs.readdirSync(seedsDirectory);
 
-  for (const fn of schemaFilenames) {
-    const sql = fs.readFileSync(`./db/seeds/${fn}`, 'utf8');
-    console.log(`\t-> Running ${chalk.green(fn)}`);
-    await db.query(sql);
+  for (const fn of seedFilenames) {
+    const filePath = path.join(seedsDirectory, fn);
+
+    if (fs.statSync(filePath).isFile()) {
+      const sql = fs.readFileSync(filePath, 'utf8');
+      console.log(`\t-> Running ${chalk.green(fn)}`);
+      await db.query(sql);
+    }
   }
 };
 
