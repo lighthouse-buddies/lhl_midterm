@@ -6,7 +6,7 @@ const myStoriesGetHandler = require('./stories/storiesOfUserGet');
 const ownerDeleteHandler = require('./stories/storiesDelete');
 const userCreateStoryHandler = require('./stories/storiesCreatePost');
 const approveChapterGetHandler = require('./stories/data/approveChapterGet');
-
+const completeStoryHandler = require('./stories/data/completeStoryGet');
 //get recent stories as json (for homepage)
 router.get('/recent/json', recentStoriesJsonHandler);
 
@@ -27,6 +27,11 @@ router.post('/new', userCreateStoryHandler);
 
 //get approve chapter page approve?chapterId=1
 router.get('/approve/', approveChapterGetHandler);
+
+//get complete story page complete?storyId=1
+router.get('/complete/', completeStoryHandler);
+
+
 
 //get stories for user
 router.get('/:id', myStoriesGetHandler);
