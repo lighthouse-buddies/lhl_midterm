@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const queries = require('../../db/queries/queries');
-const { compileFirstStoryData } = require('../route-helpers');
+const queries = require('../../../db/queries/queries');
+const { compileFirstStoryData } = require('../../route-helpers');
 
 
 //GET recent stories to render from front-end to homepage

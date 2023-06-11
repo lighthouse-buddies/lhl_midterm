@@ -4,7 +4,7 @@ const queries = require('../../db/queries/queries');
 const { compileLastStoryData } = require('../route-helpers');
 
 //this is the route handler for passing the completed and in progress stories for the user to my_stories template
-//with their associated data for last chapters
+//with their associated query for last chapters
 //(my_stories template will show the in progress and completed stories for that user)
 //the stories will be shown with preview of the last chapter on my_stories
 //Should pass an object with the following structure to my_stories:
@@ -16,7 +16,7 @@ const { compileLastStoryData } = require('../route-helpers');
 //         title: 'Story 2',
 //         first_chapter_id: 15,
 //         last_chapter_id: 25,
-//         complete: true,
+//         completion: true,
 //         deleted_at: null
 //       },
 //       lastChapter: {
@@ -38,7 +38,7 @@ const { compileLastStoryData } = require('../route-helpers');
 //         title: 'Story 1',
 //         first_chapter_id: 10,
 //         last_chapter_id: 20,
-//         complete: false,
+//         completion: false,
 //         deleted_at: null
 //       },
 //       lastChapter: {

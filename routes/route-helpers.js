@@ -38,11 +38,11 @@ const compileLastStoryData = (stories, lastChapters) => {
 
 
 /**
- * Compiles the first story data and first chapter data into appropriate categories
+ * Compiles the first story query and first chapter query into appropriate categories
  * in order to make rendering via client on the homepage easier.
  * @param {Array} stories - Array of story objects
  * @param {Array} firstChapters - Array of first chapter objects
- * @returns {Object} - Object containing completed and in-progress story data
+ * @returns {Object} - Object containing completed and in-progress story query
  */
 const compileFirstStoryData = (stories, firstChapters) => {
   let storyData = {
@@ -74,11 +74,11 @@ const compileFirstStoryData = (stories, firstChapters) => {
 // Helper functions for chapters-api...
 
 /**
- * Fetches chapter data for a given chapter ID.
- * @param {number} chapterId - ID of the chapter to fetch data for
+ * Fetches chapter query for a given chapter ID.
+ * @param {number} chapterId - ID of the chapter to fetch query for
  * @param {Promise} nextApprovedPromise - Promise for fetching the next approved chapter
  * @param {Promise} nextChaptersPromise - Promise for fetching the next chapters
- * @returns {Promise} - Promise that resolves to an object containing the chapter data
+ * @returns {Promise} - Promise that resolves to an object containing the chapter query
  */
 const fetchChapterData = (chapterId, nextApprovedPromise, nextChaptersPromise) => {
   const chapterData = {};

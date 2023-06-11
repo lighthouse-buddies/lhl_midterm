@@ -1,7 +1,7 @@
 const queries = require("../../../db/queries/queries");
 
 /**
- * GET Route handler for rendering HTML template chapter_show using the chapter data.
+ * GET Route handler for rendering HTML template chapter_show using the chapter query.
  * Also renders the username, story title, and chapter number as template variables.
  * @param {Object} req - The request object.
  * @param {Object} res - The response object.
@@ -32,9 +32,9 @@ const chaptersIdGetHandler = async (req, res) => {
 
     res.render('chapter_show', templateVars);
   } catch (error) {
-    console.error('Error retrieving data:', error);
+    console.error('Error retrieving query:', error);
     // Handle the error as needed
-    res.status(500).send('Error retrieving data');
+    res.status(500).send('Error retrieving query');
   }
 };
 

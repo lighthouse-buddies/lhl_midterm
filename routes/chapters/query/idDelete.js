@@ -1,5 +1,5 @@
-const queries = require("../../db/queries/queries");
-const Chapter = require("../../db/sequelize").Chapter;
+const queries = require("../../../db/queries/queries");
+const Chapter = require("../../../db/sequelize").Chapter;
 
 const chaptersDeleteHandler = async (req, res) => {
   const chapterId = req.params.id;

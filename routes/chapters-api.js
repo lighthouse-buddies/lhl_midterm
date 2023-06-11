@@ -2,19 +2,19 @@ const express = require('express');
 const chaptersApi = express.Router();
 
 const chaptersNewGetHandler = require('./chapters/page/newGet');
-const chaptersNewPostHandler = require('./chapters/newPost');
+const chaptersNewPostHandler = require('./chapters/query/newPost');
 const chaptersIdGetHandler = require('./chapters/page/idGet');
-const chaptersDeleteHandler = require('./chapters/idDelete');
-const chaptersIdGetJsonHandler = require('./chapters/data/idGetJson');
-const chaptersPreviewGetHandler = require('./chapters/data/previewGet');
-const nextApprovedGetHandler = require('./chapters/data/nextApprovedGet');
-const nextChaptersGetHandler = require('./chapters/data/nextChaptersGet');
+const chaptersDeleteHandler = require('./chapters/query/idDelete');
+const chaptersIdGetJsonHandler = require('./chapters/query/idGetJson');
+const chaptersPreviewGetHandler = require('./chapters/query/previewGet');
+const nextApprovedGetHandler = require('./chapters/query/nextApprovedGet');
+const nextChaptersGetHandler = require('./chapters/query/nextChaptersGet');
 
 // GET route to create new chapter
 chaptersApi.get('/new', chaptersNewGetHandler);
 // POST route to create a new chapter
 chaptersApi.post('/new', chaptersNewPostHandler);
-// GET route to get JSON data from chapter by id
+// GET route to get JSON query from chapter by id
 chaptersApi.get('/nextApproved', nextApprovedGetHandler);
 chaptersApi.get('/nextChapters', nextChaptersGetHandler);
 chaptersApi.get('/preview', chaptersPreviewGetHandler);

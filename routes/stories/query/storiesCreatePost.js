@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const queries = require('../../db/queries/queries');
+const queries = require('../../../db/queries/queries');
 
 // POST route for user to create a story
 const userCreateStoryHandler = (req, res) => {

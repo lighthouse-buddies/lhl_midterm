@@ -1,4 +1,4 @@
-const queries = require("../../db/queries/queries");
+const queries = require("../../../db/queries/queries");
 
 //<a href="/new?prevChapterId=chapID">Contribute</a>
 const chaptersNewPostHandler = async (req, res) => {

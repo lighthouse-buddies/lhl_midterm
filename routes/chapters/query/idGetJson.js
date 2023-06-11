@@ -1,12 +1,12 @@
 const queries = require("../../../db/queries/queries");
 
 /**
- * Helper function to fetch chapter data.
- * @param {number} chapterId - The ID of the chapter to fetch data for.
+ * Helper function to fetch chapter query.
+ * @param {number} chapterId - The ID of the chapter to fetch query for.
  * @param {Object} nextApproved - Promise for retrieving the next approved chapter.
  * @param {Object} nextChapters - Promise for retrieving the next chapters.
- * @returns {Object} - The fetched chapter data.
- * @throws {Error} - If there is an error retrieving the chapter data.
+ * @returns {Object} - The fetched chapter query.
+ * @throws {Error} - If there is an error retrieving the chapter query.
  */
 const fetchChapterData = async (chapterId, nextApproved, nextChapters) => {
   const chapterData = {};
@@ -43,7 +43,7 @@ const fetchChapterData = async (chapterId, nextApproved, nextChapters) => {
 };
 
 /**
- * Route handler for JSON response for chapter data to be accessed on the front end.
+ * Route handler for JSON response for chapter query to be accessed on the front end.
  * Includes the whole chapter row from the db, username, story Title, chapter Count, and current chapter number.
  * Also includes this same information for next approved chapter and next chapters.
  * @param {Object} req - The request object.
@@ -69,7 +69,7 @@ const chaptersIdGetJsonHandler = async (req, res) => {
     res.json(data);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error retrieving data' });
+    res.status(500).json({ error: 'Error retrieving query' });
   }
 };
 
