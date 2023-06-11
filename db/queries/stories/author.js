@@ -8,6 +8,9 @@ const {Story, Chapter} = require("../../sequelize");
  */
 async function author(story_id){
   const story = await Story.findByPk(story_id);
+  if(!story){
+    throw new Error(`Story with id ${story_id} not found`);
+  }
   const chapter = await Chapter.findByPk(story.first_chapter_id);
   return chapter.user_id;
 
