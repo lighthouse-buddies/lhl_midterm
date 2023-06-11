@@ -4,8 +4,10 @@ const users = require('./users/users');
 const stories = require('./stories/stories');
 const votes = require('./votes/votes');
 
+const getPreviewData = require('./chapters/getPreviewData');
+
 chapters.getPreviewData = async (chapter_id) => {
-  return await chapters.getPreviewData(chapter_id, chapters, users, stories, votes);
+  return await getPreviewData(chapter_id, chapters, users, stories, votes);
 }
 
 module.exports = {

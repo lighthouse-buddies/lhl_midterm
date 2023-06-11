@@ -45,6 +45,6 @@ module.exports = {
    */
   getChapterNumber: chapterNumber,
 
-  getPreviewData: getPreviewData,
+  // getPreviewData: getPreviewData,
 
 };
