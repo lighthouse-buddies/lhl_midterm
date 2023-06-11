@@ -38,15 +38,15 @@
       <div class='in-progress'>
         <h2> In Progress </h2>
         <div class="story-scroll">
-          <% for (const complete of storyData.completed) { %>
+          <% for (const inProgress of storyData.inProgress) { %>
             <article class="story-preview">
               <header class="story-title">
-                <a href="">
-                  <%= complete.story.title %>
+                <a href="/chapters/<%=inProgress.story.first_chapter_id%>">
+                  <%= inProgress.story.title %>
                 </a>
               </header>
               <p>
-                <% const words=complete.lastChapter.content.split(' '); %>
+                <% const words=inProgress.lastChapter.content.split(' '); %>
             <% const remainingWords = words.slice(0, 25); %>
             <%= remainingWords.join(' ') %>
           ...</p>
@@ -54,7 +54,7 @@
             <button class="story-status">
               In Progress
             </button>
-            <a href=' delete/:id' id="delete-link">
+            <a href='delete/<%=inProgress.story.id%>' id="delete-link">
                   Delete this story</a>
                   </footer>
             </article>
@@ -64,27 +64,7 @@
       <div class=' Completed'>
         <h2> Completed </h2>
         <div class="story-scroll">
-          <% for (const inProgress of storyData.inProgress) { %>
-            <article class="story-preview">
-              <header class="story-title">
-                <a href="">
-                  <%= inProgress.story.title %>
-                </a>
-              </header>
-              <p>
-                <% const words=inProgress.lastChapter.content.split(' '); %>
-            <% const remainingWords = words.slice(0, 25); %>
-            <%= remainingWords.join(' ')%>
-          ...</p>
-          <footer>
-            <button class="story-status">
-              Completed
-            </button>
-            <a href=' delete/:id' id="delete-link">
-                  Delete this story</a>
-                  </footer>
-            </article>
-            <% } %>
+
         </div>
       </div>
     </main>
