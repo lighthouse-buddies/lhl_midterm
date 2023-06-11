@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha",
     "start": "node server.js",
-    "local": "./node_modules/.bin/nodemon -L --ignore public/",
+    "local": "./node_modules/.bin/nodemon --watch ./",
     "db:reset": "node bin/resetdb.js"
   },
   "author": "Lighthouse Labs",
@@ -18,12 +18,15 @@
     "dotenv": "^2.0.0",
     "ejs": "^2.6.2",
     "express": "^4.17.1",
-    "mocha": "^10.2.0",
+    "express-session": "^1.17.3",
     "morgan": "^1.9.1",
     "pg": "^8.5.0",
-    "sass": "^1.35.1"
+    "sass": "^1.35.1",
+    "sequelize": "^6.32.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.10"
+    "mocha": "^10.2.0",
+    "nodemon": "^2.0.10",
+    "supertest": "^6.3.3"
   }
 }
