@@ -1,4 +1,4 @@
-const queries = require("../../db/queries/queries");
+const queries = require("../../../db/queries/queries");
 
 //WORKING, tested with CURL.
 // GET route to get the chapter contribution form from the previous chapter ID stories_show page.

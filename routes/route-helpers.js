@@ -1,9 +1,15 @@
-//HELPER FUNCTIONS for stories-api:
 
-//check if the story is complete or not
-//then the story data and last chapter data to appropriate category
-//in order to make rendering to template easier
-const queries = require("../db/queries/queries");
+
+const queries = require('../db/queries/queries');
+// Helper functions for stories-api:
+
+/**
+ * Compiles the last story data and last chapter data into appropriate categories
+ * in order to make rendering to a template easier.
+ * @param {Array} stories - Array of story objects
+ * @param {Array} lastChapters - Array of last chapter objects
+ * @returns {Object} - Object containing completed and in-progress story data
+ */
 const compileLastStoryData = (stories, lastChapters) => {
   let storyData = {
     completed: [],
@@ -14,19 +20,15 @@ const compileLastStoryData = (stories, lastChapters) => {
     for (let j = 0; j < lastChapters.length; j++) {
       if (stories[i].last_chapter_id === lastChapters[j].id) {
         if (!stories[i].complete) {
-          storyData.inProgress.push(
-            {
-              story: stories[i],
-              lastChapter: lastChapters[j]
-            }
-          );
+          storyData.inProgress.push({
+            story: stories[i],
+            lastChapter: lastChapters[j]
+          });
         } else {
-          storyData.completed.push(
-            {
-              story: stories[i],
-              lastChapter: lastChapters[j]
-            }
-          );
+          storyData.completed.push({
+            story: stories[i],
+            lastChapter: lastChapters[j]
+          });
         }
       }
     }
@@ -35,30 +37,32 @@ const compileLastStoryData = (stories, lastChapters) => {
 };
 
 
-//does the same thing as compileLastStoryData but for first chapters (which we will be rendering via client on homepage)
+/**
+ * Compiles the first story data and first chapter data into appropriate categories
+ * in order to make rendering via client on the homepage easier.
+ * @param {Array} stories - Array of story objects
+ * @param {Array} firstChapters - Array of first chapter objects
+ * @returns {Object} - Object containing completed and in-progress story data
+ */
 const compileFirstStoryData = (stories, firstChapters) => {
   let storyData = {
     completed: [],
-    inProgress: [],
+    inProgress: []
   };
 
   for (let i = 0; i < stories.length; i++) {
     for (let j = 0; j < firstChapters.length; j++) {
       if (stories[i].first_chapter_id === firstChapters[j].id) {
         if (!stories[i].complete) {
-          storyData.inProgress.push(
-            {
-              story: stories[i],
-              firstChapter: firstChapters[j]
-            }
-          );
+          storyData.inProgress.push({
+            story: stories[i],
+            firstChapter: firstChapters[j]
+          });
         } else {
-          storyData.completed.push(
-            {
-              story: stories[i],
-              firstChapter: firstChapters[j]
-            }
-          );
+          storyData.completed.push({
+            story: stories[i],
+            firstChapter: firstChapters[j]
+          });
         }
       }
     }
@@ -67,22 +71,27 @@ const compileFirstStoryData = (stories, firstChapters) => {
 };
 
 
-//HELPER FUNCTIONS for chapters-api...
-// //HELPER FUNCTIONS:
-// // Function to fetch chapter data.
-// // RETURNS: an object {username, chapterNumber, chapter object {id, content, prev, user_id, created_at, deleted_at}, story title}
+// Helper functions for chapters-api...
+
+/**
+ * Fetches chapter data for a given chapter ID.
+ * @param {number} chapterId - ID of the chapter to fetch data for
+ * @param {Promise} nextApprovedPromise - Promise for fetching the next approved chapter
+ * @param {Promise} nextChaptersPromise - Promise for fetching the next chapters
+ * @returns {Promise} - Promise that resolves to an object containing the chapter data
+ */
 const fetchChapterData = (chapterId, nextApprovedPromise, nextChaptersPromise) => {
   const chapterData = {};
 
   return queries.chapters.getData(chapterId)
-    .then((chapter) => {
+    .then(async (chapter) => {
       if (chapter !== null) {
         const userId = chapter.user_id;
         const currentChapterNumber = chapter.prev + 1;
 
         const usernamePromise = queries.users.getData(userId).then((user) => user.username);
         const storyIdPromise = queries.stories.storyOfChapter(chapterId).then((story) => story.story_id);
-        const storyTitlePromise = queries.stories.getData(storyIdPromise).then((story) => story.title);
+        const storyTitlePromise = queries.stories.getData(await storyIdPromise).then((story) => story.title);
 
         return Promise.all([usernamePromise, storyTitlePromise, nextApprovedPromise, nextChaptersPromise])
           .then(([username, storyTitle, nextApprovedChapter, nextChapters]) => {
@@ -106,8 +115,5 @@ const fetchChapterData = (chapterId, nextApprovedPromise, nextChaptersPromise) =
       throw new Error('Error retrieving chapter');
     });
 };
-
-
-
 
 module.exports = { compileLastStoryData, fetchChapterData, compileFirstStoryData };

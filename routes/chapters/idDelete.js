@@ -1,4 +1,5 @@
 const queries = require("../../db/queries/queries");
+const Chapter = require("../../db/sequelize").Chapter;
 
 //DELETE deleting a chapter
 const chaptersDeleteHandler = (req, res) => {

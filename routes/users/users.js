@@ -37,16 +37,6 @@ router.get('/story/:id', (req, res) => {
 });
 
 
-// // GET route for the login page
-// router.get('/login', (req, res) => {
-//   if (!req.session.userId) {
-//     return res.render('login');
-//   }
-//   return res.redirect('/');
-// });
-
-
-// POST route for user registration(working)
 
 
 

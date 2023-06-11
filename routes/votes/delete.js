@@ -1,8 +1,9 @@
 const Votes = require("../../db/queries/votes/votes");
 const votesDeleteHandler = (req, res) => {
-  const {user_id, chapter_id} = req.body;
+  const {chapter_id} = req.body;
+  const user_id = req.session.userId;
 
-  Votes.remove(user_id, chapter_id)
+  Votes.remove(user_id, chapter_id )
     .then((success) => {
       if (success) {
         res.status(200).send('Vote removed successfully');

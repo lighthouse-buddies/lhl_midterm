@@ -55,39 +55,36 @@ const { compileLastStoryData } = require('../route-helpers');
 //   ]
 // };
 
-const myStoriesGetHandler = (req, res) => {
+const getStoriesOfUser = async (userId) => {
+  const storyIds = await queries.stories.storiesOfUser(userId);
+  const storyPromises = storyIds.map((storyId) => queries.stories.getData(storyId));
+  const stories = await Promise.all(storyPromises);
+
+  const lastChaptersPromise = stories.map((story) => queries.chapters.getData(story.last_chapter_id));
+  const lastChapters = await Promise.all(lastChaptersPromise);
+
+  const storyData = compileLastStoryData(stories, lastChapters);
+  return storyData;
+}
+const myStoriesGetHandler = async (req, res) => {
   const userId = req.params.id;
   const sessionUserId = req.session.userId;
+  console.log('userId: ', userId);
+  console.log('sessionUserId: ', sessionUserId);
 
   if (sessionUserId == userId) {
-    queries.stories.storiesOfUser(userId)
-      .then((storyIds) => {
+    try {
 
-        const storyPromises = storyIds.map((storyId) => queries.stories.getData(storyId));
-        Promise.all(storyPromises)
-          .then((stories) => {
+      // console.log('storyData: ', storyData.inProgress[0].story.id);
+      let storyData = await getStoriesOfUser(userId);
 
-            const lastChaptersPromise = stories.map((story) => queries.chapters.getData(story.last_chapter_id));
-            Promise.all(lastChaptersPromise)
-              .then((lastChapters) => {
-
-                const storyData = compileLastStoryData(stories, lastChapters);
-
-                return res.render('my_stories', { storyData, userCookie: sessionUserId });
-              });
-          })
-          .catch((error) => {
-            res.status(500).send('Error: Could not retrieve stories');
-          });
-      })
-      .catch((error) => {
-        res.status(500).send('Error: Could not retrieve story IDs');
-      });
+      return res.render('my_stories', { storyData, userCookie: sessionUserId });
+    } catch (error) {
+      res.status(500).send('Error: Could not retrieve stories');
+    }
   } else {
     res.status(401).send('Not Allowed');
-  };
+  }
 };
 
 module.exports = myStoriesGetHandler;
-
-

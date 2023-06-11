@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const queries = require('../../db/queries/queries');
-const recentStoriesJsonHandler = require('./indexGet');
-const myStoriesGetHandler = require('./myStoriesGet');
-const ownerDeleteHandler = require('./ownerDelete');
-const userCreateStoryHandler = require('./userIdCreate');
+const queries = require('../db/queries/queries');
+const recentStoriesJsonHandler = require('./stories/storiesRecentGet');
+const myStoriesGetHandler = require('./stories/storiesOfUserGet');
+const ownerDeleteHandler = require('./stories/storiesDelete');
+const userCreateStoryHandler = require('./stories/storiesCreatePost');
 
 //get recent stories as json (for homepage)
 router.get('/recent/json', recentStoriesJsonHandler);
@@ -27,8 +27,7 @@ router.post('/new', userCreateStoryHandler);
 //get stories for user
 router.get('/:id', myStoriesGetHandler);
 
-//owner deletes their stories
-router.delete('delete/:id', ownerDeleteHandler);
+router.get('/delete/:id', ownerDeleteHandler);
 
 
 //**NOT USING

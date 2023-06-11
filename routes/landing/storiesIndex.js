@@ -19,3 +19,10 @@ module.exports = (req, res) => {
   console.log(req.session);
   res.render('stories_index', {userCookie: req.session.userId});
 }
+
+// change to using sequelize
+//check the last_chapter_id of the story, the rank by the chapter's last_updated_at DESC
+
+
+//SELECT * FROM stories JOIN chapters ON stories.last_chapter_id = chapters.id ORDER BY chapters.last_updated_at DESC LIMIT 6;
+//then render with object

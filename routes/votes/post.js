@@ -1,6 +1,7 @@
 const queries = require("../../db/queries/queries");
 const votesPostHandler = (req, res) => {
-  const { user_id, chapter_id } = req.body;
+  const { chapter_id } = req.body;
+  const user_id = req.session.userId;
 
   queries.votes.create(user_id, chapter_id)
     .then((success) => {
