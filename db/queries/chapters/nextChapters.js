@@ -15,9 +15,9 @@ const nextChapters = (chapter_id) => {
   // Execute the query using the database connection
   return db.query(query, values)
     .then(data => {
-      // console.log(data.rows);
       // Extract the next chapter IDs from the query response
-      return data.rows.map(row => row.id);
+      const nextChapterIds = data.rows.map(row => row.id);
+      return nextChapterIds;
     })
     .catch(error => {
       console.error('Error retrieving next chapters:', error);

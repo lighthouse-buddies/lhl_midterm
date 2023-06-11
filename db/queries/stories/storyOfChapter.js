@@ -7,6 +7,10 @@ const db = require('../../connection');
  * @returns {Promise<number|null>} A promise that resolves to the ID of the story or null if no story is found.
  */
 const storyOfChapter = async (chapter_id) => {
+
+
+
+
   // Retrieve the previous chapters recursively
   const retrievePreviousChaptersQuery = `
     WITH RECURSIVE previous_chapters AS (

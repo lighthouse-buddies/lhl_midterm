@@ -24,4 +24,6 @@ const getChapterCount = (chapterId) => {
     });
 };
 
+// IMPLEMENT A FUNCTION called exists, takes in userId and chapterId, returns boolean
+
 module.exports = getChapterCount;

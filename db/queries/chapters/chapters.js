@@ -6,6 +6,7 @@ const getUsername = require("./getUsername")
 const nextApproved = require("./nextApproved");
 // const nextApproved = require("./*nextApproved");
 const chapterNumber = require("./chapterNumber");
+const getPreviewData = require("./getPreviewData");
 
 module.exports = {
   create: create,/**
@@ -13,7 +14,7 @@ module.exports = {
    * @param {string} content - The content of the chapter.
    * @param {number|null} prev - The ID of the previous chapter (if any).
    * @param {number} user_id - The ID of the user creating the chapter.
-   * @returns {Promise<number|null>} A promise that resolves to the chapter ID (as a number) if the chapter is created successfully, or null if the chapter creation fails.
+   * @returns {Promise<object>} A promise that resolves to the chapter ID (as a number) if the chapter is created successfully, or null if the chapter creation fails.
    */
   getData: getData, //TODO? change to getData data?
   /**
@@ -43,5 +44,7 @@ module.exports = {
    * @returns {Promise<number>} A promise that resolves to the next approved chapter ID if found, or null if not found.
    */
   getChapterNumber: chapterNumber,
+
+  getPreviewData: getPreviewData,
 
 };

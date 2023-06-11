@@ -1,6 +1,7 @@
 const createVote = require('./create');
 const removeVote = require('./remove');
 const  getChapterCount = require('./getChapter');
+const voteExists = require('./exists');
 
 module.exports = {
   create: createVote,/**
@@ -21,4 +22,5 @@ module.exports = {
    * @param {number} chapterId - The ID of the chapter.
    * @returns {Promise<number>} - A promise that resolves to the total count of votes for the specified chapter.
    */
+  exists: voteExists
 };

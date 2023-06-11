@@ -167,6 +167,16 @@ const Story = sequelize.define(
   }
 );
 
+
+User.hasMany(Chapter, { foreignKey: 'user_id' });
+Chapter.belongsTo(User, { foreignKey: 'user_id' });
+
+User.hasMany(Vote, { foreignKey: 'user_id' });
+Vote.belongsTo(User, { foreignKey: 'user_id' });
+
+Chapter.hasMany(Vote, { foreignKey: 'chapter_id' });
+Vote.belongsTo(Chapter, { foreignKey: 'chapter_id' });
+
 module.exports = {
   Vote,
   Story,

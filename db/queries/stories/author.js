@@ -1,28 +1,16 @@
 //takes in story id and returns a promise (number) which is the user id
-const db = require('../../connection');
-
+// const db = require('../../connection');
+const {Story, Chapter} = require("../../sequelize");
 /**
  * Retrieves the author user ID of a story.
  * @param {number} story_id - The ID of the story.
  * @returns {Promise<number>} A promise that resolves to the author user ID.
  */
-const author = (story_id) => {
-  return new Promise((resolve, reject) => {
-    const query = `
-      SELECT user_id FROM chapters
-      WHERE id = ${story_id}
-    `;
+async function author(story_id){
+  const story = await Story.findByPk(story_id);
+  const chapter = await Chapter.findByPk(story.first_chapter_id);
+  return chapter.user_id;
 
-
-    db.query(query, (err, result) => {
-      if (err) {
-        reject(err);
-      } else {
-        const authorUserId = result.rows[0].user_id;
-        resolve(authorUserId);
-      }
-    });
-  });
-};
+}
 
 module.exports = author;
