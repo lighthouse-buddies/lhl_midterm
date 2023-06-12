@@ -1,5 +1,5 @@
 -- Drop table if exists
-DROP TABLE IF EXISTS votes;
+-- DROP TABLE IF EXISTS votes;
 
 -- Create table
 CREATE TABLE votes (

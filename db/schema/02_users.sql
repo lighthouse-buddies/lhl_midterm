@@ -1,5 +1,5 @@
 -- Drop table if exists
-DROP TABLE IF EXISTS users;
+-- DROP TABLE IF EXISTS users;
 
 -- Create table
 CREATE TABLE users (

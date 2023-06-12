@@ -1,5 +1,5 @@
 -- Drop table if exists
-DROP TABLE IF EXISTS stories;
+-- DROP TABLE IF EXISTS stories;
 
 -- Create table
 CREATE TABLE stories (

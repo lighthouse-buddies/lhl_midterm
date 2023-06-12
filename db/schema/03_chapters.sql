@@ -1,5 +1,5 @@
 -- Drop table if exists
-DROP TABLE IF EXISTS chapters;
+-- DROP TABLE IF EXISTS chapters;
 
 -- Create table
 CREATE TABLE chapters (
