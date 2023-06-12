@@ -22,7 +22,7 @@
 
   <script src="/vendor/jquery-3.0.0.js"></script>
   <script defer src="/scripts/app.js"></script>
-    <script src="/scripts/chaptersLikeButton.js"></script>
+  <script src="/scripts/chaptersLikeButton.js"></script>
 </head>
 
 <body>
@@ -42,23 +42,25 @@
             <a href="/chapters/new?prevChapterId=<%= chapter.id %>">Contribute</a>
             <% } %>
 
-          <button id='likes'>
-            <%= votes %> Likes
-          </button>
+              <button id='likes'>
+                <%= votes %> Likes
+              </button>
 
-          <% if (completeButton.show) { %>
-              <% if (completeButton.completed) { %>
+              <% if (completeButton.show) { %>
+                <% if (completeButton.completed) { %>
                   <form method="POST" action="/stories/unComplete">
-                      <input type="hidden" name="storyId" value="<%= storyId %>">
-                      <button type="submit">Uncomplete Story</button>
+                    <input type="hidden" name="storyId" value="<%= storyId %>">
+                    <input type="hidden" name="chapterId" value="<%= chapter.id %>">
+                    <button type="submit">Uncomplete Story</button>
                   </form>
-              <% } else { %>
-                  <form method="POST" action="/stories/complete">
+                  <% } else { %>
+                    <form method="POST" action="/stories/complete">
                       <input type="hidden" name="storyId" value="<%= storyId %>">
+                      <input type="hidden" name="chapterId" value="<%= chapter.id %>">
                       <button type="submit">Complete Story</button>
-                  </form>
-              <% } %>
-          <% } %>
+                    </form>
+                    <% } %>
+                      <% } %>
 
 
         </footer>
@@ -102,7 +104,9 @@
                 <!-- Repeat this article block for each article -->
                 <article class="story-preview">
                   <header class="story-title">
-                    <a href="">This is the story title</a>
+                    <a href="">
+                      Chapter <%= currentChapterNumber + 1 %>
+                    </a>
                   </header>
                   <p>
                     This is the story content, the first line will be typed here to get the reader hooked. Until a
