@@ -42,9 +42,24 @@
             <a href="/chapters/new?prevChapterId=<%= chapter.id %>">Contribute</a>
             <% } %>
 
-              <button id='likes'>
-                <%= votes %> Likes
-              </button>
+          <button id='likes'>
+            <%= votes %> Likes
+          </button>
+
+          <% if (completeButton.show) { %>
+              <% if (completeButton.completed) { %>
+                  <form method="POST" action="/stories/unComplete">
+                      <input type="hidden" name="storyId" value="<%= storyId %>">
+                      <button type="submit">Uncomplete Story</button>
+                  </form>
+              <% } else { %>
+                  <form method="POST" action="/stories/complete">
+                      <input type="hidden" name="storyId" value="<%= storyId %>">
+                      <button type="submit">Complete Story</button>
+                  </form>
+              <% } %>
+          <% } %>
+
 
         </footer>
       </div>
