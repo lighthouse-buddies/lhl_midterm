@@ -5,7 +5,7 @@ const Stories = require('../../../db/queries/stories/stories');
 function completeStoryHandlerGenerator(value) {
   return (
   async function completeStoryPostHandler(req, res) {
-    const storyId = req.query.storyId;
+    const storyId = req.body.storyId;
     const userId = req.session.userId;
     const authorID = await Stories.author(storyId);
     if (!userId || authorID !== userId) {

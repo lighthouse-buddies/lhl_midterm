@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const queries = require('../db/queries/queries');
+// const queries = require('../db/queries/queries');
 const recentStoriesJsonHandler = require('./stories/query/storiesRecentGet');
 const myStoriesGetHandler = require('./stories/storiesOfUserGet');
 const ownerDeleteHandler = require('./stories/query/storiesDelete');
