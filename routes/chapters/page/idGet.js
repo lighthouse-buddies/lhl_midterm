@@ -1,7 +1,7 @@
 const queries = require("../../../db/queries/queries");
 
 /**
- * GET Route handler for rendering HTML template chapter_show using the chapter query.
+ * GET Route handler for rendering HTML template chapter_show using the chapter data.
  * Also renders the username, story title, and chapter number as template variables.
  * @param {Object} req - The request object.
  * @param {Object} res - The response object.
@@ -10,6 +10,7 @@ const queries = require("../../../db/queries/queries");
 const chaptersIdGetHandler = async (req, res) => {
   try {
     const chapterId = req.params.id;
+    const currentUserId = req.session.userId;
 
     const chapter = await queries.chapters.getData(chapterId);
     const storyId = await queries.stories.storyOfChapter(chapterId);
@@ -17,6 +18,10 @@ const chaptersIdGetHandler = async (req, res) => {
     const chapterNumber = await queries.chapters.getChapterNumber(chapterId);
     const user = await queries.users.getData(chapter.user_id);
     const story = await queries.stories.getData(storyId);
+    const authorID = await queries.stories.author(storyId);
+
+    const chapterIsApproved = chapterId === story.last_chapter_id;
+    const currentUserIsAuthorOfStory = currentUserId && authorID === currentUserId;
 
     const templateVars = {
       chapter,
@@ -27,7 +32,14 @@ const chaptersIdGetHandler = async (req, res) => {
       storyId,
       votes,
       stories: [],
-      userCookie: req.session.userId
+      userCookie: req.session.userId,
+      approveButton:{
+        show: chapterIsApproved && currentUserIsAuthorOfStory,
+      },
+      completeButton: {
+        show: currentUserIsAuthorOfStory,
+        completed: story.complete,
+      }
     };
 
     res.render('chapter_show', templateVars);
